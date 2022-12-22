@@ -34,7 +34,7 @@
     "yargs": "^17.6.2"
   },
   "scripts": {
-    "test": "node TP14/src/utils/benchmark.js",
+    "test": "node src/utils/benchmark.js",
     "start": "node index.js"
   },
   "name": "desafios_backend",
