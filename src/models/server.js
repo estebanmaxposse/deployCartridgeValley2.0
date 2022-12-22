@@ -130,6 +130,7 @@ io.on('connection', async (socket) => {
 
     socket.on('new-message', async data => {
         data.date = new Date().toLocaleString();
+        console.log(data);
         await messageManager.save(data);
         io.sockets.emit('messages', await messageManager.getAll());
     })
