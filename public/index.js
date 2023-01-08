@@ -4,7 +4,6 @@ const pug = require('pug');
 
 //Render without template
 const renderProducts = (data) => {
-    console.log('New prod render!');
     let table = '<table class="table table-stripped w-75 m-auto table-hover table-bordered">'
     table += '<thead><tr><th scope="col">ID #</th><th scope="col">Title</th><th scope="col">price</th><th scope="col">Thumnbnail</th></tr></thead>'
     table += '<tbody>'
@@ -92,28 +91,7 @@ const addMessage = (e) => {
     return false;
 }
 
-//Message denormalizer
-// const denormalize = normalizr.denormalize;
-// const schema = normalizr.schema;
-
-// const schemaAuthor = new schema.Entity('author', {}, {idAttribute: '_id'});
-// const schemaMessage = new schema.Entity('message', {author: schemaAuthor}, {idAttribute: '_id'} );
-// const schemaMessages = new schema.Entity('messages', {messages: [schemaMessage]}, {idAttribute: '_id'});
-
 server.on('messages', data => {
-    // let normalizedMessagesSize = JSON.stringify(data).length
-    // console.log(data, normalizedMessagesSize);
-
-    // let denormalizedMessages = denormalize(data.result, schemaMessages, data.entities)
-    // let denormalizedMessagesSize = JSON.stringify(denormalizedMessages).length
-    // console.log(denormalizedMessages, denormalizedMessagesSize);
-
-    // let compressionPercentage = parseInt((normalizedMessagesSize * 100) / denormalizedMessagesSize);
-    // console.log(`${compressionPercentage}%`);
-
-    // document.getElementById('percentage-rate').innerText = `Compression rate = ${compressionPercentage}`
-
-    // console.log(denormalizedMessages.messages);
     renderMessages(data);
 });
 

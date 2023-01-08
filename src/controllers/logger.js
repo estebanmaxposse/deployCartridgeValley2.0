@@ -14,6 +14,11 @@ const routeLog = (req, res, next) => {
     next()
 }
 
+const log = async (message) => {
+    loggerInfo.info(message)
+    return
+}
+
 const invalidRouteLog = (req, res, next) => {
     loggerInfo.info('Route: %s with Method: %s does not exist', req.url, req.method)
     loggerWarn.warn('Route: %s with Method: %s does not exist', req.url, req.method)
@@ -26,4 +31,4 @@ const errorLog = async (error, message) => {
     return
 }
 
-export {routeLog, invalidRouteLog, errorLog}
+export {routeLog, invalidRouteLog, errorLog, log}

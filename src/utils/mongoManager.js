@@ -5,7 +5,7 @@ import cartSchema from '../models/schemas/cartSchema.js';
 import messageSchema from '../models/schemas/messageSchema.js';
 import userSchema from '../models/schemas/userSchema.js'
 import config from '../config/globalConfig.js'
-import { errorLog } from "../controllers/logger.js";
+import { errorLog, log } from "../controllers/logger.js";
 
 const client = new MongoClient(config.MONGOATLAS_URL);
 client.connectDb()
@@ -85,7 +85,7 @@ class ContainerMongoDB {
     async deleteAll() {
         try {
             await this.content.deleteMany();
-            console.log(`All products deleted!`);
+            log(`All products deleted!`);
         } catch (error) {
             errorLog(error, `Error deleting all products`)
         };

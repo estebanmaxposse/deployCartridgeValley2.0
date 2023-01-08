@@ -1,8 +1,8 @@
 import { model } from "mongoose";
 import { connect } from "mongoose";
-// import { forEach } from "../database/products.json";
 import productSchema from '../models/schemas/productSchema.js';
 import config from './globalConfig.js'
+import { errorLog, log } from "../controllers/logger.js";
 
 const productsCollection = "products";
 
@@ -21,7 +21,7 @@ class MongoClient {
                 useUnifiedTopology: true,
             });
         } catch (error) {
-            console.log(error);
+            errorLog(error);
         }
     }
 }
@@ -39,7 +39,7 @@ const settingDb = async () => {
         //Create db from json
         await forEach((elem) => {
             new products(elem).save();
-            console.log(products(elem));
+            log(products(elem));
         });
 
         //delete db
@@ -47,9 +47,9 @@ const settingDb = async () => {
 
         //read db
         let productsFromDb = await products.find();
-        console.log(productsFromDb);
+        log(productsFromDb);
     } catch (error) {
-        console.log(error);
+        errorLog(error);
     }
 };
 

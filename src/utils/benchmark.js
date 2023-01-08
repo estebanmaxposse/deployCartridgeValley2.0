@@ -1,5 +1,6 @@
 import autocannon from "autocannon";
-import {PassThrough} from 'stream'
+import {PassThrough} from 'stream';
+import { errorLog, log } from "../controllers/logger.js";
 
 const run = (url) => {
     const buf =[]
@@ -19,6 +20,6 @@ const run = (url) => {
     })
 }
 
-console.log('Running all benchmarks in parallel... ');
+log('Running all benchmarks in parallel... ');
 
 run("http://localhost:8080/info")

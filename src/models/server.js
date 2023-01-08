@@ -18,12 +18,12 @@ import args from '../utils/argsHandler.js'
 import cluster from 'cluster';
 import CPU from 'os'
 import compression from  'compression'
-import { routeLog, invalidRouteLog } from '../controllers/logger.js';
+import { routeLog, invalidRouteLog, log, errorLog } from '../controllers/logger.js';
 
 // import { normalizeMessage } from '../controllers/dataNormalizer.js';
 
 const PORT = args.port;
-console.log(PORT);
+log(PORT);
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const productManager = new dbManager('products');
@@ -86,34 +86,34 @@ const startServer = () => {
     switch (args.serverMode) {
         case 'fork':
             httpServer.listen(PORT, () => {
-                console.log(`Server running on ${PORT}`);
+                log(`Server running on ${PORT}`);
             });
             break;
 
         case 'cluster':
             if (cluster.isPrimary) {
                 const numCPUs = CPU.cpus().length
-                console.log(`Master ${process.pid} setting up ${numCPUs} workers...`);
+                log(`Master ${process.pid} setting up ${numCPUs} workers...`);
         
                 for (let index = 0; index < numCPUs; index++) {
                     cluster.fork()
                 }
         
                 cluster.on('online', (worker) => {
-                    console.log('Worker ' + worker.process.pid + ' is online');
+                    log('Worker ' + worker.process.pid + ' is online');
                 });
                 cluster.on('exit', (worker, code, signal) => {
-                    console.log('Worker ' + worker.process.pid + ' died with code: ' + code + ', and signal: ' + signal);
+                    log('Worker ' + worker.process.pid + ' died with code: ' + code + ', and signal: ' + signal);
                 });
             } else {
                 httpServer.listen(PORT, () => {
-                    console.log(`Server running on ${PORT}`);
+                    log(`Server running on ${PORT}`);
                 });
             }
             break
         default:
             httpServer.listen(PORT, () => {
-                console.log(`Server running on ${PORT}`);
+                log(`Server running on ${PORT}`);
             });
             break;
     }
@@ -130,19 +130,10 @@ io.on('connection', async (socket) => {
 
     socket.on('new-message', async data => {
         data.date = new Date().toLocaleString();
-        console.log(data);
+        log(data);
         await messageManager.save(data);
         io.sockets.emit('messages', await messageManager.getAll());
     })
 })
-
-//NORMALIZE MSGS FUNCTION
-// const getNormalizedMessages = async () => {
-//     const messages = await messageManager.getAll();
-//     console.log(messages);
-//     const normalizedMessages = normalizeMessage({id: 'messages', messages});
-//     console.log(normalizedMessages);
-//     return normalizedMessages
-// }
 
 export default startServer;

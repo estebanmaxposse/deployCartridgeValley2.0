@@ -4,6 +4,7 @@ import dbManager from "../utils/mongoManager.js";
 const userManager = new dbManager("users");
 import isValidPassword from "../utils/passwordValidator.js";
 import createHash from '../utils/hashGenerator.js'
+import { errorLog, log } from "../controllers/logger.js";
 
 passport.use(
     "login",
@@ -11,14 +12,14 @@ passport.use(
         try {
             const user = await userManager.getByUsername(username);
             if (!isValidPassword(user, password)) {
-                console.log(`Invalid password`);
+                log(`Invalid password`);
                 return done(null, false);
             }
             return done(null, user);
         } catch (error) {
-            console.log(error);
+            errorLog(error);
             if (error) {
-                console.log(`User not found with username ${username}`);
+                log(`User not found with username ${username}`);
                 return done(null, false);
             }
             return done(error) 
@@ -36,7 +37,7 @@ passport.use(
             try {
                 const user = await userManager.getByUsername(username);
                 if (user) {
-                    console.log(`User ${username} already exists`);
+                    log(`User ${username} already exists`);
                     return done(null, false);
                 }
             } catch (error) {
@@ -49,7 +50,7 @@ passport.use(
                     admin: req.session.admin || true
                 };
                 const userWithId = await userManager.save(newUser)
-                console.log(`Registrarion successful`);
+                log(`Registrarion successful`);
                 return done(null, userWithId);
             }
         }

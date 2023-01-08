@@ -3,7 +3,7 @@ const router = Router();
 import dbManager from '../utils/mongoManager.js';
 const userManager = new dbManager('users');
 import passport from '../config/passportStrats.js'
-import { errorLog } from "../controllers/logger.js";
+import { errorLog, log } from "../controllers/logger.js";
 
 router.get('/session', (req, res) => {
     req.session.views = req.session.views ? req.session.views + 1 : 1
@@ -21,7 +21,7 @@ router.get('/user', (req, res) => {
 router.get('/login', (req, res) => {
     if (req.isAuthenticated()) {
         let user = req.user;
-        console.log(`${user} is logged in`);
+        log(`${user} is logged in`);
         res.redirect('/')
     } else {
         res.redirect('/pages/login.html')
@@ -31,14 +31,14 @@ router.get('/login', (req, res) => {
 router.post('/login', passport.authenticate('login', {failureRedirect: '/api/auth/loginFailed'}), (req, res) => res.redirect('/'))
 
 router.get('/loginFailed', (req, res) => {
-    console.log('Login failed');
+    log('Login failed');
     res.render('loginFailed.pug', req.user)
 })
 
 router.get('/signUp', (req, res) => {
     if (req.isAuthenticated()) {
         let user = req.user;
-        console.log(`${user} is logged in`);
+        log(`${user} is logged in`);
         res.redirect('/')
     } else {
         res.redirect('/pages/signUp.html')
@@ -48,7 +48,7 @@ router.get('/signUp', (req, res) => {
 router.post('/signUp', passport.authenticate('signUp', {failureRedirect: '/api/auth/signUpFailed'}), (req, res) => res.redirect('/'))
 
 router.get('/signUpFailed', (req, res) => {
-    console.log('Sign up failed');
+    log('Sign up failed');
     res.render('signUpFailed.pug', req.user)
 })
 

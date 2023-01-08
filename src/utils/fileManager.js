@@ -1,5 +1,6 @@
 import { readFileSync, promises, writeFileSync } from "fs";
 import { join } from "path";
+import { errorLog, log } from "../controllers/logger.js";
 
 class File {
   constructor(name) {
@@ -9,7 +10,7 @@ class File {
       this.content = readFileSync(this.name, 'utf-8');
       this.content = JSON.parse(this.content);
     } catch (error) {
-      console.log(error);
+      errorLog(error);
       this.content = [];
       promises.writeFile(this.name, JSON.stringify(this.content, null, '\t'))
     };
@@ -29,13 +30,12 @@ class File {
       this.content.push(object);
       promises.writeFile(this.name, JSON.stringify(this.content, null, '\t'))
         .then(() => {
-          console.log('Object Saved')
+          log('Object Saved')
         })
-        .catch(e => console.log(e))
+        .catch(e => errorLog(e))
       return ({ response: 'Saved', object })
     } catch (error) {
-      console.log(error);
-      throw new Error(`Failed to add object!`)
+      errorLog(error);
     };
   };
 
@@ -45,8 +45,7 @@ class File {
       let foundElement = content.find((item) => item.id === Number(id));
       return foundElement;
     } catch (error) {
-      console.log(error);
-      throw new Error(`Couldn't find ${id} object! ${error}`);
+      errorLog(error);
     };
   };
 
@@ -59,7 +58,7 @@ class File {
       const content = await this.getAll();
       const index = content.findIndex(e => e.id == item.id)
       if (index < 0) {
-        console.error(`updateItem: item ${item.id} not found`)
+        errorLog(`updateItem: item ${item.id} not found`)
         return;
       }
 			const newElement = {...content[index], ...item}
@@ -69,12 +68,12 @@ class File {
       try {
         writeFileSync(this.name, JSON.stringify(content, null, '\t'))
       } catch (error) {
-        console.log(error);
+        errorLog(error);
       }
 
 			return ({ response: "Updated", element: newElement })
 		} catch (error) {
-			console.log(error)
+			errorLog(error)
 			return ({ response: Error `updating ${newElement}`, error })
 		}
   }
@@ -88,18 +87,18 @@ class File {
         JSON.stringify(toDelete, null, 4)
       );
       this.#updateContent(toDelete);
-      console.log(`item ${id} deleted!`);
+      log(`item ${id} deleted!`);
     } catch (error) {
-      console.log(`item ${id} couldn't be deleted: ${error}`);
+      log(`item ${id} couldn't be deleted: ${error}`);
     };
   };
 
   async deleteAll() {
     try {
       await promises.writeFile(this.filePath, JSON.stringify([]));
-      console.log(`All products deleted!`);
+      log(`All products deleted!`);
     } catch (error) {
-      throw new Error(`Error deleting all products: ${error}`);
+      errorLog(error)
     };
   };
 };
