@@ -12,6 +12,7 @@ router.get('/session', (req, res) => {
 
 router.get('/user', (req, res) => {
     if (req.user) {
+        console.log(req.user);
         res.send(req.user)
     } else {
         res.status(404).send('Not found :(')

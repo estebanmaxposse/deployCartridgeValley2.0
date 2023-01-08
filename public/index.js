@@ -26,7 +26,7 @@ async function renderTemplateTable(data) {
         let resText = await fetch('templates/productTable.pug')
         let textTemplate = await resText.text()
         let compileTemplate = pug.compile(textTemplate)
-        let html = compileTemplate({products: data})
+        let html = compileTemplate({ products: data })
         return html;
     } catch (error) {
         console.log(error)
@@ -48,7 +48,7 @@ const addProduct = (e) => {
 server.on('products', async data => {
     if (!data.length) {
         document.getElementById('product-container').innerHTML = '<div class="alert alert-danger w-25" role="alert"><p class="text-center">No products added yet!</p></div>'
-    }else{
+    } else {
         document.getElementById('product-container').innerHTML = await renderTemplateTable(data)
     }
 });
@@ -66,8 +66,8 @@ const renderMessages = (data) => {
             <p class="fst-italic" style='color:green; font-style: italic'>${element.text}</p>
         </div>`
         )
-        }).join('');
-        document.getElementById('messages').innerHTML = htmlMessage;
+    }).join('');
+    document.getElementById('messages').innerHTML = htmlMessage;
 }
 
 let text = document.getElementById('message-text');
@@ -124,4 +124,3 @@ fetch(`/api/auth/user`)
     .catch(() => {
         window.location.href = '/pages/login.html'
     })
-

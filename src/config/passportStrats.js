@@ -41,16 +41,20 @@ passport.use(
                     return done(null, false);
                 }
             } catch (error) {
+                console.log(req.body.phoneNumber);
                 const newUser = {
                     username: username,
+                    fullName: req.body.fullName || '',
                     phoneNumber: req.body.phoneNumber || '',
                     shippingAddress: req.body.shippingAddress || '',
-                    email: req.body.email || '',
+                    email: username || '',
                     password: createHash(password),
-                    admin: req.session.admin || true
+                    admin: req.session.admin || true,
+                    age: req.body.age || '',
+                    avatar: req.body.avatar || ''
                 };
                 const userWithId = await userManager.save(newUser)
-                log(`Registrarion successful`);
+                log(`Registration successful`);
                 return done(null, userWithId);
             }
         }

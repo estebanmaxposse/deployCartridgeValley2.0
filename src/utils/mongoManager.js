@@ -59,7 +59,8 @@ class ContainerMongoDB {
             errorLog(error, `Couldn't find ${username} object! ${error}`)
         }
         if (!foundUser) {
-            errorLog('User not found')
+            throw new Error("User not found")
+            return
         }
         return foundUser;
     }

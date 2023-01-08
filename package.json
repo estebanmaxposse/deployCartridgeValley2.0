@@ -17,6 +17,7 @@
     "faker": "^6.6.6",
     "gzip": "^0.1.0",
     "handlebars": "^4.7.7",
+    "intl-tel-input": "^17.0.19",
     "knex": "^2.3.0",
     "minimist": "^1.2.7",
     "mongoose": "^6.7.2",
