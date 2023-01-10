@@ -61,7 +61,7 @@
             </div>
             <div class="mb-3">
                 <p for="user-phone" class="form-label">Phone Number</p>
-                <input type="tel" class="form-control" id="user-phone" placeholder="3874106249" name="phoneNumber"
+                <input type="tel" class="form-control" id="user-phone" placeholder="3874106249" onchange="formatPhone()"
                     required />
             </div>
             <div class="mb-3">
@@ -79,6 +79,7 @@
             </div>
             <button type="submit" class="btn btn-primary">Sign Up!</button>
             <a href="/pages/login.html">Log in!</a>
+            <input type="hidden" id="formated-phone" name="phoneNumber"></form>
         </form>
     </div>
 
