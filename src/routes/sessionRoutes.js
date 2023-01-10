@@ -4,6 +4,7 @@ import dbManager from '../utils/mongoManager.js';
 const userManager = new dbManager('users');
 import passport from '../config/passportStrats.js'
 import { errorLog, log } from "../controllers/logger.js";
+import {mailUser} from '../controllers/nodemailerGmail.js'
 
 router.get('/session', (req, res) => {
     req.session.views = req.session.views ? req.session.views + 1 : 1
@@ -46,7 +47,11 @@ router.get('/signUp', (req, res) => {
     }
 })
 
-router.post('/signUp', passport.authenticate('signUp', {failureRedirect: '/api/auth/signUpFailed'}), (req, res) => res.redirect('/'))
+router.post('/signUp', passport.authenticate('signUp', {failureRedirect: '/api/auth/signUpFailed'}), (req, res) => {
+    let user = req.user;
+    mailUser(user)
+    res.redirect('/')
+})
 
 router.get('/signUpFailed', (req, res) => {
     log('Sign up failed');

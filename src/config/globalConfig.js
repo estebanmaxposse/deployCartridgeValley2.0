@@ -6,5 +6,7 @@ export default {
     PORT: process.env.PORT || '8080',
     SESSION_KEY: process.env.SESSION_KEY || 'secret',
     MONGOATLAS_URL: process.env.MONGOATLAS_URL || "mongodb+srv://estebanmaxposse:GetStuff8@ecommerce.qwzmjs0.mongodb.net/?retryWrites=true&w=majority",
-    SERVER_MODE: process.env.SERVER_MODE || 'fork'
+    SERVER_MODE: process.env.SERVER_MODE || 'fork',
+    SENT_MAIL: process.env.SENT_MAIL || 'estebanposse98@gmail.com',
+    RECIEVE_MAIL: process.env.RECIEVE_MAIL || 'estebanmaxposse@hotmail.com'
 }

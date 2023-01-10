@@ -6,6 +6,7 @@ import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import dbManager from '../utils/mongoManager.js';
 import productRouter from '../routes/productRoutes.js';
+import cartRouter from '../routes/cartRoutes.js'
 import sessionRouter from '../routes/sessionRoutes.js';
 import miscRouter from '../routes/miscRoutes.js'
 import forkRouter from '../controllers/serverFork.js'
@@ -66,6 +67,7 @@ app.use(compression(), routeLog, productRouter);
 app.use('/api/auth', compression(), routeLog, sessionRouter);
 app.use(compression(), routeLog, miscRouter)
 app.use(compression(), routeLog, forkRouter)
+// app.use('/api/cart', compression(), routeLog, cartRouter);
 
 app.use(invalidRouteLog, (req, res, next) => {
     res.status(404);
