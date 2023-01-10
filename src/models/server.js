@@ -67,7 +67,7 @@ app.use(compression(), routeLog, productRouter);
 app.use('/api/auth', compression(), routeLog, sessionRouter);
 app.use(compression(), routeLog, miscRouter)
 app.use(compression(), routeLog, forkRouter)
-// app.use('/api/cart', compression(), routeLog, cartRouter);
+app.use('/api/cart', compression(), routeLog, cartRouter);
 
 app.use(invalidRouteLog, (req, res, next) => {
     res.status(404);

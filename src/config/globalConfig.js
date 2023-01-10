@@ -8,5 +8,6 @@ export default {
     MONGOATLAS_URL: process.env.MONGOATLAS_URL || "mongodb+srv://estebanmaxposse:GetStuff8@ecommerce.qwzmjs0.mongodb.net/?retryWrites=true&w=majority",
     SERVER_MODE: process.env.SERVER_MODE || 'fork',
     SENT_MAIL: process.env.SENT_MAIL || 'estebanposse98@gmail.com',
-    RECIEVE_MAIL: process.env.RECIEVE_MAIL || 'estebanmaxposse@hotmail.com'
+    RECIEVE_MAIL: process.env.RECIEVE_MAIL || 'estebanmaxposse@hotmail.com',
+    ADMIN_PHONE: process.env.ADMIN_PHONE || '+543874106249'
 }

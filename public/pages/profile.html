@@ -60,7 +60,6 @@
 
     <section style="background-color: #eee">
       <div class="container py-5">
-
         <div class="row">
           <div class="col-lg-4">
             <div class="card mb-4">
@@ -76,7 +75,13 @@
                 <p class="text-muted mb-1" id="profile-email-1"></p>
                 <p class="text-muted mb-4" id="profile-address-1"></p>
                 <div class="d-flex justify-content-center mb-2">
-                  <button type="button" class="btn btn-danger" onclick="logOut()">Logout</button>
+                  <button
+                    type="button"
+                    class="btn btn-danger"
+                    onclick="logOut()"
+                  >
+                    Logout
+                  </button>
                 </div>
               </div>
             </div>
@@ -122,86 +127,28 @@
                 </div>
                 <hr />
                 <div class="row">
-                    <div class="col-sm-3">
-                      <p class="mb-0">Age</p>
-                    </div>
-                    <div class="col-sm-9">
-                      <p class="text-muted mb-0" id="profile-age"></p>
-                    </div>
+                  <div class="col-sm-3">
+                    <p class="mb-0">Age</p>
                   </div>
+                  <div class="col-sm-9">
+                    <p class="text-muted mb-0" id="profile-age"></p>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="row">
-              <div class="col-md-6">
+              <div class="col">
                 <div class="card mb-4 mb-md-0">
                   <div class="card-body">
-                    <p class="mb-4">
-                      <span class="text-primary font-italic me-1"
-                        >Cart</span
-                      >
-                      Your products
-                    </p>
-                    <p class="mb-1" style="font-size: 0.77rem">Product test</p>
-                    <div class="progress rounded" style="height: 5px">
-                      <div
-                        class="progress-bar"
-                        role="progressbar"
-                        style="width: 80%"
-                        aria-valuenow="80"
-                        aria-valuemin="0"
-                        aria-valuemax="100"
-                      ></div>
-                    </div>
-                    <p class="mt-4 mb-1" style="font-size: 0.77rem">
-                      Product test
-                    </p>
-                    <div class="progress rounded" style="height: 5px">
-                      <div
-                        class="progress-bar"
-                        role="progressbar"
-                        style="width: 72%"
-                        aria-valuenow="72"
-                        aria-valuemin="0"
-                        aria-valuemax="100"
-                      ></div>
-                    </div>
-                    <p class="mt-4 mb-1" style="font-size: 0.77rem">Product test</p>
-                    <div class="progress rounded" style="height: 5px">
-                      <div
-                        class="progress-bar"
-                        role="progressbar"
-                        style="width: 89%"
-                        aria-valuenow="89"
-                        aria-valuemin="0"
-                        aria-valuemax="100"
-                      ></div>
-                    </div>
-                    <p class="mt-4 mb-1" style="font-size: 0.77rem">
-                      Product test
-                    </p>
-                    <div class="progress rounded" style="height: 5px">
-                      <div
-                        class="progress-bar"
-                        role="progressbar"
-                        style="width: 55%"
-                        aria-valuenow="55"
-                        aria-valuemin="0"
-                        aria-valuemax="100"
-                      ></div>
-                    </div>
-                    <p class="mt-4 mb-1" style="font-size: 0.77rem">
-                      Product test
-                    </p>
-                    <div class="progress rounded mb-2" style="height: 5px">
-                      <div
-                        class="progress-bar"
-                        role="progressbar"
-                        style="width: 66%"
-                        aria-valuenow="66"
-                        aria-valuemin="0"
-                        aria-valuemax="100"
-                      ></div>
-                    </div>
+                    <div class="d-flex p-2 justify-content-between">
+                      <p class="text-primary font-italic me-1">Cart </p>
+                      <button type="button" class="btn btn-success d-none" id="purchase-button">Complete purchase</button>
+                  </div>
+                    <ul class="list-group shadow" id="cart-products">
+                      <!-- list group item-->
+                      <li class="list-group-item">Loading...</li>
+                    </ul>
+                    <!-- End -->
                   </div>
                 </div>
               </div>
@@ -212,5 +159,6 @@
     </section>
 
     <script type="text/javascript" src="../scripts/profile.js"></script>
+    <script type="text/javascript" src="../scripts/cart.js"></script>
   </body>
 </html>
