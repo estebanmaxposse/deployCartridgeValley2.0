@@ -4,15 +4,20 @@ import dbManager from '../utils/mongoManager.js';
 const userManager = new dbManager('users');
 import passport from '../config/passportStrats.js'
 import { errorLog, log } from "../controllers/logger.js";
+import {mailUser} from '../controllers/nodemailer.js'
 
 router.get('/session', (req, res) => {
     req.session.views = req.session.views ? req.session.views + 1 : 1
     res.send(`<h1>Views: ${req.session.views} </h1>`)
 })
 
+let user
+
 router.get('/user', (req, res) => {
     if (req.user) {
+        user = req.user
         res.send(req.user)
+        return user
     } else {
         res.status(404).send('Not found :(')
     }
@@ -45,7 +50,11 @@ router.get('/signUp', (req, res) => {
     }
 })
 
-router.post('/signUp', passport.authenticate('signUp', {failureRedirect: '/api/auth/signUpFailed'}), (req, res) => res.redirect('/'))
+router.post('/signUp', passport.authenticate('signUp', {failureRedirect: '/api/auth/signUpFailed'}), (req, res) => {
+    let user = req.user;
+    mailUser(user)
+    res.redirect('/')
+})
 
 router.get('/signUpFailed', (req, res) => {
     log('Sign up failed');
@@ -56,6 +65,7 @@ router.get('/logout', (req, res) => {
     try {
         let user = req.user
         req.logout(console.log);
+        log("LOGOUT", user);
         res.render('logout.pug', {user: user.username})
     } catch (error) {
         errorLog(error, "Couldn't log out!")
@@ -63,3 +73,5 @@ router.get('/logout', (req, res) => {
 })
 
 export default router;
+
+export { user }
