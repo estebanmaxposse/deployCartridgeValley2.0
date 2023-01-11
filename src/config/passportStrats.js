@@ -41,7 +41,6 @@ passport.use(
                     return done(null, false);
                 }
             } catch (error) {
-                console.log(req.body.phoneNumber);
                 const newUser = {
                     username: username,
                     fullName: req.body.fullName || '',

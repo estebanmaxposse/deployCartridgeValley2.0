@@ -1,4 +1,5 @@
 let currentUser
+let filteredCart
 
 const cartList = document.getElementById('cart-products')
 
@@ -10,7 +11,6 @@ const filterCart = async () => {
             })
             .then(user => {
                 currentUser = user
-                console.log(currentUser);
                 return currentUser
             });
         await fetch(`/api/cart`)
@@ -18,10 +18,7 @@ const filterCart = async () => {
                 return res.json()
             })
             .then(carts => {
-                console.log(carts);
-                console.log(currentUser);
-                const filteredCart = carts.find(cart => cart.buyerID === currentUser._id)
-                console.log(filteredCart);
+                filteredCart = carts.find(cart => cart.buyerID === currentUser._id)
                 if (filteredCart.products.length === 0) {
                     cartList.innerHTML = `
                         <h4> You haven't added any products yet! </h4>
@@ -59,6 +56,7 @@ const filterCart = async () => {
                     ).join('')
                     document.getElementById('purchase-button').className = "btn btn-success"
                 }
+                return filteredCart
             })
             .catch(
                 cartList.innerHTML = `
@@ -72,3 +70,16 @@ const filterCart = async () => {
 }
 
 filterCart()
+
+const completePurchase = async () => {
+    try {
+        const response = await fetch(`/api/cart/${filteredCart._id}`, {
+            method: 'post',
+            body: filteredCart._id
+        })
+        console.log('Completed!', response);
+        document.getElementById('purchase-button').innerHTML = 'Purchased!'
+    } catch (error) {
+        console.log(error);
+    }    
+}

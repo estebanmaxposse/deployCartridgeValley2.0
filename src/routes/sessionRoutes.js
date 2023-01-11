@@ -15,10 +15,8 @@ let user
 
 router.get('/user', (req, res) => {
     if (req.user) {
-        console.log(req.user);
         user = req.user
         res.send(req.user)
-        console.log(user);
         return user
     } else {
         res.status(404).send('Not found :(')
@@ -67,7 +65,7 @@ router.get('/logout', (req, res) => {
     try {
         let user = req.user
         req.logout(console.log);
-        console.log("LOGOUT", user);
+        log("LOGOUT", user);
         res.render('logout.pug', {user: user.username})
     } catch (error) {
         errorLog(error, "Couldn't log out!")

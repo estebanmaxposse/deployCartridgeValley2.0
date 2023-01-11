@@ -6,10 +6,7 @@ const phoneInput = window.intlTelInput(phoneInputField, {
 });
 
 const formatPhone = () => {
-    console.log(phoneInput);
     const phoneNumber = phoneInput.getNumber()
-    console.log(phoneNumber);
     const formatedPhone = document.getElementById('formated-phone')
-    console.log(formatedPhone);
     formatedPhone.value = phoneNumber
 }
