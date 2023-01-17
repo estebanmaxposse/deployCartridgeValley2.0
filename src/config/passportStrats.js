@@ -1,10 +1,9 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
-import dbManager from "../utils/mongoManager.js";
-const userManager = new dbManager("users");
+import userManager from "../daos/daoUsers.js";
 import isValidPassword from "../utils/passwordValidator.js";
 import createHash from '../utils/hashGenerator.js'
-import { errorLog, log } from "../controllers/logger.js";
+import { errorLog, log } from "../utils/logger.js";
 
 passport.use(
     "login",

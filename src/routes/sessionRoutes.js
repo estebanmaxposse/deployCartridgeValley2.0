@@ -1,77 +1,24 @@
 import { Router } from "express";
 const router = Router();
-import dbManager from '../utils/mongoManager.js';
-const userManager = new dbManager('users');
 import passport from '../config/passportStrats.js'
-import { errorLog, log } from "../controllers/logger.js";
-import {mailUser} from '../controllers/nodemailer.js'
+import { getSessionController, getUserController, loginUserController, authLoginController, loginFailedController, signUpUserController, authSignUpController, signUpFailedController, logoutController } from '../controllers/sessionController.js'
 
-router.get('/session', (req, res) => {
-    req.session.views = req.session.views ? req.session.views + 1 : 1
-    res.send(`<h1>Views: ${req.session.views} </h1>`)
-})
+router.get('/session', getSessionController)
 
-let user
+router.get('/user', getUserController)
 
-router.get('/user', (req, res) => {
-    if (req.user) {
-        user = req.user
-        res.send(req.user)
-        return user
-    } else {
-        res.status(404).send('Not found :(')
-    }
-})
+router.get('/login', loginUserController)
 
-router.get('/login', (req, res) => {
-    if (req.isAuthenticated()) {
-        let user = req.user;
-        log(`${user} is logged in`);
-        res.redirect('/')
-    } else {
-        res.redirect('/pages/login.html')
-    }
-})
+router.post('/login', passport.authenticate('login', {failureRedirect: '/api/auth/loginFailed'}), authLoginController)
 
-router.post('/login', passport.authenticate('login', {failureRedirect: '/api/auth/loginFailed'}), (req, res) => res.redirect('/'))
+router.get('/loginFailed', loginFailedController)
 
-router.get('/loginFailed', (req, res) => {
-    log('Login failed');
-    res.render('loginFailed.pug', req.user)
-})
+router.get('/signUp', signUpUserController)
 
-router.get('/signUp', (req, res) => {
-    if (req.isAuthenticated()) {
-        let user = req.user;
-        log(`${user} is logged in`);
-        res.redirect('/')
-    } else {
-        res.redirect('/pages/signUp.html')
-    }
-})
+router.post('/signUp', passport.authenticate('signUp', {failureRedirect: '/api/auth/signUpFailed'}), authSignUpController)
 
-router.post('/signUp', passport.authenticate('signUp', {failureRedirect: '/api/auth/signUpFailed'}), (req, res) => {
-    let user = req.user;
-    mailUser(user)
-    res.redirect('/')
-})
+router.get('/signUpFailed', signUpFailedController)
 
-router.get('/signUpFailed', (req, res) => {
-    log('Sign up failed');
-    res.render('signUpFailed.pug', req.user)
-})
-
-router.get('/logout', (req, res) => {
-    try {
-        let user = req.user
-        req.logout(console.log);
-        log("LOGOUT", user);
-        res.render('logout.pug', {user: user.username})
-    } catch (error) {
-        errorLog(error, "Couldn't log out!")
-    }
-})
+router.get('/logout', logoutController)
 
 export default router;
-
-export { user }

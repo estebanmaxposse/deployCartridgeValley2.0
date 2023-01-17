@@ -1,13 +1,8 @@
 import { Router } from "express";
 const router = Router();
 import info from '../utils/argsHandler.js'
+import { getInfoController } from "../controllers/miscController.js";
 
-router.get('/info', async (req, res) => {
-    try {
-        res.render('info.pug', { info })
-    } catch (error) {
-        throw new Error(error);
-    }
-})
+router.get('/info', getInfoController)
 
 export default router

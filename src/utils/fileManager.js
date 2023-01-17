@@ -1,6 +1,6 @@
 import { readFileSync, promises, writeFileSync } from "fs";
 import { join } from "path";
-import { errorLog, log } from "../controllers/logger.js";
+import { errorLog, log } from "../utils/logger.js";
 
 class File {
   constructor(name) {

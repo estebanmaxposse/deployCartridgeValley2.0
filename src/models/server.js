@@ -4,12 +4,13 @@ import { Server as IOServer } from 'socket.io';
 import { join } from 'path';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
-import dbManager from '../utils/mongoManager.js';
+import messageManager from '../daos/daoMessages.js';
+import productManager from '../daos/daoProducts.js';
 import productRouter from '../routes/productRoutes.js';
 import cartRouter from '../routes/cartRoutes.js'
 import sessionRouter from '../routes/sessionRoutes.js';
 import miscRouter from '../routes/miscRoutes.js'
-import forkRouter from '../controllers/serverFork.js'
+import forkRouter from '../utils/serverFork.js'
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
@@ -19,16 +20,13 @@ import args from '../utils/argsHandler.js'
 import cluster from 'cluster';
 import CPU from 'os'
 import compression from  'compression'
-import { routeLog, invalidRouteLog, log, errorLog } from '../controllers/logger.js';
+import { routeLog, invalidRouteLog, log, errorLog } from '../utils/logger.js';
 
 // import { normalizeMessage } from '../controllers/dataNormalizer.js';
 
 const PORT = args.port;
 log(PORT);
 const __dirname = dirname(fileURLToPath(import.meta.url));
-
-const productManager = new dbManager('products');
-const messageManager = new dbManager('messages');
 
 const app = express();
 const httpServer = new HttpServer(app);

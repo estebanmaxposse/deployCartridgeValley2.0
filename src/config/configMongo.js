@@ -2,7 +2,7 @@ import { model } from "mongoose";
 import { connect } from "mongoose";
 import productSchema from '../models/schemas/productSchema.js';
 import config from './globalConfig.js'
-import { errorLog, log } from "../controllers/logger.js";
+import { errorLog, log } from "../utils/logger.js";
 
 const productsCollection = "products";
 

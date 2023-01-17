@@ -1,97 +1,21 @@
 import { Router } from "express";
-import Cart from '../models/cart.js'
 const router = Router();
-import dbManager from '../utils/mongoManager.js';
-import { user } from "./sessionRoutes.js";
-import { sendSMS, sendWpp } from "../controllers/twilio.js";
-import { mailPurchase } from "../controllers/nodemailer.js";
-import config from '../config/globalConfig.js'
+import { getNewCartController, getAllCartsController, addProductsController, getProductsController, getCartController, completePurchaseController, deleteCartController, deleteProductCartController } from '../controllers/cartController.js'
 
-const productManager = new dbManager('products');
-const cartManager = new dbManager('cart');
-const userManager = new dbManager("users");
+router.post("/", getNewCartController);
 
-router.post("/", async (req, res) => {
-    try {
-        let newCart = new Cart()
-        newCart.buyerID = user._id
-        res.status(200).json(await cartManager.save(newCart))
-    } catch (error) {
-        throw new Error(error);
-    };
-});
+router.get('/', getAllCartsController)
 
-router.get('/', async (req, res) => {
-    try {
-        res.status(200).json(await cartManager.getAll())
-    } catch (error) {
-        throw new Error(error);
-    }
-})
+router.post("/:id/products", addProductsController);
 
-router.post("/:id/products", async (req, res) => {
-    let { id } = req.params;
-    let cart = await cartManager.getById(id);
-    let body = req.body;
-    await Promise
-        .all(body.map(pId => {
-            return productManager.getById(pId._id)}))
-        .then(products => {
-            cart.products.push(...products)});
+router.get("/:id/products", getProductsController);
 
-    let updatedCart = await cartManager.updateItem(cart);
-    res.json(updatedCart.response);
-});
+router.get("/:id", getCartController)
 
-router.get("/:id/products", async (req, res) => {
-    let { id } = req.params;
-    let cart = await cartManager.getById(id);
-    if (cart.products.length === 0) {
-        res.json({ response: "This cart has no products" })
-    } else {
-        res.status(200).json({cartId: cart._id, products: cart.products, buyerID: cart.buyerID})
-    };
-});
+router.post("/:id", completePurchaseController)
 
-router.get("/:id", async (req, res) => {
-    let {id} = req.params;
-    let cart = await cartManager.getById(id)
-    res.status(200).json(cart)
-})
+router.delete("/:id", deleteCartController)
 
-router.post("/:id", async (req, res) => {
-    let {id} = req.params;
-    let cart = await cartManager.getById(id)
-    let buyer = await userManager.getById(cart.buyerID)
-    sendWpp(
-        config.TEST_PHONE,
-        `New purchase from ${buyer.fullName}
-        with email ${buyer.email}.
-        Products purchased:
-        ${cart.products.map(product => product.title).join(', ')}
-        `
-    );
-    sendSMS(
-        buyer.phoneNumber, `Purchase completed! Your order is being processed.`
-    )
-    mailPurchase(buyer, cart)
-    res.status(200)
-})
-
-router.delete("/:id", async (req, res) => {
-    let { id } = req.params;
-    res.status(200).json( await cartManager.deleteById(id) );
-})
-
-router.delete("/:id/products/:id_prod", async (req, res) => {
-    let { id, id_prod } = req.params;
-    let cart = await cartManager.getById(id);
-    let newProducts = cart.products.filter((product) => (product._id).toString() !== id_prod);
-    cart.products = newProducts;
-
-    let updatedCart = await cartManager.updateItem(cart);
-    res.status(200).json(updatedCart.response);
-})
-
+router.delete("/:id/products/:id_prod", deleteProductCartController)
 
 export default router;

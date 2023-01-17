@@ -1,6 +1,6 @@
 import autocannon from "autocannon";
 import {PassThrough} from 'stream';
-import { errorLog, log } from "../controllers/logger.js";
+import { errorLog, log } from "../utils/logger.js";
 
 const run = (url) => {
     const buf =[]
