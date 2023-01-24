@@ -1,7 +1,5 @@
 import productValidation from "../utils/validator.js";
 import Product from "../models/product.js";
-import productManager from "../daos/daoProducts.js";
-import productDTO from "../daos/dtos/dtoProducts.js";
 import mockProducts from "../utils/mockProducts.js";
 import { errorLog } from "../utils/logger.js";
 import productsRepo from "../daos/repos/productsRepo.js";

@@ -1,32 +1,24 @@
-import messageManager from '../daos/daoMessages.js';
-import productManager from '../daos/daoProducts.js';
-import productDTO from '../daos/dtos/dtoProducts.js';
-import messageDTO from '../daos/dtos/dtoMessages.js';
-import { getProducts } from '../services/productServices.js';
+import productsRepo from '../daos/repos/productsRepo.js';
+import messagesRepo from '../daos/repos/messagesRepo.js';
 import { log } from './logger.js';
 
-const getMessages = async () => {
-        const rawMessages = await messageManager.getAll()
-        const messages = rawMessages.map(m => new messageDTO(m))
-        return messages
-}
+const productsRepository = new productsRepo()
+const messagesRepository = new messagesRepo()
 
 const socketConfig = async (io, socket) => {
-    socket.emit('products', await getProducts());
-    socket.emit('messages', await getMessages())
+    socket.emit('products', await productsRepository.getAll());
+    socket.emit('messages', await messagesRepository.getMessages())
 
     socket.on('new-product', async data => {
-        const product = new productDTO(data)
-        await productManager.save(product);
-        io.sockets.emit('products', await getProducts());
+        await productsRepository.postProduct(data)
+        io.sockets.emit('products', await productsRepository.getAll());
     });
 
     socket.on('new-message', async data => {
         data.date = new Date().toLocaleString();
         log(data);
-        const message = new messageDTO(data)
-        await messageManager.save(message);
-        io.sockets.emit('messages', await getMessages());
+        await messagesRepository.saveMessage(data)
+        io.sockets.emit('messages', await messagesRepository.getMessages());
     })
 }
 

@@ -7,32 +7,32 @@ class productsRepo {
     }
 
     async getAll() {
-        const rawProducts = await productManager.getAll();
+        const rawProducts = await this.dao.getAll();
         const products = rawProducts.map(p => new productDTO(p))
         return products
     }
 
     async getProduct(id) {
-        const rawProduct = await productManager.getById(id);
+        const rawProduct = await this.dao.getById(id);
         const product = new productDTO(rawProduct)
         return product
     }
 
     async postProduct(rawProduct) {
         const product = new productDTO(rawProduct)
-        await productManager.save(product);
+        await this.dao.save(product);
         return product;
     }
 
     async updateProduct(id, rawProduct) {
         let product = new productDTO(rawProduct)
         let updatedProduct = {...product, id: id};
-        await productManager.updateItem(updatedProduct);
+        await this.dao.updateItem(updatedProduct);
         return updatedProduct
     }
 
     async deleteProduct(id) {
-        return await productManager.deleteById(id)
+        return await this.dao.deleteById(id)
     }
 }
 
