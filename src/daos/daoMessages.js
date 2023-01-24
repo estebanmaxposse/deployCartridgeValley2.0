@@ -2,8 +2,27 @@ import config from '../config/globalConfig.js'
 import daoMessagesMongo from './mongo/daoMessagesMongo.js';
 
 let selectedDB = config.DATABASE;
+let instance = null
 
 class messageFactory {
+
+    //SINGLETON TEST
+    constructor() {
+        this.value = Math.random(100)
+    }
+
+    printValue() {
+        console.log(this.value)
+    }
+
+    static getInstance() {
+        if (!instance) {
+            instance = new messageFactory()
+        }
+        return instance
+    }
+
+    //FACTORY PATTERN
     createMessageManager() {
         switch (selectedDB) {
             case 'mongo':
@@ -19,7 +38,13 @@ class messageFactory {
     }
 }
 
-let factory = new messageFactory()
-let messageManager = factory.createMessageManager()
+//SINGLETON TEST
+let factory = messageFactory.getInstance()
+// let con2 = messageFactory.getInstance()
+// con1.printValue()
+// con2.printValue()
+// console.log(con1 === con2);
+
+let messageManager = instance.createMessageManager()
 
 export default messageManager
