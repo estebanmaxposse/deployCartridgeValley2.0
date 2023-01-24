@@ -1,19 +1,25 @@
 import config from '../config/globalConfig.js'
 import daoCartsMongo from './mongo/daoCartsMongo.js';
 
-let selectedDB = config.DATABASE;
-let cartManager
+const selectedDB = config.DATABASE;
 
-switch (selectedDB) {
-    case 'mongo':
-        cartManager = new daoCartsMongo()
-        break;
-    // case 'firebase':
-    //     cartManager = new daocartsFirebase()
-    //     break;
-    // default:
-    //     cartManager = new daocartsFile('carts.json')
-    //     break;
+class cartFactory {
+    createCartManager() {
+        switch (selectedDB) {
+            case 'mongo':
+                return new daoCartsMongo()
+                break;
+            // case 'firebase':
+            //     return daocartsFirebase()
+            //     break;
+            default:
+                return new daoCartsMongo()
+                break;
+        }
+    }
 }
+
+let factory = new cartFactory()
+let cartManager = factory.createCartManager()
 
 export default cartManager
