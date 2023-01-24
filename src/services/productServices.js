@@ -4,8 +4,10 @@ import productManager from "../daos/daoProducts.js";
 import productDTO from "../daos/dtos/dtoProducts.js";
 import mockProducts from "../utils/mockProducts.js";
 import { errorLog } from "../utils/logger.js";
+import productsRepo from "../daos/repos/productsRepo.js";
 
 const generateProducts = new mockProducts()
+const productsRepository = new productsRepo()
 
 const admin = true;
 
@@ -13,8 +15,7 @@ const checkAdmin = () => admin;
 
 const getProducts = async () => {
     try {
-        const rawProducts = await productManager.getAll();
-        const products = rawProducts.map(p => new productDTO(p))
+        let products = await productsRepository.getAll()
         const productExists = products.length !== 0;
         if (productExists) {
             return products
@@ -33,8 +34,7 @@ const getRandomProducts = async () => {
 
 const getProduct = async (id) => {
     try {
-        const rawProduct = await productManager.getById(id);
-        const product = new productDTO(rawProduct)
+        const product = await productsRepository.getProduct(id)
         let productExists = true;
         if (!product) {
             productExists = false;
@@ -60,9 +60,7 @@ const postProduct = async () => {
         if (validatedProduct.error) {
             return validatedProduct;
         } else {
-            const product = new productDTO(validatedProduct)
-            await productManager.save(product);
-            return product;
+            await productsRepository.postProduct(validatedProduct)
         }
     } catch (error) {
         errorLog(error)
@@ -74,10 +72,7 @@ const updateProduct = async (id, rawProduct) => {
         return { response: "Can't access this page", status: 403 }
     }
     try {
-        let product = new productDTO(rawProduct)
-        let updatedProduct = {...product, id: id};
-        await productManager.updateItem(updatedProduct);
-        return updatedProduct
+        await productsRepository.updateProduct(id, rawProduct)
     } catch (error) {
         errorLog(error)
     };
@@ -88,7 +83,7 @@ const deleteProduct = async (id) => {
         return { response: "Can't access this page", status: 403 }
     }
     try { 
-         return await productManager.deleteById(id)
+         await productsRepository.deleteProduct(id)
     } catch (error) {
         errorLog(error)
     };
