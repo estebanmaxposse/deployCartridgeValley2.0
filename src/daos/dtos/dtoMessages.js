@@ -1,6 +1,5 @@
 class messageDTO {
     constructor(messageData) {
-        console.log('MESSAGES DTO: ', messageData);
         this.name = messageData.author.name,
         this.surname = messageData.author.surname,
         this.age = messageData.author.age,
