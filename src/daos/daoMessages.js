@@ -2,18 +2,49 @@ import config from '../config/globalConfig.js'
 import daoMessagesMongo from './mongo/daoMessagesMongo.js';
 
 let selectedDB = config.DATABASE;
-let messageManager
+let instance = null
 
-switch (selectedDB) {
-    case 'mongo':
-        messageManager = new daoMessagesMongo()
-        break;
-    // case 'firebase':
-    //     messageManager = new daoMessagesFirebase()
-    //     break;
-    // default:
-    //     messageManager = new daoMessagesFile('Messages.json')
-    //     break;
+class messageFactory {
+
+    //SINGLETON TEST
+    constructor() {
+        this.value = Math.random(100)
+    }
+
+    printValue() {
+        console.log(this.value)
+    }
+
+    static getInstance() {
+        if (!instance) {
+            instance = new messageFactory()
+        }
+        return instance
+    }
+
+    //FACTORY PATTERN
+    createMessageManager() {
+        switch (selectedDB) {
+            case 'mongo':
+                return new daoMessagesMongo()
+                break;
+            // case 'firebase':
+            //     return new daoMessagesFirebase()
+            //     break;
+            default:
+                return new daoMessagesMongo()
+                break;
+        }
+    }
 }
+
+//SINGLETON TEST
+let factory = messageFactory.getInstance()
+// let con2 = messageFactory.getInstance()
+// con1.printValue()
+// con2.printValue()
+// console.log(con1 === con2);
+
+let messageManager = instance.createMessageManager()
 
 export default messageManager

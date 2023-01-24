@@ -1,10 +1,11 @@
 import productValidation from "../utils/validator.js";
 import Product from "../models/product.js";
-import productManager from "../daos/daoProducts.js";
 import mockProducts from "../utils/mockProducts.js";
 import { errorLog } from "../utils/logger.js";
+import productsRepo from "../daos/repos/productsRepo.js";
 
 const generateProducts = new mockProducts()
+const productsRepository = new productsRepo()
 
 const admin = true;
 
@@ -12,12 +13,12 @@ const checkAdmin = () => admin;
 
 const getProducts = async () => {
     try {
-        const products = await productManager.getAll();
+        let products = await productsRepository.getAll()
         const productExists = products.length !== 0;
         if (productExists) {
             return products
         } else {
-            return { error: "Couldn't find any products!" }
+            return { response: "Couldn't find any products!", status: 404 }
         }
     } catch (error) {
         errorLog(error)
@@ -31,7 +32,7 @@ const getRandomProducts = async () => {
 
 const getProduct = async (id) => {
     try {
-        const product = await productManager.getById(id);
+        const product = await productsRepository.getProduct(id)
         let productExists = true;
         if (!product) {
             productExists = false;
@@ -39,8 +40,7 @@ const getProduct = async (id) => {
         if (productExists) {
              return product;
         } else {
-            errorLog("Couldn't find the specified product!")
-            return { error: "Couldn't find the specified product!" }
+            return { response: "Couldn't find any products!", status: 404 }
         }
     } catch (error) {
         errorLog(error)
@@ -49,7 +49,7 @@ const getProduct = async (id) => {
 
 const postProduct = async () => {
     if (!checkAdmin()) {
-        return {response: "You can not access this page"}
+        return { response: "Can't access this page", status: 403 }
     }
     try {
         const { title, price, description, code, thumbnail, stock, category } = req.body;
@@ -58,22 +58,19 @@ const postProduct = async () => {
         if (validatedProduct.error) {
             return validatedProduct;
         } else {
-            const product = await productManager.save(validatedProduct);
-            return validatedProduct;
+            await productsRepository.postProduct(validatedProduct)
         }
     } catch (error) {
         errorLog(error)
     };
 }
 
-const updateProduct = async (id, product) => {
+const updateProduct = async (id, rawProduct) => {
     if (!checkAdmin()) {
-        return {response: "You can not access this page"}
+        return { response: "Can't access this page", status: 403 }
     }
     try {
-        let updatedProduct = {...product, id: id};
-        await productManager.updateItem(updatedProduct);
-        return updatedProduct
+        await productsRepository.updateProduct(id, rawProduct)
     } catch (error) {
         errorLog(error)
     };
@@ -81,10 +78,10 @@ const updateProduct = async (id, product) => {
 
 const deleteProduct = async (id) => {
     if (!checkAdmin()) {
-        return {response: "You can not access this page"}
+        return { response: "Can't access this page", status: 403 }
     }
     try { 
-         return await productManager.deleteById(id)
+         await productsRepository.deleteProduct(id)
     } catch (error) {
         errorLog(error)
     };

@@ -1,5 +1,6 @@
 import { errorLog, log } from "../utils/logger.js";
 import { mailUser } from '../utils/nodemailer.js'
+import userDTO from "../daos/dtos/dtoUsers.js";
 
 let user
 
@@ -15,7 +16,7 @@ const getSession = async (sessionViews) => {
 const getUser = async (userCheck) => {
     try {
         if (userCheck) {
-            user = userCheck
+            user = new userDTO(userCheck)
             return { response: user, status: 200 }
         } else {
             return { response: 'User not found', status: 404 }

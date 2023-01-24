@@ -7,12 +7,14 @@ import { sendSMS, sendWpp } from "../utils/twilio.js";
 import { mailPurchase } from "../utils/nodemailer.js";
 import config from '../config/globalConfig.js'
 import { errorLog } from '../utils/logger.js';
+import cartDTO from '../daos/dtos/dtoCarts.js';
 
 const getNewCart = async () => {
     try {
         let newCart = new Cart()
         newCart.buyerID = user._id
-        return await cartManager.save(newCart)
+        let cart = new cartDTO(newCart)
+        return await cartManager.save(cart)
     } catch (error) {
         errorLog(error);
     }
@@ -20,7 +22,8 @@ const getNewCart = async () => {
 
 const getAllCarts = async () => {
     try {
-        const carts = await cartManager.getAll()
+        const rawCarts = await cartManager.getAll()
+        const carts = rawCarts.map(c => new cartDTO(c))
         return carts
     } catch (error) {
         errorLog(error)
@@ -59,7 +62,8 @@ const getProducts = async (id) => {
 
 const getCart = async (id) => {
     try {
-        let cart = await cartManager.getById(id)
+        let rawCart = await cartManager.getById(id)
+        let cart = new cartDTO(rawCart)
         return cart
     } catch (error) {
         errorLog(error)
