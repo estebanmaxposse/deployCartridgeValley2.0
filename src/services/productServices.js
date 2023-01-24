@@ -1,6 +1,7 @@
 import productValidation from "../utils/validator.js";
 import Product from "../models/product.js";
 import productManager from "../daos/daoProducts.js";
+import productDTO from "../daos/dtos/dtoProducts.js";
 import mockProducts from "../utils/mockProducts.js";
 import { errorLog } from "../utils/logger.js";
 
@@ -12,12 +13,13 @@ const checkAdmin = () => admin;
 
 const getProducts = async () => {
     try {
-        const products = await productManager.getAll();
+        const rawProducts = await productManager.getAll();
+        const products = rawProducts.map(p => new productDTO(p))
         const productExists = products.length !== 0;
         if (productExists) {
             return products
         } else {
-            return { error: "Couldn't find any products!" }
+            return { response: "Couldn't find any products!", status: 404 }
         }
     } catch (error) {
         errorLog(error)
@@ -31,7 +33,8 @@ const getRandomProducts = async () => {
 
 const getProduct = async (id) => {
     try {
-        const product = await productManager.getById(id);
+        const rawProduct = await productManager.getById(id);
+        const product = new productDTO(rawProduct)
         let productExists = true;
         if (!product) {
             productExists = false;
@@ -39,8 +42,7 @@ const getProduct = async (id) => {
         if (productExists) {
              return product;
         } else {
-            errorLog("Couldn't find the specified product!")
-            return { error: "Couldn't find the specified product!" }
+            return { response: "Couldn't find any products!", status: 404 }
         }
     } catch (error) {
         errorLog(error)
@@ -49,7 +51,7 @@ const getProduct = async (id) => {
 
 const postProduct = async () => {
     if (!checkAdmin()) {
-        return {response: "You can not access this page"}
+        return { response: "Can't access this page", status: 403 }
     }
     try {
         const { title, price, description, code, thumbnail, stock, category } = req.body;
@@ -58,19 +60,21 @@ const postProduct = async () => {
         if (validatedProduct.error) {
             return validatedProduct;
         } else {
-            const product = await productManager.save(validatedProduct);
-            return validatedProduct;
+            const product = new productDTO(validatedProduct)
+            await productManager.save(product);
+            return product;
         }
     } catch (error) {
         errorLog(error)
     };
 }
 
-const updateProduct = async (id, product) => {
+const updateProduct = async (id, rawProduct) => {
     if (!checkAdmin()) {
-        return {response: "You can not access this page"}
+        return { response: "Can't access this page", status: 403 }
     }
     try {
+        let product = new productDTO(rawProduct)
         let updatedProduct = {...product, id: id};
         await productManager.updateItem(updatedProduct);
         return updatedProduct
@@ -81,7 +85,7 @@ const updateProduct = async (id, product) => {
 
 const deleteProduct = async (id) => {
     if (!checkAdmin()) {
-        return {response: "You can not access this page"}
+        return { response: "Can't access this page", status: 403 }
     }
     try { 
          return await productManager.deleteById(id)

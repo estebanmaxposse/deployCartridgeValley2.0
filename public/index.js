@@ -56,6 +56,7 @@ server.on('products', async data => {
 //Messages & Chat
 
 const renderMessages = (data) => {
+    console.log(data);
     const htmlMessage = data.map((element, index) => {
         return (`
         <div class='text-center d-flex flex-column align-items-start m-2'>

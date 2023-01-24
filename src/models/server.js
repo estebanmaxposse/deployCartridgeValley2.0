@@ -4,13 +4,12 @@ import { Server as IOServer } from 'socket.io';
 import { join } from 'path';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
-import messageManager from '../daos/daoMessages.js';
-import productManager from '../daos/daoProducts.js';
 import productRouter from '../routes/productRoutes.js';
 import cartRouter from '../routes/cartRoutes.js'
 import sessionRouter from '../routes/sessionRoutes.js';
 import miscRouter from '../routes/miscRoutes.js'
 import forkRouter from '../utils/serverFork.js'
+import socketConfig from '../utils/socket.js';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
@@ -119,21 +118,6 @@ const startServer = () => {
     }
 }
 
-io.on('connection', async (socket) => {
-    socket.emit('products', await productManager.getAll());
-    socket.emit('messages', await messageManager.getAll())
-
-    socket.on('new-product', async data => {
-        await productManager.save(data);
-        io.sockets.emit('products', await productManager.getAll());
-    });
-
-    socket.on('new-message', async data => {
-        data.date = new Date().toLocaleString();
-        log(data);
-        await messageManager.save(data);
-        io.sockets.emit('messages', await messageManager.getAll());
-    })
-})
+io.on('connection', async (socket) => socketConfig(io, socket))
 
 export default startServer;
