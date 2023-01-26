@@ -19,7 +19,8 @@ import args from '../utils/argsHandler.js'
 import cluster from 'cluster';
 import CPU from 'os'
 import compression from  'compression'
-import { routeLog, invalidRouteLog, log, errorLog } from '../utils/logger.js';
+import { routeLog, invalidRouteLog, log } from '../utils/logger.js';
+import cors from 'cors'
 
 // import { normalizeMessage } from '../controllers/dataNormalizer.js';
 
@@ -30,6 +31,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
 const httpServer = new HttpServer(app);
 const io = new IOServer(httpServer)
+app.use(cors())
 
 //Session Manager
 app.use(session({
