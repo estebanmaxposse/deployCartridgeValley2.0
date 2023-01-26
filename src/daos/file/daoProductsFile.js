@@ -1,9 +1,9 @@
-import ContainerMongoDB from "../mongoManager.js";
+import ContainerFile from "../fileManager.js";
 
-class daoProductsMongo extends ContainerMongoDB {
+class daoProductsFile extends ContainerFile {
     constructor() {
         super('products')
     }
 }
 
-export default daoProductsMongo
+export default daoProductsFile

@@ -2,7 +2,7 @@ import { readFileSync, promises, writeFileSync } from "fs";
 import { join } from "path";
 import { errorLog, log } from "../utils/logger.js";
 
-class File {
+class ContainerFile {
   constructor(name) {
     this.name = join(__dirname, '../database', `${name}`);
 
@@ -116,4 +116,4 @@ class File {
   };
 };
 
-export default File;
+export default ContainerFile;
