@@ -1,4 +1,15 @@
-import {} from 'dotenv/config'
+import * as dotenv from 'dotenv'
+import path from 'path'
+
+const dotEnvProduction = ".env.production";
+const dotEnvDevelopment = ".env.development";
+
+dotenv.config({
+    path: path.resolve(process.cwd(), dotEnvDevelopment)
+})
+
+console.log(path.resolve(process.cwd(), dotEnvDevelopment));
+// console.log(process.env);
 
 export default {
     NODE_ENV: process.env.NODE_ENV || 'development',
