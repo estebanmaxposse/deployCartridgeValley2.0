@@ -3,7 +3,8 @@ import { errorLog } from '../utils/logger.js';
 
 const getNewCartController = async (req, res) => {
     try {
-        res.json(await getNewCart())
+        const query = await getNewCart()
+        res.status(query.status).json(query.response)
     } catch (error) {
         errorLog(error);
     }

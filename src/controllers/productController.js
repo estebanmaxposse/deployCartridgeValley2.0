@@ -5,10 +5,12 @@ const getProductsController = async (req, res) => {
     try {
         let products = await getProducts()
         if (products.status === 200) {
-            res.json(products.response)
+            res.status(products.status).json(products)
         } else {
-            res.status(products.status).json(products.response)
+            //TO MANAGE ERRORS LATER
+            res.status(products.status).json(products)
         }
+        res.status(products.status).json(products.response)
     } catch (error) {
         errorLog(error)
     };
@@ -28,9 +30,10 @@ const getProductController = async (req, res) => {
         const { id } = req.params;
         const product = await getProduct(id);
         if (product.status === 200) {
-            res.json(product.response)
+            res.status(product.status).json(product)
         } else {
-            res.status(product.status).json(product.response)
+            //TO MANAGE ERRORS LATER
+            res.status(product.status).json(product)
         }
     } catch (error) {
         errorLog(error)
@@ -41,12 +44,7 @@ const postProductController = async (req, res) => {
     try { 
         const rawProduct = req.body;
         let query = await postProduct(rawProduct)
-        console.log(query);
-        if (query.status === 200) {
-            res.json(query.response)
-        } else {
-            res.status(query.status).json(query.response)
-        }
+        res.status(query.status).json(query.response)
     } catch (error) {
         errorLog(error)
     };
@@ -56,11 +54,7 @@ const updateProductController = async (req, res) => {
     try {
         let { id } = req.params;
         let query = await updateProduct(id, req.body)
-        if (query.status === 200) {
-            res.json(query.response)
-        } else {
-            res.status(query.status).json(query.response)
-        };
+        res.status(query.status).json(query.response)
     } catch (error) {
         errorLog(error)
     };

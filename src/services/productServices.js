@@ -22,6 +22,7 @@ const getProducts = async () => {
         }
     } catch (error) {
         errorLog(error)
+        return { response: error, status: 500 }
     };
 }
 
@@ -44,7 +45,7 @@ const getProduct = async (id) => {
         }
     } catch (error) {
         errorLog(error)
-        return { response: "Couldn't find product!", status: 404 }
+        return { response: error, status: 500 }
     };
 }
 

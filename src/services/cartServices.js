@@ -10,13 +10,15 @@ import { errorLog } from '../utils/logger.js';
 import cartDTO from '../daos/dtos/dtoCarts.js';
 
 const getNewCart = async () => {
+    let newCart = new Cart()
+    newCart.buyerID = user._id
+    let cart = new cartDTO(newCart)
     try {
-        let newCart = new Cart()
-        newCart.buyerID = user._id
-        let cart = new cartDTO(newCart)
-        return await cartManager.save(cart)
+        let savedCart = await cartManager.save(cart)
+        return { response: 'Cart created!', status: 201 }
     } catch (error) {
         errorLog(error);
+        return { response: "Couldn't create cart", status: 500 }
     }
 }
 
