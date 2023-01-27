@@ -67,7 +67,7 @@ class ContainerMongoDB {
     async updateItem(item) {
         try {
             const updateItem = await this.content.updateOne({ '_id': item.id }, item)
-            return { response: `${item} updated!` };
+            return updateItem
         } catch (error) {
             errorLog(error, `Error updating ${item}`)
         }
@@ -76,7 +76,7 @@ class ContainerMongoDB {
     async deleteById(id) {
         try {
             const deleteItem = await this.content.deleteOne({ '_id': id })
-            return { response: `Deleted item: ${id}` };
+            return deleteItem
         } catch (error) {
             errorLog(error, `Error deleting ${id}`)
         }

@@ -72,9 +72,11 @@ const updateProduct = async (id, rawProduct) => {
         return { response: "Can't access this page", status: 403 }
     }
     try {
-        await productsRepository.updateProduct(id, rawProduct)
+        const updatedProduct = await productsRepository.updateProduct(id, rawProduct)
+        return { response: `Product ${updatedProduct.title} updated`, status: 201 }
     } catch (error) {
         errorLog(error)
+        return { response: "Couldn't update product", status: 500 }
     };
 }
 
@@ -83,9 +85,11 @@ const deleteProduct = async (id) => {
         return { response: "Can't access this page", status: 403 }
     }
     try { 
-         await productsRepository.deleteProduct(id)
+         const deletedProduct = await productsRepository.deleteProduct(id)
+         return { response: `Product ${id} deleted`, status: 201 }
     } catch (error) {
         errorLog(error)
+        return { response: "Couldn't delete product", status: 500 }
     };
 }
 

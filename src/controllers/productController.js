@@ -55,8 +55,12 @@ const postProductController = async (req, res) => {
 const updateProductController = async (req, res) => {
     try {
         let { id } = req.params;
-        let updatedProduct = await updateProduct(id, req.body)
-        res.json(updatedProduct);
+        let query = await updateProduct(id, req.body)
+        if (query.status === 200) {
+            res.json(query.response)
+        } else {
+            res.status(query.status).json(query.response)
+        };
     } catch (error) {
         errorLog(error)
     };
@@ -65,7 +69,12 @@ const updateProductController = async (req, res) => {
 const deleteProductController = async (req, res) => {
     try {
         const { id } = req.params;
-        res.json(await deleteProduct(id))
+        const query = await deleteProduct(id)
+        if (query.status === 200) {
+            res.json(query.response)
+        } else {
+            res.status(query.status).json(query.response)
+        };
     } catch (error) {
         errorLog(error)
     };
