@@ -30,6 +30,7 @@ const loginUser = async (userCheck) => {
     try {
         user = userCheck
         log(`${user} is logged in`)
+        return { response: 'Logged in!', status: 200 }
     } catch (error) {
         errorLog(error)
     }
@@ -47,6 +48,7 @@ const signUpUser = async (userCheck) => {
     try {
         user = userCheck
         log(`${user} is logged in`)
+        return { response: 'Signed up!', status: 200 }
     } catch (error) {
         errorLog(error)
     }
@@ -56,6 +58,7 @@ const authSignUp = async (userCheck) => {
     try {
         let user = userCheck
         mailUser(user)
+        return { response: 'Signed up!', status: 200 }
     } catch (error) {
         errorLog(error)
     }
@@ -70,9 +73,10 @@ const logout = async (userCheck) => {
     try {
         let user = userCheck
         log("LOGOUT", user);
-        return user
+        return { response: user, status: 200 }
     } catch (error) {
         errorLog(error)
+        return { response: error, status: 500 }
     }
 }
 

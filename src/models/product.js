@@ -1,13 +1,14 @@
 class Product {
-    constructor(title, description, code, thumbnail, price, stock) {
+    constructor(rawProduct) {
 
         this.timestamp = new Date().toLocaleString()
-        this.title = title || ""
-        this.description = description || ""
-        this.code = code || ""
-        this.thumbnail = thumbnail || ""
-        this.price = price || ""
-        this.stock = stock || ""
+        this.title = rawProduct.title || ""
+        this.description = rawProduct.description || ""
+        this.code = rawProduct.code || ""
+        this.thumbnail = rawProduct.thumbnail || ""
+        this.price = rawProduct.price || ""
+        this.stock = rawProduct.stock || ""
+        this.category = rawProduct.category || ""
     }
 }
 

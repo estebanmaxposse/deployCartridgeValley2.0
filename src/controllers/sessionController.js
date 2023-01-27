@@ -17,7 +17,7 @@ const getUserController = async (req, res) => {
 const loginUserController = async (req, res) => {
     if (req.isAuthenticated()) {
         let user = await loginUser(req.user)
-        res.redirect('/')
+        res.status(user.status).redirect('/')
     } else {
         res.redirect('/pages/login.html')
     }
@@ -25,7 +25,7 @@ const loginUserController = async (req, res) => {
 
 const authLoginController = async (req, res) => {
     await authLogin()
-    res.redirect('/')
+    res.status(200).redirect('/')
 }
 
 const loginFailedController = async (req, res) => {
@@ -36,7 +36,7 @@ const loginFailedController = async (req, res) => {
 const signUpUserController = async (req, res) => {
     if (req.isAuthenticated()) {
         let user = await signUpUser(req.user)
-        res.redirect('/')
+        res.status(user.status).redirect('/')
     } else {
         res.redirect('/pages/signUp.html')
     }
@@ -44,7 +44,7 @@ const signUpUserController = async (req, res) => {
 
 const authSignUpController =  async (req, res) => {
     let user = await authSignUp(req.user)
-    res.redirect('/')
+    res.status(user.status).redirect('/')
 }
 
 const signUpFailedController = async (req, res) => {
@@ -56,7 +56,7 @@ const logoutController = async (req, res) => {
     try {
         let user = await logout(req.user)
         req.logout(console.log);
-        res.render('logout.pug', {user: user.username})
+        res.status(user.status).render('logout.pug', {user: user.response.username})
     } catch (error) {
         errorLog(error, "Couldn't log out!")
     }

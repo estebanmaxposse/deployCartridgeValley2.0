@@ -4,7 +4,11 @@ import { getProducts, getRandomProducts, getProduct, postProduct, updateProduct,
 const getProductsController = async (req, res) => {
     try {
         let products = await getProducts()
-        res.json(products)
+        if (products.status === 200) {
+            res.json(products.response)
+        } else {
+            res.status(products.status).json(products.response)
+        }
     } catch (error) {
         errorLog(error)
     };
@@ -23,16 +27,26 @@ const getProductController = async (req, res) => {
     try {
         const { id } = req.params;
         const product = await getProduct(id);
-        res.json(product)
+        if (product.status === 200) {
+            res.json(product.response)
+        } else {
+            res.status(product.status).json(product.response)
+        }
     } catch (error) {
         errorLog(error)
     };
 }
 
 const postProductController = async (req, res) => {
-    try {  
-        let response = await postProduct()
-        res.json(response);
+    try { 
+        const rawProduct = req.body;
+        let query = await postProduct(rawProduct)
+        console.log(query);
+        if (query.status === 200) {
+            res.json(query.response)
+        } else {
+            res.status(query.status).json(query.response)
+        }
     } catch (error) {
         errorLog(error)
     };
