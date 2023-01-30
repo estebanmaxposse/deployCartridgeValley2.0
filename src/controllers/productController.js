@@ -5,10 +5,10 @@ const getProductsController = async (req, res) => {
     try {
         let products = await getProducts()
         if (products.status === 200) {
-            res.status(products.status).json(products)
+            res.status(products.status).json(products.response)
         } else {
             //TO MANAGE ERRORS LATER
-            res.status(products.status).json(products)
+            res.status(products.status).json(products.response)
         }
         res.status(products.status).json(products.response)
     } catch (error) {
@@ -30,10 +30,10 @@ const getProductController = async (req, res) => {
         const { id } = req.params;
         const product = await getProduct(id);
         if (product.status === 200) {
-            res.status(product.status).json(product)
+            res.status(product.status).json(product.response)
         } else {
             //TO MANAGE ERRORS LATER
-            res.status(product.status).json(product)
+            res.status(product.status).json(product.response)
         }
     } catch (error) {
         errorLog(error)

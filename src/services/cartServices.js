@@ -26,9 +26,10 @@ const getAllCarts = async () => {
     try {
         const rawCarts = await cartManager.getAll()
         const carts = rawCarts.map(c => new cartDTO(c))
-        return carts
+        return { response: carts, status: 200 }
     } catch (error) {
         errorLog(error)
+        return { response: "Couldn't fetch carts", status: 500 }
     }
 }
 
@@ -40,12 +41,14 @@ const addProducts = async (id, products) => {
             .all(body.map(pId => {
                 return productManager.getById(pId._id)}))
             .then(products => {
+                console.log(products);
                 cart.products.push(...products)});
-    
+        console.log(cart);
         let updatedCart = await cartManager.updateItem(cart);
-        return updatedCart.response
+        return { response: 'Cart updated!', status: 201 }
     } catch (error) {
         errorLog(error)
+        return { response: "Couldn't update cart", status: 500 }
     }
 }
 
@@ -53,9 +56,16 @@ const getProducts = async (id) => {
     try {
         let cart = await cartManager.getById(id);
         if (cart.products.length === 0) {
-            return { response: "This cart has no products" }
+            return { response: "This cart has no products", status: 200 }
         } else {
-            return { cartId: cart._id, products: cart.products, buyerID: cart.buyerID }
+            return { 
+                response: {
+                    cartId: cart._id, 
+                    products: cart.products,
+                    buyerID: cart.buyerID
+                },
+                status: 200
+            }
         }
     } catch (error) {
         errorLog(error)
@@ -65,10 +75,15 @@ const getProducts = async (id) => {
 const getCart = async (id) => {
     try {
         let rawCart = await cartManager.getById(id)
-        let cart = new cartDTO(rawCart)
-        return cart
+        if (!rawCart) {
+            return { response: "Couldn't find cart!", status: 404 }
+        } else {
+            let cart = new cartDTO(rawCart)
+            return { response: cart, status: 200 }
+        }
     } catch (error) {
         errorLog(error)
+        return { response: "Error fetching cart!", status: 500 }
     }
 }
 
@@ -88,18 +103,20 @@ const completePurchase = async (id) => {
             buyer.phoneNumber, `Purchase completed! Your order is being processed.`
         )
         mailPurchase(buyer, cart)
-        return { response: 'Purchase successful' }
+        return { response: 'Purchase successful', status: 201 }
     } catch (error) {
         errorLog(error)
+        return { response: "Error completing purchase!", status: 500 }
     }
 }
 
 const deleteCart = async (id) => {
     try {
         await cartManager.deleteById(id)
-        return { response: 'Cart deleted' }
+        return { response: 'Cart deleted', status: 201 }
     } catch (error) {
         errorLog(error)
+        return { response: "Error deleting cart!", status: 500 }
     }
 }
 
@@ -110,9 +127,10 @@ const deleteProduct = async (id, id_prod) => {
         cart.products = newProducts;
     
         let updatedCart = await cartManager.updateItem(cart);
-        return updatedCart.response
+        return { response: 'Cart updated!', status: 201 }
     } catch (error) {
         errorLog(error)
+        return { response: "Couldn't update cart", status: 500 }
     }
 }
 

@@ -12,7 +12,8 @@ const getNewCartController = async (req, res) => {
 
 const getAllCartsController  = async (req, res) => {
     try {
-        res.json(await getAllCarts())
+        const query = await getAllCarts()
+        res.status(query.status).json(query.response)
     } catch (error) {
         errorLog(error);
     }
@@ -21,8 +22,8 @@ const getAllCartsController  = async (req, res) => {
 const addProductsController = async (req, res) => {
     const { id } = req.params
     try {
-        const updatedCart = await addProducts(id, req.body)
-        res.json(updatedCart)
+        const query = await addProducts(id, req.body)
+        res.status(query.status).json(query.response)
     } catch (error) {
         errorLog(error);
     }
@@ -31,8 +32,8 @@ const addProductsController = async (req, res) => {
 const getProductsController = async (req, res) => {
     let { id } = req.params;
     try {
-        const productsCart = await getProducts(id)
-        res.json(productsCart)
+        const query = await getProducts(id)
+        res.status(query.status).json(query.response)
     } catch (error) {
         errorLog(error)
     }
@@ -41,8 +42,13 @@ const getProductsController = async (req, res) => {
 const getCartController = async (req, res) => {
     let { id } = req.params;
     try {
-        let cart = await getCart(id)
-        res.json(cart)
+        let query = await getCart(id)
+        if (query.status === 200) {
+            res.status(query.status).json(query.response)
+        } else {
+            //TO MANAGE ERRORS LATER
+            res.status(query.status).json(query.response)
+        }
     } catch (error) {
         errorLog(error)
     }
@@ -51,8 +57,8 @@ const getCartController = async (req, res) => {
 const completePurchaseController = async (req, res) => {
     let { id } = req.params;
     try {
-        const purchase = await completePurchase(id)
-        res.json(purchase)
+        const query = await completePurchase(id)
+        res.status(query.status).json(query.response)
     } catch (error) {
         errorLog(error)
     }
@@ -61,7 +67,8 @@ const completePurchaseController = async (req, res) => {
 const deleteCartController = async (req, res) => {
     let { id } = req.params;
     try {
-        req.json(await deleteCart(id))
+        const query = await deleteCart(id)
+        res.status(query.status).json(query.response)
     } catch (error) {
         errorLog(error)
     }
@@ -70,7 +77,8 @@ const deleteCartController = async (req, res) => {
 const deleteProductCartController = async (req, res) => {
     let { id, id_prod } = req.params;
     try {
-        res.json(await deleteProduct(id, id_prod))
+        const query = await deleteProduct(id, id_prod)
+        res.status(query.status).json(query.response)
     } catch (error) {
         errorLog(error)
     }

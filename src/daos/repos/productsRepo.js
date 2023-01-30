@@ -19,10 +19,8 @@ class productsRepo {
     }
 
     async postProduct(rawProduct) {
-        console.log('Before DTO: ', rawProduct);
         const product = new productDTO(rawProduct)
         await this.dao.save(product);
-        console.log('After DTO: ', product);
         return product;
     }
 
