@@ -1,5 +1,6 @@
 import config from '../config/globalConfig.js'
 import daoMessagesMongo from './mongo/daoMessagesMongo.js';
+import daoMessagesFile from './file/daoMessagesFile.js'
 
 let selectedDB = config.DATABASE;
 let instance = null
@@ -28,9 +29,9 @@ class messageFactory {
             case 'mongo':
                 return new daoMessagesMongo()
                 break;
-            // case 'firebase':
-            //     return new daoMessagesFirebase()
-            //     break;
+            case 'file':
+                return new daoMessagesFile()
+                break;
             default:
                 return new daoMessagesMongo()
                 break;

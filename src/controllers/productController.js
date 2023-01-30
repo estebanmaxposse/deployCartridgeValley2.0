@@ -4,7 +4,13 @@ import { getProducts, getRandomProducts, getProduct, postProduct, updateProduct,
 const getProductsController = async (req, res) => {
     try {
         let products = await getProducts()
-        res.json(products)
+        if (products.status === 200) {
+            res.status(products.status).json(products.response)
+        } else {
+            //TO MANAGE ERRORS LATER
+            res.status(products.status).json(products.response)
+        }
+        res.status(products.status).json(products.response)
     } catch (error) {
         errorLog(error)
     };
@@ -23,16 +29,22 @@ const getProductController = async (req, res) => {
     try {
         const { id } = req.params;
         const product = await getProduct(id);
-        res.json(product)
+        if (product.status === 200) {
+            res.status(product.status).json(product.response)
+        } else {
+            //TO MANAGE ERRORS LATER
+            res.status(product.status).json(product.response)
+        }
     } catch (error) {
         errorLog(error)
     };
 }
 
 const postProductController = async (req, res) => {
-    try {  
-        let response = await postProduct()
-        res.json(response);
+    try { 
+        const rawProduct = req.body;
+        let query = await postProduct(rawProduct)
+        res.status(query.status).json(query.response)
     } catch (error) {
         errorLog(error)
     };
@@ -41,8 +53,8 @@ const postProductController = async (req, res) => {
 const updateProductController = async (req, res) => {
     try {
         let { id } = req.params;
-        let updatedProduct = await updateProduct(id, req.body)
-        res.json(updatedProduct);
+        let query = await updateProduct(id, req.body)
+        res.status(query.status).json(query.response)
     } catch (error) {
         errorLog(error)
     };
@@ -51,7 +63,12 @@ const updateProductController = async (req, res) => {
 const deleteProductController = async (req, res) => {
     try {
         const { id } = req.params;
-        res.json(await deleteProduct(id))
+        const query = await deleteProduct(id)
+        if (query.status === 200) {
+            res.json(query.response)
+        } else {
+            res.status(query.status).json(query.response)
+        };
     } catch (error) {
         errorLog(error)
     };

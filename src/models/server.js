@@ -1,3 +1,4 @@
+import config from '../config/globalConfig.js';
 import express, { json, urlencoded, static as staticFiles } from 'express';
 import { Server as HttpServer } from 'http'; 
 import { Server as IOServer } from 'socket.io';
@@ -14,22 +15,23 @@ import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import passport from 'passport';
-import config from '../config/globalConfig.js';
 import args from '../utils/argsHandler.js'
 import cluster from 'cluster';
 import CPU from 'os'
 import compression from  'compression'
-import { routeLog, invalidRouteLog, log, errorLog } from '../utils/logger.js';
+import { routeLog, invalidRouteLog, log } from '../utils/logger.js';
+import cors from 'cors'
 
 // import { normalizeMessage } from '../controllers/dataNormalizer.js';
 
-const PORT = args.port;
+const PORT = config.PORT;
 log(PORT);
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const app = express();
 const httpServer = new HttpServer(app);
 const io = new IOServer(httpServer)
+app.use(cors())
 
 //Session Manager
 app.use(session({

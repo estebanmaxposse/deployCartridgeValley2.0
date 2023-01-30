@@ -16,12 +16,13 @@ const getProducts = async () => {
         let products = await productsRepository.getAll()
         const productExists = products.length !== 0;
         if (productExists) {
-            return products
+            return { response: products, status: 200 }
         } else {
             return { response: "Couldn't find any products!", status: 404 }
         }
     } catch (error) {
         errorLog(error)
+        return { response: error, status: 500 }
     };
 }
 
@@ -38,31 +39,33 @@ const getProduct = async (id) => {
             productExists = false;
         };
         if (productExists) {
-             return product;
+             return { response: product, status: 200 }
         } else {
-            return { response: "Couldn't find any products!", status: 404 }
+            return { response: "Couldn't find product!", status: 404 }
         }
     } catch (error) {
         errorLog(error)
+        return { response: error, status: 500 }
     };
 }
 
-const postProduct = async () => {
+const postProduct = async (rawProduct) => {
     if (!checkAdmin()) {
         return { response: "Can't access this page", status: 403 }
     }
-    try {
-        const { title, price, description, code, thumbnail, stock, category } = req.body;
-        const newProduct = new Product(title, description, code, thumbnail, price, stock, category);
-        const validatedProduct = productValidation(newProduct.title, newProduct.price, newProduct.description, newProduct.code, newProduct.thumbnail, newProduct.stock, newProduct.timestamp, newProduct.category);
-        if (validatedProduct.error) {
-            return validatedProduct;
-        } else {
-            await productsRepository.postProduct(validatedProduct)
-        }
-    } catch (error) {
-        errorLog(error)
-    };
+    const newProduct = new Product(rawProduct);
+    const validatedProduct = productValidation(newProduct);
+    if (validatedProduct.error) {
+        return validatedProduct;
+    } else {
+        try {
+            const savedProduct = await productsRepository.postProduct(validatedProduct)
+            return { response: `Product ${savedProduct.title} saved`, status: 201 }
+        } catch (error) {
+            errorLog(error)
+            return { response: "Couldn't save product", status: 500 }
+        };
+    }
 }
 
 const updateProduct = async (id, rawProduct) => {
@@ -70,9 +73,11 @@ const updateProduct = async (id, rawProduct) => {
         return { response: "Can't access this page", status: 403 }
     }
     try {
-        await productsRepository.updateProduct(id, rawProduct)
+        const updatedProduct = await productsRepository.updateProduct(id, rawProduct)
+        return { response: `Product ${updatedProduct.title} updated`, status: 201 }
     } catch (error) {
         errorLog(error)
+        return { response: "Couldn't update product", status: 500 }
     };
 }
 
@@ -81,9 +86,11 @@ const deleteProduct = async (id) => {
         return { response: "Can't access this page", status: 403 }
     }
     try { 
-         await productsRepository.deleteProduct(id)
+         const deletedProduct = await productsRepository.deleteProduct(id)
+         return { response: `Product ${id} deleted`, status: 201 }
     } catch (error) {
         errorLog(error)
+        return { response: "Couldn't delete product", status: 500 }
     };
 }
 

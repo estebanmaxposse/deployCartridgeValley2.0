@@ -1,5 +1,6 @@
 import config from '../config/globalConfig.js'
 import daoUsersMongo from './mongo/daoUsersMongo.js'
+import daoUsersFile from './file/daoUsersFile.js'
 
 let selectedDB = config.DATABASE;
 let instance = null
@@ -27,9 +28,9 @@ class userFactory {
             case 'mongo':
                 return new daoUsersMongo()
                 break;
-            // case 'firebase':
-            //     return new daoUsersFirebase()
-            //     break;
+            case 'file':
+                return new daoUsersFile()
+                break;
             default:
                 return new daoUsersMongo()
                 break;
