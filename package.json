@@ -42,7 +42,8 @@
     "yargs": "^17.6.2"
   },
   "scripts": {
-    "test": "node src/utils/benchmark.js",
+    "test": "mocha test/products.test.js",
+    "test-manual": "mocha test/products.test.js",
     "start": "node index.js"
   },
   "name": "desafios_backend",
