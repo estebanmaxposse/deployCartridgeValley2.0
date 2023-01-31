@@ -1,25 +1,15 @@
 import supertest from "supertest";
-import { generateProducts } from "../src/utils/fakerGenerator.js";
 import startServer from "../src/models/server.js";
 import { describe } from "mocha";
 import { expect } from "chai";
 import MongoClient from '../src/config/configMongo.js';
 import config from "../src/config/globalConfig.js";
-const client = new MongoClient(config.MONGOATLAS_URL);
-import assert from "assert";
+import mockProducts from "../src/utils/mockProducts.js";
 
+const generateProducts = new mockProducts()
+const client = new MongoClient(config.MONGOATLAS_URL);
 let request
 let server
-
-const mockPostProduct = {
-    title: "Dying Light 1",
-    description: "Use your agility and combat skills to survive, and change the fate of The City. Upgrade your Dying Light 2 Standard Edition to get the Deluxe content.",
-    price: 60,
-    stock: 5,
-    code: "dsadas",
-    category: "games",
-    thumbnail: "https://i.imgur.com/zbjM3Ni.png"
-};
 
 const mockUpdateProduct = {
     price: 80,
@@ -27,12 +17,13 @@ const mockUpdateProduct = {
 };
 
 describe('Product api test', function () {
-    
+
     before(async () => {
         console.log('STARTING SERVER');
         server = startServer()
         await client.connectDb()
         request = supertest('http://localhost:8080/api/products')
+
     })
 
     describe('GET ALL PRODUCTS', () => {
@@ -53,5 +44,33 @@ describe('Product api test', function () {
         });
     })
 
-    describe
+    describe('POST MOCK PRODUCT', () => {
+        it('Should post mock product', async () => {
+            let mockPostProduct = generateProducts.singleProduct()
+            let response = await request.post('/').send(mockPostProduct)
+            // console.log(response.status);
+            // console.log(response.body);
+            expect(response.status).to.eql(201)
+
+            const productId = response.body.product
+
+            describe('UPDATE MOCK PRODUCT', () => {
+                it('Should update mock product', async () => {
+                    let response = await request.put(`/${productId}`).send(mockUpdateProduct)
+                    // console.log(response.status);
+                    // console.log(response.body);
+                    expect(response.status).to.eql(201)
+
+                    describe('DELETE MOCK PRODUCT', () => {
+                        it('Should delete mock product', async () => {
+                            let response = await request.delete(`/${productId}`)
+                            // console.log(response.status);
+                            // console.log(response.body);
+                            expect(response.status).to.eql(201)
+                        });
+                    })
+                });
+            })
+        })
+    })
 })

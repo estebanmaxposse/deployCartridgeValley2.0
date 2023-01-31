@@ -9,6 +9,11 @@ class mockProducts {
         }
         return newProducts
     }
+
+    singleProduct() {
+        const newProduct = generateProducts()
+        return newProduct
+    }
 }
 
 export default mockProducts
