@@ -10,7 +10,6 @@ const getProductsController = async (req, res) => {
             //TO MANAGE ERRORS LATER
             res.status(products.status).json(products.response)
         }
-        res.status(products.status).json(products.response)
     } catch (error) {
         errorLog(error)
     };

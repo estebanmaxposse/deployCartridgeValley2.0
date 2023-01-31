@@ -35,8 +35,7 @@ class ContainerMongoDB {
     async save(object) {
         try {
             const saveObjectModel = new this.content(object);
-            let savedObject = await saveObjectModel.save();
-            return savedObject
+            return saveObjectModel.save().then(item => item._id);
         } catch (error) {
             errorLog(error, `Failed to add object!`)
         };

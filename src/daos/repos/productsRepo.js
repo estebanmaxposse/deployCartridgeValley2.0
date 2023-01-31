@@ -20,8 +20,8 @@ class productsRepo {
 
     async postProduct(rawProduct) {
         const product = new productDTO(rawProduct)
-        await this.dao.save(product);
-        return product;
+        const savedProduct = await this.dao.save(product);
+        return savedProduct;
     }
 
     async updateProduct(id, rawProduct) {
