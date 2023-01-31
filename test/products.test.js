@@ -15,6 +15,7 @@ const mockUpdateProduct = {
     price: 80,
     stock: 0,
 };
+let productId
 
 describe('Product api test', function () {
 
@@ -52,25 +53,25 @@ describe('Product api test', function () {
             // console.log(response.body);
             expect(response.status).to.eql(201)
 
-            const productId = response.body.product
+            productId = response.body.product
 
-            describe('UPDATE MOCK PRODUCT', () => {
-                it('Should update mock product', async () => {
-                    let response = await request.put(`/${productId}`).send(mockUpdateProduct)
-                    // console.log(response.status);
-                    // console.log(response.body);
-                    expect(response.status).to.eql(201)
-
-                    describe('DELETE MOCK PRODUCT', () => {
-                        it('Should delete mock product', async () => {
-                            let response = await request.delete(`/${productId}`)
-                            // console.log(response.status);
-                            // console.log(response.body);
-                            expect(response.status).to.eql(201)
-                        });
-                    })
-                });
-            })
         })
+    })
+    describe('UPDATE MOCK PRODUCT', () => {
+        it('Should update mock product', async () => {
+            let response = await request.put(`/${productId}`).send(mockUpdateProduct)
+            // console.log(response.status);
+            // console.log(response.body);
+            expect(response.status).to.eql(201)
+
+        });
+    })
+    describe('DELETE MOCK PRODUCT', () => {
+        it('Should delete mock product', async () => {
+            let response = await request.delete(`/${productId}`)
+            // console.log(response.status);
+            // console.log(response.body);
+            expect(response.status).to.eql(201)
+        });
     })
 })
