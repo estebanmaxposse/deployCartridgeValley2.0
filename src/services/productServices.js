@@ -79,7 +79,7 @@ const updateProduct = async (id, rawProduct) => {
     }
     try {
         const updatedProduct = await productsRepository.updateProduct(id, rawProduct)
-        return { response: `Product ${updatedProduct.title} updated`, status: 201 }
+        return { response: `Product ${id} updated`, status: 201 }
     } catch (error) {
         errorLog(error)
         return { response: "Couldn't update product", status: 500 }
