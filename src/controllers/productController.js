@@ -43,7 +43,12 @@ const postProductController = async (req, res) => {
     try { 
         const rawProduct = req.body;
         let query = await postProduct(rawProduct)
-        res.status(query.status).json(query.response)
+        if (query.status === 201) {
+            res.status(query.status).json(query.response)
+        } else {
+            //TO MANAGE ERRORS LATER
+            res.status(query.status).json(query.response)
+        }
     } catch (error) {
         errorLog(error)
     };

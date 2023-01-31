@@ -41,9 +41,7 @@ const addProducts = async (id, products) => {
             .all(body.map(pId => {
                 return productManager.getById(pId._id)}))
             .then(products => {
-                console.log(products);
                 cart.products.push(...products)});
-        console.log(cart);
         let updatedCart = await cartManager.updateItem(cart);
         return { response: 'Cart updated!', status: 201 }
     } catch (error) {

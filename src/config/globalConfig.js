@@ -8,9 +8,6 @@ dotenv.config({
     path: path.resolve(process.cwd(), dotEnvDevelopment)
 })
 
-console.log(path.resolve(process.cwd(), dotEnvDevelopment));
-// console.log(process.env);
-
 export default {
     NODE_ENV: process.env.NODE_ENV || 'development',
     HOST: process.env.HOST || '127.0.0.1',

@@ -60,7 +60,12 @@ const postProduct = async (rawProduct) => {
     } else {
         try {
             const savedProduct = await productsRepository.postProduct(validatedProduct)
-            return { response: `Product ${savedProduct} saved`, status: 201 }
+            return { 
+                response: {
+                    message: `Product ${savedProduct} saved`,
+                    product: savedProduct
+                }, 
+                status: 201 }
         } catch (error) {
             errorLog(error)
             return { response: "Couldn't save product", status: 500 }
