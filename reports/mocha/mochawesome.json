@@ -1,0 +1,297 @@
+{
+  "stats": {
+    "suites": 6,
+    "tests": 5,
+    "passes": 5,
+    "pending": 0,
+    "failures": 0,
+    "start": "2023-01-31T17:24:03.187Z",
+    "end": "2023-01-31T17:24:04.837Z",
+    "duration": 1650,
+    "testsRegistered": 5,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "c99e2109-5ab1-4bcc-8424-fe91583e93f8",
+      "title": "",
+      "fullFile": "C:\\Users\\Usuario\\Documents\\Coderhouse\\Backend\\Deploy\\TP15\\test\\products.test.js",
+      "file": "\\test\\products.test.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "f54c1d97-bec6-4cf6-9cd5-7114741da45d",
+          "title": "Product api test",
+          "fullFile": "C:\\Users\\Usuario\\Documents\\Coderhouse\\Backend\\Deploy\\TP15\\test\\products.test.js",
+          "file": "\\test\\products.test.js",
+          "beforeHooks": [
+            {
+              "title": "\"before all\" hook in \"Product api test\"",
+              "fullTitle": "Product api test \"before all\" hook in \"Product api test\"",
+              "timedOut": false,
+              "duration": 3,
+              "state": null,
+              "speed": null,
+              "pass": false,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "console.log('STARTING SERVER');\nserver = startServer()\nawait client.connectDb()\nrequest = supertest('http://localhost:8080/api/products')",
+              "err": {},
+              "uuid": "ac29db56-ace0-47a1-9df9-10fcf047d381",
+              "parentUUID": "f54c1d97-bec6-4cf6-9cd5-7114741da45d",
+              "isHook": true,
+              "skipped": false
+            }
+          ],
+          "afterHooks": [],
+          "tests": [],
+          "suites": [
+            {
+              "uuid": "2d3e682b-7d05-4062-9713-6f01a3f14e11",
+              "title": "GET ALL PRODUCTS",
+              "fullFile": "C:\\Users\\Usuario\\Documents\\Coderhouse\\Backend\\Deploy\\TP15\\test\\products.test.js",
+              "file": "\\test\\products.test.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "Should return status 200 + all products",
+                  "fullTitle": "Product api test GET ALL PRODUCTS Should return status 200 + all products",
+                  "timedOut": false,
+                  "duration": 902,
+                  "state": "passed",
+                  "speed": "slow",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "let response = await request.get('/')\n// console.log(response.status);\n// console.log(response.body);\nexpect(response.status).to.eql(200)",
+                  "err": {},
+                  "uuid": "9a7308fb-ac23-45e7-a590-bd3f1694f1ce",
+                  "parentUUID": "2d3e682b-7d05-4062-9713-6f01a3f14e11",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "9a7308fb-ac23-45e7-a590-bd3f1694f1ce"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 902,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 2000
+            },
+            {
+              "uuid": "a982e768-f1b6-484d-b4b8-d35bfc1d44e7",
+              "title": "GET SINGLE PRODUCT",
+              "fullFile": "C:\\Users\\Usuario\\Documents\\Coderhouse\\Backend\\Deploy\\TP15\\test\\products.test.js",
+              "file": "\\test\\products.test.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "Should return Gamecube Controller Adapter",
+                  "fullTitle": "Product api test GET SINGLE PRODUCT Should return Gamecube Controller Adapter",
+                  "timedOut": false,
+                  "duration": 370,
+                  "state": "passed",
+                  "speed": "slow",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "let response = await request.get('/636bd97f8b94654de74ee272')\n// console.log(response.status);\n// console.log(response.body);\nexpect(response.status).to.eql(200)",
+                  "err": {},
+                  "uuid": "f50debe1-54fc-43a1-b3c0-f0b3d4565e95",
+                  "parentUUID": "a982e768-f1b6-484d-b4b8-d35bfc1d44e7",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "f50debe1-54fc-43a1-b3c0-f0b3d4565e95"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 370,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 2000
+            },
+            {
+              "uuid": "10798e71-8f83-4eaa-a861-438b44161da7",
+              "title": "POST MOCK PRODUCT",
+              "fullFile": "C:\\Users\\Usuario\\Documents\\Coderhouse\\Backend\\Deploy\\TP15\\test\\products.test.js",
+              "file": "\\test\\products.test.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "Should post mock product",
+                  "fullTitle": "Product api test POST MOCK PRODUCT Should post mock product",
+                  "timedOut": false,
+                  "duration": 142,
+                  "state": "passed",
+                  "speed": "slow",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "let mockPostProduct = generateProducts.singleProduct()\nlet response = await request.post('/').send(mockPostProduct)\n// console.log(response.status);\n// console.log(response.body);\nexpect(response.status).to.eql(201)\nproductId = response.body.product",
+                  "err": {},
+                  "uuid": "7a098702-1c23-4e5a-aa05-22e3bc740919",
+                  "parentUUID": "10798e71-8f83-4eaa-a861-438b44161da7",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "7a098702-1c23-4e5a-aa05-22e3bc740919"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 142,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 2000
+            },
+            {
+              "uuid": "9d7f52fa-5aca-445c-9d55-529e0bab081d",
+              "title": "UPDATE MOCK PRODUCT",
+              "fullFile": "C:\\Users\\Usuario\\Documents\\Coderhouse\\Backend\\Deploy\\TP15\\test\\products.test.js",
+              "file": "\\test\\products.test.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "Should update mock product",
+                  "fullTitle": "Product api test UPDATE MOCK PRODUCT Should update mock product",
+                  "timedOut": false,
+                  "duration": 113,
+                  "state": "passed",
+                  "speed": "slow",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "let response = await request.put(`/${productId}`).send(mockUpdateProduct)\n// console.log(response.status);\n// console.log(response.body);\nexpect(response.status).to.eql(201)",
+                  "err": {},
+                  "uuid": "3d0217de-9389-485c-9323-48e7af474fe6",
+                  "parentUUID": "9d7f52fa-5aca-445c-9d55-529e0bab081d",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "3d0217de-9389-485c-9323-48e7af474fe6"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 113,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 2000
+            },
+            {
+              "uuid": "c32a7d94-821b-4224-b539-c5c88c512b63",
+              "title": "DELETE MOCK PRODUCT",
+              "fullFile": "C:\\Users\\Usuario\\Documents\\Coderhouse\\Backend\\Deploy\\TP15\\test\\products.test.js",
+              "file": "\\test\\products.test.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "Should delete mock product",
+                  "fullTitle": "Product api test DELETE MOCK PRODUCT Should delete mock product",
+                  "timedOut": false,
+                  "duration": 107,
+                  "state": "passed",
+                  "speed": "slow",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "let response = await request.delete(`/${productId}`)\n// console.log(response.status);\n// console.log(response.body);\nexpect(response.status).to.eql(201)",
+                  "err": {},
+                  "uuid": "605acc64-8339-4d4b-973f-b854d37b0e27",
+                  "parentUUID": "c32a7d94-821b-4224-b539-c5c88c512b63",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "605acc64-8339-4d4b-973f-b854d37b0e27"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 107,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 2000
+            }
+          ],
+          "passes": [],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 0,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "10.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "reports/mocha",
+        "reportTitle": "mochaReport"
+      },
+      "version": "6.2.0"
+    }
+  }
+}
