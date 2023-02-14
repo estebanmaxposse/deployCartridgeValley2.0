@@ -14,7 +14,12 @@ class productsRepo {
 
     async getProduct(id) {
         const rawProduct = await this.dao.getById(id);
-        const product = new productDTO(rawProduct)
+        let product
+        try {
+            product = new productDTO(rawProduct)
+        } catch (error) {
+            product = null
+        }
         return product
     }
 

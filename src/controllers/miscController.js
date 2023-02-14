@@ -9,4 +9,16 @@ const getInfoController = async (req, res) => {
     }
 }
 
-export { getInfoController }
+const notFound404 = async (req, res, next) => {
+    res.status(404).json({
+        error: {
+          'message':'Invalid Request',
+          'statusCode':404,
+          'stack':'http://localhost:8080/'
+        },
+         message: 'Page not found!'
+      });
+    next();
+}
+
+export { getInfoController, notFound404 }

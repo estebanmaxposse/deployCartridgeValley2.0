@@ -8,7 +8,7 @@ import { fileURLToPath } from 'url';
 import productRouter from '../routes/productRoutes.js';
 import cartRouter from '../routes/cartRoutes.js'
 import sessionRouter from '../routes/sessionRoutes.js';
-import miscRouter from '../routes/miscRoutes.js'
+import {miscRouter, errorRouter} from '../routes/miscRoutes.js'
 import forkRouter from '../utils/serverFork.js'
 import socketConfig from '../utils/socket.js';
 import cookieParser from 'cookie-parser';
@@ -68,20 +68,7 @@ app.use(compression(), routeLog, miscRouter)
 app.use(compression(), routeLog, forkRouter)
 app.use('/api/cart', compression(), routeLog, cartRouter);
 
-app.use(invalidRouteLog, (req, res, next) => {
-    res.status(404);
-    res.json({
-        error: {
-          'name':'Error',
-          'status':404,
-          'message':'Invalid Request',
-          'statusCode':404,
-          'stack':'http://localhost:8080/'
-        },
-         message: 'Testing!'
-      });
-    next();
-   });
+app.use(invalidRouteLog, errorRouter);
 
 const startServer = () => {
     switch (args.serverMode) {

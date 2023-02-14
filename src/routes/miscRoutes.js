@@ -1,8 +1,10 @@
 import { Router } from "express";
-const router = Router();
-import info from '../utils/argsHandler.js'
-import { getInfoController } from "../controllers/miscController.js";
+const miscRouter = Router();
+import { getInfoController, notFound404 } from "../controllers/miscController.js";
 
-router.get('/info', getInfoController)
+miscRouter.get('/info', getInfoController)
 
-export default router
+const errorRouter = Router()
+errorRouter.get('*', notFound404)
+
+export {miscRouter, errorRouter}

@@ -44,7 +44,7 @@
   },
   "scripts": {
     "test": "mocha test/products.test.js --reporter mochawesome --reporter-options reportDir=reports/mocha,reportTitle=mochaReport",
-    "start": "node index.js"
+    "start": "nodemon index.js | pino-pretty"
   },
   "name": "desafios_backend",
   "version": "1.0.0",
