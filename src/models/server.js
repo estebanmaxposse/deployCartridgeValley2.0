@@ -15,11 +15,9 @@ import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import passport from 'passport';
-import args from '../utils/argsHandler.js'
-import cluster from 'cluster';
-import CPU from 'os'
 import compression from  'compression'
 import { routeLog, invalidRouteLog, log } from '../utils/logger.js';
+import serverConfig from '../config/serverConfig.js';
 import cors from 'cors'
 
 // import { normalizeMessage } from '../controllers/dataNormalizer.js';
@@ -70,42 +68,7 @@ app.use('/api/cart', compression(), routeLog, cartRouter);
 
 app.use(invalidRouteLog, errorRouter);
 
-const startServer = () => {
-    switch (args.serverMode) {
-        case 'fork':
-            httpServer.listen(PORT, () => {
-                log(`Server running on ${PORT}`);
-            });
-            break;
-
-        case 'cluster':
-            if (cluster.isPrimary) {
-                const numCPUs = CPU.cpus().length
-                log(`Master ${process.pid} setting up ${numCPUs} workers...`);
-        
-                for (let index = 0; index < numCPUs; index++) {
-                    cluster.fork()
-                }
-        
-                cluster.on('online', (worker) => {
-                    log('Worker ' + worker.process.pid + ' is online');
-                });
-                cluster.on('exit', (worker, code, signal) => {
-                    log('Worker ' + worker.process.pid + ' died with code: ' + code + ', and signal: ' + signal);
-                });
-            } else {
-                httpServer.listen(PORT, () => {
-                    log(`Server running on ${PORT}`);
-                });
-            }
-            break
-        default:
-            httpServer.listen(PORT, () => {
-                log(`Server running on ${PORT}`);
-            });
-            break;
-    }
-}
+const startServer = () => serverConfig(httpServer, PORT)
 
 io.on('connection', async (socket) => socketConfig(io, socket))
 
