@@ -38,6 +38,8 @@
     "socket.io": "^4.5.2",
     "sqlite3": "^5.1.2",
     "supertest": "^6.3.3",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^4.6.0",
     "twilio": "^3.84.0",
     "winston": "^3.8.2",
     "yargs": "^17.6.2"
