@@ -1,0 +1,28 @@
+# Get specific product
+paths:
+  /api/products/{id}:
+    get: 
+      tags: 
+        - Products
+      summary: Gets the product with the corresponding id
+      description: Gets the product with the corresponding id. If it does not exists returns 404.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: 
+            type: string
+      responses:
+        '200':
+          description: Fetched product successfully
+          content: 
+            application/json: 
+              schema:
+                $ref: '#components/schemas/Product'
+        '404': 
+          description: Couldn't find product
+        '500':
+          description: Internal server error
+
+components:
+  $ref: '../../schemas/products.yaml'
