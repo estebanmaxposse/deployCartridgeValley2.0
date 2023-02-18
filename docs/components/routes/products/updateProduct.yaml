@@ -1,0 +1,44 @@
+# Update product
+paths:
+  /api/products/{id}:
+    put: 
+      tags: 
+        - Products
+      summary: Updates a specific product
+      description: Upadtes a product in the database.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: 
+            type: string
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/UpdateProduct'
+      responses:
+        '201':
+          description: Updated product successfully
+          content: 
+            application/json: 
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Message from the server
+                  productId:
+                    type: string
+                    description: ID generated of the new product
+                example:
+                  message: Product 63efecc343df49b6c6054189 saved
+                  productId: 63efecc343df49b6c6054189
+        '500':
+          description: Internal server error
+        '403':
+          description: Can't access this page
+
+components:
+  $ref: '../../schemas/updateProduct.yaml'

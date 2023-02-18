@@ -1,0 +1,22 @@
+# Get all products
+paths:
+  /api/products:
+    get: 
+      tags: 
+        - Products
+      summary: Gets all products
+      description: Gets all products from database.
+      responses:
+        '200':
+          description: Fetched products successfully
+          content: 
+            application/json: 
+              schema:
+                type: array
+                items: 
+                  $ref: '#components/schemas/Product'
+        '500':
+          description: Internal server error
+
+components:
+  $ref: '../../schemas/products.yaml'

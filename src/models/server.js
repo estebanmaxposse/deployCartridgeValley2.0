@@ -8,7 +8,7 @@ import { fileURLToPath } from 'url';
 import productRouter from '../routes/productRoutes.js';
 import cartRouter from '../routes/cartRoutes.js'
 import sessionRouter from '../routes/sessionRoutes.js';
-import {miscRouter, errorRouter} from '../routes/miscRoutes.js'
+import {miscRouter, errorRouter, docsRouter} from '../routes/miscRoutes.js'
 import forkRouter from '../utils/serverFork.js'
 import socketConfig from '../utils/socket.js';
 import cookieParser from 'cookie-parser';
@@ -63,6 +63,7 @@ app.use(cookieParser());
 app.use(compression(), routeLog, productRouter);
 app.use('/api/auth', compression(), routeLog, sessionRouter);
 app.use(compression(), routeLog, miscRouter)
+app.use(docsRouter)
 app.use(compression(), routeLog, forkRouter)
 app.use('/api/cart', compression(), routeLog, cartRouter);
 
