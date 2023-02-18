@@ -1,0 +1,56 @@
+# Upadted product
+components:
+  requestBodies:
+    UpdateProduct:
+      type: object
+      oneOf:
+        - required:
+            - title
+          properties:
+            title:
+              type: string
+              description: The title of the product.
+        - required:
+            - description
+          properties:
+            description:
+              type: string
+              description: The description of the product.
+        - required:
+            - price
+          properties:
+            price:
+              type: number
+              description: The price of the product.
+        - required:
+            - stock
+          properties:
+            stock:
+              type: number
+              description: The stock of the product.
+        - required:
+            - code
+          properties:
+            code:
+              type: string
+              description: The code of the product.
+        - required:
+            - category
+          properties:
+            category:
+              type: string
+              description: The category of the product.
+        - required:
+            - thumbnail
+          properties:
+            thumbnail:
+              type: string
+              description: The URL of the product thumbnail.
+      example:
+        title: Dying Light 1
+        description: Use your agility and combat skills to survive, and change the fate of The City. Upgrade your Dying Light 2 Standard Edition to get the Deluxe content.
+        price: 60
+        stock: 5
+        code: randomcode
+        category: games
+        thumbnail: https://i.imgur.com/zbjM3Ni.png
