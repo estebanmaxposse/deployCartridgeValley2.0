@@ -31,6 +31,8 @@ paths:
                   productId: 63efecc343df49b6c6054189
         '500':
           description: Internal server error
+        '403':
+          description: Can't access this page
 
 components:
   $ref: '../../schemas/newProduct.yaml'
