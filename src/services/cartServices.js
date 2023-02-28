@@ -44,7 +44,8 @@ const addProducts = async (id, products) => {
                 return productManager.getById(pId._id)}))
             .then(products => {
                 let productsIds = products.map(p => p._id)
-                cart.productsIds.push(...products)});
+                console.log(productsIds);
+                cart.products.push(...productsIds)});
         let updatedCart = await cartManager.updateItem(cart);
         return { response: 'Cart updated!', status: 201 }
     } catch (error) {
@@ -59,10 +60,11 @@ const getProducts = async (id) => {
         if (cart.products.length === 0) {
             return { response: "This cart has no products", status: 200 }
         } else {
+            let cartProducts = await Promise.all(cart.products.map(p => productManager.getById(p._id)))
             return { 
                 response: {
                     cartId: cart._id, 
-                    products: cart.products,
+                    products: cartProducts,
                     buyerID: cart.buyerID
                 },
                 status: 200
