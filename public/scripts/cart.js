@@ -30,8 +30,6 @@ const filterCart = async () => {
                         .then(res => { return res.json() })
                         .then(cart => {
                             cartProducts = cart.products
-                            console.log(cart);
-                            console.log(cartProducts);
                             return cartProducts
                         })
                         // .then(console.log(cartProducts))

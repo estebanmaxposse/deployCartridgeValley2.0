@@ -13,6 +13,8 @@ const getNewCart = async () => {
     let newCart = new Cart()
     console.log(user);
     newCart.buyerID = user._id
+    newCart.buyerEmail = user.email
+    newCart.buyerShippingAddress = user.shippingAddress
     let cart = new cartDTO(newCart)
     console.log(cart);
     try {
@@ -56,16 +58,21 @@ const addProducts = async (id, products) => {
 
 const getProducts = async (id) => {
     try {
-        let cart = await cartManager.getById(id);
+        let rawCart = await cartManager.getById(id);
+        let cart = new cartDTO(rawCart)
         if (cart.products.length === 0) {
             return { response: "This cart has no products", status: 200 }
         } else {
             let cartProducts = await Promise.all(cart.products.map(p => productManager.getById(p._id)))
+            let cartLength = cartProducts.length
+            let totalPrice = cartProducts.reduce((acc, p) => acc + p.price, 0)
             return { 
                 response: {
                     cartId: cart._id, 
                     products: cartProducts,
-                    buyerID: cart.buyerID
+                    buyerID: cart.buyerID,
+                    cartLength: cartLength,
+                    total: totalPrice
                 },
                 status: 200
             }

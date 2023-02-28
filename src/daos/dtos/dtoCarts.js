@@ -4,6 +4,8 @@ class cartDTO {
         this.timestamp = cart.timestamp
         this.products = cart.products
         this.buyerID = cart.buyerID
+        this.buyerEmail = cart.buyerEmail
+        this.buyerShippingAddress = cart.buyerShippingAddress
     }
 }
 
