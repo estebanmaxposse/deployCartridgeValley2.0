@@ -14,9 +14,11 @@ const getSession = async (sessionViews) => {
 }
 
 const getUser = async (userCheck) => {
+    console.log(userCheck);
     try {
         if (userCheck) {
             user = new userDTO(userCheck)
+            console.log(user);
             return { response: user, status: 200 }
         } else {
             return { response: 'User not found', status: 404 }

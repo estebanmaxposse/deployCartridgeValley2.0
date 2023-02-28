@@ -11,8 +11,10 @@ import cartDTO from '../daos/dtos/dtoCarts.js';
 
 const getNewCart = async () => {
     let newCart = new Cart()
+    console.log(user);
     newCart.buyerID = user._id
     let cart = new cartDTO(newCart)
+    console.log(cart);
     try {
         let savedCart = await cartManager.save(cart)
         return { response: 'Cart created!', status: 201 }
@@ -41,7 +43,8 @@ const addProducts = async (id, products) => {
             .all(body.map(pId => {
                 return productManager.getById(pId._id)}))
             .then(products => {
-                cart.products.push(...products)});
+                let productsIds = products.map(p => p._id)
+                cart.productsIds.push(...products)});
         let updatedCart = await cartManager.updateItem(cart);
         return { response: 'Cart updated!', status: 201 }
     } catch (error) {

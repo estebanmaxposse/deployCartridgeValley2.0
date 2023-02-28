@@ -50,6 +50,15 @@ class ContainerMongoDB {
         };
     };
 
+    async getByParameter(parameter) {
+        try {
+            const content = await this.content.find(parameter);
+            return content
+        } catch (error) {
+            errorLog(error, `Couldn't find objects with parameter: ${parameter}!`)
+        }
+    }
+
     async getByUsername(username) {
         let foundUser;
         try {

@@ -23,6 +23,12 @@ class productsRepo {
         return product
     }
 
+    async getProductsByCategory(category) {
+        const rawProducts = await this.dao.getByParameter({category: category});
+        const products = rawProducts.map(p => new productDTO(p))
+        return products
+    }
+
     async postProduct(rawProduct) {
         const product = new productDTO(rawProduct)
         const savedProduct = await this.dao.save(product);
