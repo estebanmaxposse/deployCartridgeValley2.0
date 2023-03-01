@@ -3,6 +3,8 @@ class Cart {
         this.timestamp = new Date().toLocaleDateString();
         this.products = products || [];
         this.buyerID = '';
+        this.buyerEmail = '';
+        this.buyerShippingAddress = '';
     };
 };
 
