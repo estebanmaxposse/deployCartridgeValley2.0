@@ -4,6 +4,7 @@ import productManager from '../daos/daoProducts.js';
 import { user } from "../services/sessionsServices.js";
 import { errorLog } from '../utils/logger.js';
 import cartDTO from '../daos/dtos/dtoCarts.js';
+import { productCounter, totalCounter } from '../utils/productCounter.js';
 
 const getNewCart = async () => {
     let newCart = new Cart()
@@ -37,16 +38,16 @@ const addProducts = async (id, products) => {
         let body = products;
         await Promise
             .all(body.map(pId => {
-                return productManager.getById(pId._id)}))
+                return productManager.getById(pId._id)
+            }))
             .then(products => {
-                let productsIds = products.map(p => p._id)
-                cart.products.push(...productsIds)});
+                let totalProducts = productCounter(products, cart)
+                cart.products = totalProducts
 
-        let cartProducts = await Promise.all(cart.products.map(p => productManager.getById(p._id)))
-        let cartLength = await cartProducts.length
-        let totalPrice = await cartProducts.reduce((acc, p) => acc + p.price, 0)
-        cart.cartTotalProducts = cartLength
-        cart.cartTotalPrice = totalPrice
+                let totalAmounts = totalCounter(totalProducts)
+                cart.cartTotalProducts = totalAmounts.totalCount
+                cart.cartTotalPrice = totalAmounts.totalPrice
+            });
 
         let updatedCart = await cartManager.updateItem(cart);
         return { response: 'Cart updated!', status: 201 }
@@ -63,16 +64,20 @@ const getProducts = async (id) => {
         if (cart.products.length === 0) {
             return { response: "This cart has no products", status: 200 }
         } else {
-            let cartProducts = await Promise.all(cart.products.map(p => productManager.getById(p._id)))
-            let cartLength = cartProducts.length
-            let totalPrice = cartProducts.reduce((acc, p) => acc + p.price, 0)
-            return { 
+            let cartProducts = await Promise.all(cart.products.map(async p => {
+                return {
+                    product: await productManager.getById(p._id),
+                    quantity: p.count,
+                    subtotal: p.totalPrice
+                }
+            }))
+            return {
                 response: {
-                    cartId: cart._id, 
+                    cartId: cart._id,
                     products: cartProducts,
                     buyerID: cart.buyerID,
-                    cartLength: cartLength,
-                    total: totalPrice
+                    cartLength: cart.cartTotalProducts,
+                    total: cart.cartTotalPrice
                 },
                 status: 200
             }

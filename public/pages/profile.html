@@ -141,14 +141,23 @@
                 <div class="card mb-4 mb-md-0">
                   <div class="card-body">
                     <div class="d-flex p-2 justify-content-between">
-                      <p class="text-primary font-italic me-1">Cart </p>
-                      <button type="button" class="btn btn-success d-none" id="purchase-button" onclick="completePurchase()">Complete purchase</button>
-                  </div>
+                      <p class="text-primary font-italic me-1">Cart</p>
+                      <button
+                        type="button"
+                        class="btn btn-success d-none"
+                        id="purchase-button"
+                        onclick="completePurchase()"
+                      >
+                        Complete purchase
+                      </button>
+                    </div>
                     <ul class="list-group shadow" id="cart-products">
                       <!-- list group item-->
                       <li class="list-group-item">Loading...</li>
                     </ul>
                     <!-- End -->
+                    <div class="d-flex p-1 flex-column align-items-end" id="cart-total">
+                    </div>
                   </div>
                 </div>
               </div>
