@@ -1,5 +1,6 @@
 class userDTO {
     constructor(user) {
+        this._id = user._id
         this.username = user.username
         this.fullName = user.fullName
         this.phoneNumber = user.phoneNumber

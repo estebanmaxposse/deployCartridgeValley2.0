@@ -1,13 +1,15 @@
-class Cart {
+class Order {
     constructor(products) {
         this.timestamp = new Date().toLocaleDateString();
+        this.status = 'pending';
         this.products = products || [];
+        this.orderNumber = 0;
         this.buyerID = '';
         this.buyerEmail = '';
         this.buyerShippingAddress = '';
-        this.cartTotalProducts = 0;
-        this.cartTotalPrice = 0;
-    };
-};
+        this.orderTotalProducts = 0;
+        this.orderTotalPrice = 0;
+    }
+}
 
-export default Cart
+export default Order

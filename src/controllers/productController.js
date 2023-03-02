@@ -1,5 +1,5 @@
 import { errorLog } from "../utils/logger.js";
-import { getProducts, getRandomProducts, getProduct, postProduct, updateProduct, deleteProduct } from "../services/productServices.js";
+import { getProducts, getRandomProducts, getProduct, getProductsByCategory, postProduct, updateProduct, deleteProduct } from "../services/productServices.js";
 
 const getProductsController = async (req, res) => {
     try {
@@ -33,6 +33,21 @@ const getProductController = async (req, res) => {
         } else {
             //TO MANAGE ERRORS LATER
             res.status(product.status).json(product.response)
+        }
+    } catch (error) {
+        errorLog(error)
+    };
+}
+
+const getProductsByCategoryController = async (req, res) => {
+    try {
+        const { category } = req.params;
+        const products = await getProductsByCategory(category);
+        if (products.status === 200) {
+            res.status(products.status).json(products.response)
+        } else {
+            //TO MANAGE ERRORS LATER
+            res.status(products.status).json(products.response)
         }
     } catch (error) {
         errorLog(error)
@@ -78,4 +93,4 @@ const deleteProductController = async (req, res) => {
     };
 }
 
-export { getProductsController, getProductController, getRandomProductsController, postProductController, updateProductController, deleteProductController }
+export { getProductsController, getProductController, getProductsByCategoryController, getRandomProductsController, postProductController, updateProductController, deleteProductController }
