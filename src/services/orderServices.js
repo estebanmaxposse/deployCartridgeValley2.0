@@ -85,7 +85,7 @@ const sendOrder = async (order) => {
             `New purchase from ${buyer.fullName}
             with email ${buyer.email}.
             Products purchased:
-            ${order.products.map(product => product.title).join(', ')}
+            ${order.products.map(product => product.product.title).join(', ')}
             `
         );
         sendSMS(

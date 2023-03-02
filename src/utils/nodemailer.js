@@ -45,6 +45,7 @@ const mailUser = async (user) => {
 };
 
 const mailPurchaseToAdmin = async (user, order) => {
+    console.log(order);
     try {
         mailOptions.subject = `New purchase from ${user.fullName} with email ${user.email}`
         mailOptions.html= `
