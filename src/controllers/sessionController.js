@@ -7,7 +7,6 @@ const getSessionController = async (req, res) => {
 
 const getUserController = async (req, res) => {
     let query = await getUser(req.user)
-    console.log(query);
     if (query.status === 200) {
         res.send(req.user)
     } else {
@@ -18,7 +17,6 @@ const getUserController = async (req, res) => {
 const loginUserController = async (req, res) => {
     if (req.isAuthenticated()) {
         let user = await loginUser(req.user)
-        console.log(user);
         res.status(user.status).redirect('/')
     } else {
         res.redirect('/pages/login.html')

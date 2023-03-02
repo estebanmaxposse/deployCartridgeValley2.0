@@ -70,7 +70,6 @@ const mailPurchaseToUser = async (order) => {
         mailOptions.subject = `Purchase completed! Your order is being processed.`
         mailOptions.html= `
             <h1>Objects purchased: </h1>
-            <br/>
             <ul>
             ${order.products.map(product => `
                 <li>
@@ -79,11 +78,11 @@ const mailPurchaseToUser = async (order) => {
                 </li>
             `)}
             </ul>
+            <br/>
             <h2>Total Products: </h2>
-            <br/>
             <p>${order.orderTotalProducts}</p>
-            <h2>Total Price: </h2>
             <br/>
+            <h2>Total Price: </h2>
             <p>${order.orderTotalPrice}</p>
             `
         const info = await transporter.sendMail(mailOptions)

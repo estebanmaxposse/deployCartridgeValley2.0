@@ -1,22 +1,16 @@
 import Cart from '../models/cart.js'
 import cartManager from '../daos/daoCarts.js';
 import productManager from '../daos/daoProducts.js';
-import userManager from '../daos/daoUsers.js';
 import { user } from "../services/sessionsServices.js";
-import { sendSMS, sendWpp } from "../utils/twilio.js";
-import { mailPurchaseToAdmin } from "../utils/nodemailer.js";
-import config from '../config/globalConfig.js'
 import { errorLog } from '../utils/logger.js';
 import cartDTO from '../daos/dtos/dtoCarts.js';
 
 const getNewCart = async () => {
     let newCart = new Cart()
-    console.log(user);
     newCart.buyerID = user._id
     newCart.buyerEmail = user.email
     newCart.buyerShippingAddress = user.shippingAddress
     let cart = new cartDTO(newCart)
-    console.log(cart);
     try {
         let savedCart = await cartManager.save(cart)
         return { response: 'Cart created!', status: 201 }
@@ -46,15 +40,12 @@ const addProducts = async (id, products) => {
                 return productManager.getById(pId._id)}))
             .then(products => {
                 let productsIds = products.map(p => p._id)
-                console.log(productsIds);
                 cart.products.push(...productsIds)});
         let cartProducts = await Promise.all(cart.products.map(p => productManager.getById(p._id)))
         let cartLength = await cartProducts.length
         let totalPrice = await cartProducts.reduce((acc, p) => acc + p.price, 0)
-        console.log(cartLength, totalPrice);
         cart.cartTotalProducts = cartLength
         cart.cartTotalPrice = totalPrice
-        console.log(cart);
         let updatedCart = await cartManager.updateItem(cart);
         return { response: 'Cart updated!', status: 201 }
     } catch (error) {
@@ -86,6 +77,7 @@ const getProducts = async (id) => {
         }
     } catch (error) {
         errorLog(error)
+        return { response: "Couldn't fetch cart", status: 500 }
     }
 }
 

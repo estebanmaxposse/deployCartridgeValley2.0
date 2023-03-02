@@ -13,7 +13,6 @@ import { getProducts } from "./cartServices.js";
 const getNewOrder = async (id) => {
     try {
         let cart = await cartManager.getById(id);
-        console.log('CART: ', cart);
         let products = await getProducts(id);
         let newOrder = new Order();
         newOrder.orderNumber = await orderManager.getOrderNumber();
@@ -23,9 +22,7 @@ const getNewOrder = async (id) => {
         newOrder.products = products.response.products;
         newOrder.orderTotalProducts = cart.cartTotalProducts;
         newOrder.orderTotalPrice = cart.cartTotalPrice;
-        console.log(newOrder);
         let order = new orderDTO(newOrder);
-        console.log(order);
         let savedOrder = await orderManager.save(order);
         let sentOrder = await sendOrder(order)
         return { response: "Order created!", status: 201 };
@@ -81,7 +78,6 @@ const deleteOrder = async (id) => {
 
 const sendOrder = async (order) => {
     try {
-        console.log('SEND ORDER: ', order);
         let buyer = await userManager.getById(order.buyerID);
         sendWpp(
             config.TEST_PHONE,
