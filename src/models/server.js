@@ -8,6 +8,7 @@ import { fileURLToPath } from 'url';
 import productRouter from '../routes/productRoutes.js';
 import cartRouter from '../routes/cartRoutes.js'
 import sessionRouter from '../routes/sessionRoutes.js';
+import orderRouter from '../routes/orderRoutes.js';
 import {miscRouter, errorRouter, docsRouter} from '../routes/miscRoutes.js'
 import forkRouter from '../utils/serverFork.js'
 import socketConfig from '../utils/socket.js';
@@ -66,6 +67,7 @@ app.use(compression(), routeLog, miscRouter)
 app.use(docsRouter)
 app.use(compression(), routeLog, forkRouter)
 app.use('/api/cart', compression(), routeLog, cartRouter);
+app.use('/api/orders', compression(), routeLog, orderRouter);
 
 app.use(invalidRouteLog, errorRouter);
 

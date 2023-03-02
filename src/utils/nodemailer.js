@@ -44,14 +44,14 @@ const mailUser = async (user) => {
     }
 };
 
-const mailPurchase = async (user, cart) => {
+const mailPurchaseToAdmin = async (user, order) => {
     try {
         mailOptions.subject = `New purchase from ${user.fullName} with email ${user.email}`
         mailOptions.html= `
             <h1>Objects purchased: </h1>
             <br/>
             <ul>
-            ${cart.products.map(product => `
+            ${order.products.map(product => `
                 <li>
                    <p>Title: ${product.title}</p>
                    <p>Price: ${product.price}</p>
@@ -65,4 +65,31 @@ const mailPurchase = async (user, cart) => {
     }
 };
 
-export {mailUser, mailPurchase}
+const mailPurchaseToUser = async (order) => {
+    try {
+        mailOptions.subject = `Purchase completed! Your order is being processed.`
+        mailOptions.html= `
+            <h1>Objects purchased: </h1>
+            <br/>
+            <ul>
+            ${order.products.map(product => `
+                <li>
+                   <p>Title: ${product.title}</p>
+                   <p>Price: ${product.price}</p>
+                </li>
+            `)}
+            </ul>
+            <h2>Total Products: </h2>
+            <br/>
+            <p>${order.orderTotalProducts}</p>
+            <h2>Total Price: </h2>
+            <br/>
+            <p>${order.orderTotalPrice}</p>
+            `
+        const info = await transporter.sendMail(mailOptions)
+    } catch (error) {
+        errorLog(error);
+    }
+}
+
+export {mailUser, mailPurchaseToAdmin, mailPurchaseToUser}

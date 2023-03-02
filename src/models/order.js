@@ -4,6 +4,7 @@ class Order {
         this.status = 'pending';
         this.products = products || [];
         this.orderNumber = 0;
+        this.buyerID = '';
         this.buyerEmail = '';
         this.buyerShippingAddress = '';
         this.orderTotalProducts = 0;

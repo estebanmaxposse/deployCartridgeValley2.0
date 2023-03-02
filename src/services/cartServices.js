@@ -4,7 +4,7 @@ import productManager from '../daos/daoProducts.js';
 import userManager from '../daos/daoUsers.js';
 import { user } from "../services/sessionsServices.js";
 import { sendSMS, sendWpp } from "../utils/twilio.js";
-import { mailPurchase } from "../utils/nodemailer.js";
+import { mailPurchaseToAdmin } from "../utils/nodemailer.js";
 import config from '../config/globalConfig.js'
 import { errorLog } from '../utils/logger.js';
 import cartDTO from '../daos/dtos/dtoCarts.js';
@@ -112,7 +112,7 @@ const completePurchase = async (id) => {
         sendSMS(
             buyer.phoneNumber, `Purchase completed! Your order is being processed.`
         )
-        mailPurchase(buyer, cart)
+        mailPurchaseToAdmin(buyer, cart)
         return { response: 'Purchase successful', status: 201 }
     } catch (error) {
         errorLog(error)
