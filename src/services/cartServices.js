@@ -41,11 +41,13 @@ const addProducts = async (id, products) => {
             .then(products => {
                 let productsIds = products.map(p => p._id)
                 cart.products.push(...productsIds)});
+
         let cartProducts = await Promise.all(cart.products.map(p => productManager.getById(p._id)))
         let cartLength = await cartProducts.length
         let totalPrice = await cartProducts.reduce((acc, p) => acc + p.price, 0)
         cart.cartTotalProducts = cartLength
         cart.cartTotalPrice = totalPrice
+
         let updatedCart = await cartManager.updateItem(cart);
         return { response: 'Cart updated!', status: 201 }
     } catch (error) {
@@ -111,7 +113,6 @@ const deleteProduct = async (id, id_prod) => {
         let cart = await cartManager.getById(id);
         let newProducts = cart.products.filter((product) => (product._id).toString() !== id_prod);
         cart.products = newProducts;
-    
         let updatedCart = await cartManager.updateItem(cart);
         return { response: 'Cart updated!', status: 201 }
     } catch (error) {
@@ -120,4 +121,16 @@ const deleteProduct = async (id, id_prod) => {
     }
 }
 
-export { getNewCart, getAllCarts, addProducts, getProducts, getCart, deleteCart, deleteProduct }
+const clearCart = async (id) => {
+    try {
+        let cart = await cartManager.getById(id);
+        cart.products = [];
+        let updatedCart = await cartManager.updateItem(cart);
+        return { response: 'Cart updated!', status: 201 }
+    } catch (error) {
+        errorLog(error)
+        return { response: "Couldn't update cart", status: 500 }
+    }
+}
+
+export { getNewCart, getAllCarts, addProducts, getProducts, getCart, deleteCart, deleteProduct, clearCart }

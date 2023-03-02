@@ -8,7 +8,7 @@ import config from "../config/globalConfig.js";
 import { errorLog } from "../utils/logger.js";
 import cartManager from "../daos/daoCarts.js";
 import userManager from "../daos/daoUsers.js";
-import { getProducts } from "./cartServices.js";
+import { getProducts, clearCart } from "./cartServices.js";
 
 const getNewOrder = async (id) => {
     try {
@@ -25,6 +25,7 @@ const getNewOrder = async (id) => {
         let order = new orderDTO(newOrder);
         let savedOrder = await orderManager.save(order);
         let sentOrder = await sendOrder(order)
+        let clearedCart = await clearCart(id);
         return { response: "Order created!", status: 201 };
     } catch (error) {
         errorLog(error);
