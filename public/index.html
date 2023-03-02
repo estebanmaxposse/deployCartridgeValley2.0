@@ -39,6 +39,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="pages/profile.html">Profile</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="pages/chat.html">Chat</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -47,7 +50,7 @@
     <div id="welcome"></div>
 
     <div class="row w-100 mt-3 mb-3">
-        <div class="col-md-7">
+        <div class="col-md-12">
             <h1 class="text-center mb-2 mt-2">Enter a product!</h1>
             <div class="d-flex justify-content-center m-3">
                 <form onsubmit="return addProduct(this)" class="w-50">
@@ -56,76 +59,27 @@
                             Product Title
                         </label>
                         <input name="title" type="text" class="form-control" id="product-title"
-                            aria-describedby="product-title" ) />
+                            aria-describedby="product-title" />
                     </div>
                     <div class="mb-3">
                         <label for="product-price" class="form-label">
                             Product Price
                         </label>
                         <input name="price" type="number" class="form-control" id="product-price"
-                            aria-describedby="product-price" ) />
+                            aria-describedby="product-price" />
                     </div>
                     <div class="mb-3">
                         <label for="product-thumbnail" class="form-label">
                             Product Thumbnail
                         </label>
                         <input name="thumbnail" type="text" class="form-control" id="product-thumbnail"
-                            aria-describedby="product-thumbnail" ) />
+                            aria-describedby="product-thumbnail" />
                     </div>
                     <button class="btn btn-primary" type="submit">Submit</button>
                 </form>
             </div>
 
             <div id="product-container" class="d-flex justify-content-center"></div>
-        </div>
-
-        <div class="d-flex col-md-5 flex-column" style="max-height: 100vh">
-            <div class="d-flex">
-                <form onsubmit="return addMessage(this)" class="" id="form-product">
-                    <div class="mb-3">
-                        <label for="message-author" class="form-label">Email </label>
-                        <input name="email" type="email" class="form-control" id="message-author"
-                            aria-describedby="message-author" required />
-                    </div>
-                    <div class="mb-3">
-                        <label for="message-name" class="form-label">Name </label>
-                        <input name="name" type="text" class="form-control" id="message-name"
-                            aria-describedby="message-name" required />
-                    </div>
-                    <div class="mb-3">
-                        <label for="message-surname" class="form-label">Surname </label>
-                        <input name="surname" type="text" class="form-control" id="message-surname"
-                            aria-describedby="message-surname" required />
-                    </div>
-                    <div class="mb-3">
-                        <label for="message-age" class="form-label">Age </label>
-                        <input name="age" type="number" class="form-control" id="message-age"
-                            aria-describedby="message-age" required />
-                    </div>
-                    <div class="mb-3">
-                        <label for="message-nick" class="form-label">Nick </label>
-                        <input name="nick" type="text" class="form-control" id="message-nick"
-                            aria-describedby="message-nick" required />
-                    </div>
-                    <div class="mb-3">
-                        <label for="message-avatar" class="form-label">Avatar </label>
-                        <input name="avatar" type="text" class="form-control" id="message-avatar"
-                            aria-describedby="message-avatar" required />
-                    </div>
-                    <div class="mb-3">
-                        <label for="message-text" class="form-label">What you wanna say?
-                        </label>
-                        <input name="text" type="text" class="form-control" id="message-text"
-                            aria-describedby="message-text" required />
-                    </div>
-                    <button class="btn btn-primary" type="submit" id="chat-button">
-                        Submit
-                    </button>
-                </form>
-            </div>
-
-            <!-- <p id="percentage-rate">Compression rate =</p> -->
-            <div id="messages" class="d-flex flex-column align-items-start m-3"></div>
         </div>
     </div>
 

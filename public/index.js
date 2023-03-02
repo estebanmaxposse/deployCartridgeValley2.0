@@ -53,52 +53,7 @@ server.on('products', async data => {
     }
 });
 
-//Messages & Chat
-
-const renderMessages = (data) => {
-    console.log(data);
-    const htmlMessage = data.map((element, index) => {
-        return (`
-        <div class='text-center d-flex flex-column align-items-start m-2'>
-            <div>
-                <span class="fw-bold" style='color:blue; font-weight: bold;'>${element.author.name}</span>
-                <span style='color:brown'>${element.date}</span>
-            </div>
-            <p class="fst-italic" style='color:green; font-style: italic'>${element.text}</p>
-        </div>`
-        )
-    }).join('');
-    document.getElementById('messages').innerHTML = htmlMessage;
-}
-
-let text = document.getElementById('message-text');
-
-const addMessage = (e) => {
-    const message = {
-        author: {
-            name: document.getElementById('message-name').value,
-            surname: document.getElementById('message-surname').value,
-            age: document.getElementById('message-age').value,
-            nick: document.getElementById('message-nick').value,
-            avatar: document.getElementById('message-avatar').value,
-            email: document.getElementById('message-author').value
-        },
-        text: text.value,
-    };
-    server.emit('new-message', message);
-    text.value = ''
-    text.focus()
-
-    return false;
-}
-
-server.on('messages', data => {
-    renderMessages(data);
-});
-
 //Session handler
-const userToast = document.getElementById('user-toast')
-
 const logOut = () => {
     window.location.href = '/api/auth/logout'
 }

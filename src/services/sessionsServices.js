@@ -37,7 +37,7 @@ const loginUser = async (userCheck) => {
 }
 
 const authLogin = async () => {
-    return
+    return { response: 'Logged in!', status: 200 }
 }
 
 const loginFailed = async () => {
