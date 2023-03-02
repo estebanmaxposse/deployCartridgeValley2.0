@@ -2,7 +2,7 @@ import { Router } from "express";
 const router = Router();
 import { getNewOrderController, getAllOrdersController, getOrderController, updateOrderController, deleteOrderController } from '../controllers/orderController.js'
 
-router.post("/", getNewOrderController);
+router.post("/:id", getNewOrderController);
 
 router.get('/', getAllOrdersController);
 

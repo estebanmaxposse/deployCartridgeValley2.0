@@ -84,7 +84,7 @@ filterCart()
 
 const completePurchase = async () => {
     try {
-        const response = await fetch(`/api/cart/${filteredCart._id}`, {
+        const response = await fetch(`/api/order/${filteredCart._id}`, {
             method: 'post',
             body: filteredCart._id
         })

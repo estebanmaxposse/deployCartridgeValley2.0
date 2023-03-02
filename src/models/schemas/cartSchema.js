@@ -5,7 +5,9 @@ const cartSchema = new Schema({
     products: [],
     buyerID: { type: String },
     buyerEmail: { type: String },
-    buyerShippingAddress: { type: String }
+    buyerShippingAddress: { type: String },
+    cartTotalProducts: { type: Number },
+    cartTotalPrice: { type: Number },
 });
 
 export default cartSchema;

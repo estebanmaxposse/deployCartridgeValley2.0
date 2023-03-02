@@ -3,7 +3,8 @@ import MongoClient from '../config/configMongo.js';
 import productSchema from '../models/schemas/productSchema.js';
 import cartSchema from '../models/schemas/cartSchema.js';
 import messageSchema from '../models/schemas/messageSchema.js';
-import userSchema from '../models/schemas/userSchema.js'
+import userSchema from '../models/schemas/userSchema.js';
+import orderSchema from '../models/schemas/orderSchema.js';
 import config from '../config/globalConfig.js'
 import { errorLog, log } from "../utils/logger.js";
 
@@ -22,6 +23,8 @@ class ContainerMongoDB {
             this.selectedSchema = messageSchema
         } else if (name === 'users') {
             this.selectedSchema = userSchema
+        } else if (name === 'order') {
+            this.selectedSchema = orderSchema
         }
 
         this.content = model(this.collectionName, this.selectedSchema)

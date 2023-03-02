@@ -48,6 +48,13 @@ const addProducts = async (id, products) => {
                 let productsIds = products.map(p => p._id)
                 console.log(productsIds);
                 cart.products.push(...productsIds)});
+        let cartProducts = await Promise.all(cart.products.map(p => productManager.getById(p._id)))
+        let cartLength = await cartProducts.length
+        let totalPrice = await cartProducts.reduce((acc, p) => acc + p.price, 0)
+        console.log(cartLength, totalPrice);
+        cart.cartTotalProducts = cartLength
+        cart.cartTotalPrice = totalPrice
+        console.log(cart);
         let updatedCart = await cartManager.updateItem(cart);
         return { response: 'Cart updated!', status: 201 }
     } catch (error) {
@@ -97,29 +104,6 @@ const getCart = async (id) => {
     }
 }
 
-const completePurchase = async (id) => {
-    try {
-        let cart = await cartManager.getById(id)
-        let buyer = await userManager.getById(cart.buyerID)
-        sendWpp(
-            config.TEST_PHONE,
-            `New purchase from ${buyer.fullName}
-            with email ${buyer.email}.
-            Products purchased:
-            ${cart.products.map(product => product.title).join(', ')}
-            `
-        );
-        sendSMS(
-            buyer.phoneNumber, `Purchase completed! Your order is being processed.`
-        )
-        mailPurchaseToAdmin(buyer, cart)
-        return { response: 'Purchase successful', status: 201 }
-    } catch (error) {
-        errorLog(error)
-        return { response: "Error completing purchase!", status: 500 }
-    }
-}
-
 const deleteCart = async (id) => {
     try {
         await cartManager.deleteById(id)
@@ -144,4 +128,4 @@ const deleteProduct = async (id, id_prod) => {
     }
 }
 
-export { getNewCart, getAllCarts, addProducts, getProducts, getCart, completePurchase, deleteCart, deleteProduct }
+export { getNewCart, getAllCarts, addProducts, getProducts, getCart, deleteCart, deleteProduct }

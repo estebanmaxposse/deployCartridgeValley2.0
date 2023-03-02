@@ -2,7 +2,7 @@ import ContainerMongoDB from "../mongoManager.js";
 
 class daoCartsMongo extends ContainerMongoDB {
     constructor() {
-        super('cart')
+        super('order')
     }
 
     async getOrderNumber() {

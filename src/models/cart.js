@@ -5,6 +5,8 @@ class Cart {
         this.buyerID = '';
         this.buyerEmail = '';
         this.buyerShippingAddress = '';
+        this.cartTotalProducts = 0;
+        this.cartTotalPrice = 0;
     };
 };
 

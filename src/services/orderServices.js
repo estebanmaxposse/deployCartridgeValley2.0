@@ -7,21 +7,22 @@ import { mailPurchaseToAdmin, mailPurchaseToUser } from "../utils/nodemailer.js"
 import config from "../config/globalConfig.js";
 import { errorLog } from "../utils/logger.js";
 import cartManager from "../daos/daoCarts.js";
-import productManager from "../daos/daoProducts.js";
+import userManager from "../daos/daoUsers.js";
 import { getProducts } from "./cartServices.js";
 
 const getNewOrder = async (id) => {
     try {
         let cart = await cartManager.getById(id);
+        console.log('CART: ', cart);
         let products = await getProducts(id);
         let newOrder = new Order();
         newOrder.orderNumber = await orderManager.getOrderNumber();
         newOrder.buyerID = user._id;
         newOrder.buyerEmail = user.email;
         newOrder.buyerShippingAddress = user.shippingAddress;
-        newOrder.products = products.response;
-        newOrder.orderTotalProducts = cart.orderTotalProducts;
-        newOrder.orderTotalPrice = cart.orderTotalPrice;
+        newOrder.products = products.response.products;
+        newOrder.orderTotalProducts = cart.cartTotalProducts;
+        newOrder.orderTotalPrice = cart.cartTotalPrice;
         console.log(newOrder);
         let order = new orderDTO(newOrder);
         console.log(order);
@@ -80,14 +81,14 @@ const deleteOrder = async (id) => {
 
 const sendOrder = async (order) => {
     try {
-        console.log(order);
+        console.log('SEND ORDER: ', order);
         let buyer = await userManager.getById(order.buyerID);
         sendWpp(
             config.TEST_PHONE,
             `New purchase from ${buyer.fullName}
             with email ${buyer.email}.
             Products purchased:
-            ${cart.products.map(product => product.title).join(', ')}
+            ${order.products.map(product => product.title).join(', ')}
             `
         );
         sendSMS(

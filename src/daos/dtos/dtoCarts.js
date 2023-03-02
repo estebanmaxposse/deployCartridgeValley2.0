@@ -6,6 +6,8 @@ class cartDTO {
         this.buyerID = cart.buyerID
         this.buyerEmail = cart.buyerEmail
         this.buyerShippingAddress = cart.buyerShippingAddress
+        this.cartTotalProducts = cart.cartTotalProducts
+        this.cartTotalPrice = cart.cartTotalPrice
     }
 }
 

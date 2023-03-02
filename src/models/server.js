@@ -67,7 +67,7 @@ app.use(compression(), routeLog, miscRouter)
 app.use(docsRouter)
 app.use(compression(), routeLog, forkRouter)
 app.use('/api/cart', compression(), routeLog, cartRouter);
-app.use('/api/orders', compression(), routeLog, orderRouter);
+app.use('/api/order', compression(), routeLog, orderRouter);
 
 app.use(invalidRouteLog, errorRouter);
 
