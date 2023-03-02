@@ -49,6 +49,21 @@ const getProduct = async (id) => {
     };
 }
 
+const getProductsByCategory = async (category) => {
+    try {
+        let products = await productsRepository.getProductsByCategory(category)
+        const productExists = products.length !== 0;
+        if (productExists) {
+            return { response: products, status: 200 }
+        } else {
+            return { response: "Couldn't find any products!", status: 404 }
+        }
+    } catch (error) {
+        errorLog(error)
+        return { response: error, status: 500 }
+    };
+}
+
 const postProduct = async (rawProduct) => {
     if (!checkAdmin()) {
         return { response: "Can't access this page", status: 403 }
@@ -99,4 +114,4 @@ const deleteProduct = async (id) => {
     };
 }
 
-export { getProducts, getRandomProducts, getProduct, postProduct, updateProduct, deleteProduct }
+export { getProducts, getRandomProducts, getProduct, getProductsByCategory, postProduct, updateProduct, deleteProduct }

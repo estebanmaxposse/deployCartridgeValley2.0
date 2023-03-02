@@ -1,4 +1,4 @@
-import { getNewCart, getAllCarts, addProducts, getProducts, getCart, completePurchase, deleteCart, deleteProduct } from '../services/cartServices.js'
+import { getNewCart, getAllCarts, addProducts, getProducts, getCart, deleteCart, deleteProduct, clearCart } from '../services/cartServices.js'
 import { errorLog } from '../utils/logger.js';
 
 const getNewCartController = async (req, res) => {
@@ -54,16 +54,6 @@ const getCartController = async (req, res) => {
     }
 }
 
-const completePurchaseController = async (req, res) => {
-    let { id } = req.params;
-    try {
-        const query = await completePurchase(id)
-        res.status(query.status).json(query.response)
-    } catch (error) {
-        errorLog(error)
-    }
-}
-
 const deleteCartController = async (req, res) => {
     let { id } = req.params;
     try {
@@ -84,4 +74,14 @@ const deleteProductCartController = async (req, res) => {
     }
 }
 
-export { getNewCartController, getAllCartsController, addProductsController, getProductsController, getCartController, completePurchaseController, deleteCartController, deleteProductCartController }
+const clearCartController = async (req, res) => {
+    let { id } = req.params;
+    try {
+        const query = await clearCart(id)
+        res.status(query.status).json(query.response)
+    } catch (error) {
+        errorLog(error)
+    }
+}
+
+export { getNewCartController, getAllCartsController, addProductsController, getProductsController, getCartController, deleteCartController, deleteProductCartController, clearCartController }
