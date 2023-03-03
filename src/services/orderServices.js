@@ -1,7 +1,6 @@
 import Order from "../models/order.js";
 import orderDTO from "../daos/dtos/dtoOrders.js";
 import orderManager from "../daos/daoOrders.js";
-import { user } from "../services/sessionsServices.js";
 import { sendSMS, sendWpp } from "../utils/twilio.js";
 import { mailPurchaseToAdmin, mailPurchaseToUser } from "../utils/nodemailer.js";
 import config from "../config/globalConfig.js";
@@ -10,7 +9,7 @@ import cartManager from "../daos/daoCarts.js";
 import userManager from "../daos/daoUsers.js";
 import { getProducts, clearCart } from "./cartServices.js";
 
-const getNewOrder = async (id) => {
+const getNewOrder = async (id, user) => {
     try {
         let cart = await cartManager.getById(id);
         let products = await getProducts(id);

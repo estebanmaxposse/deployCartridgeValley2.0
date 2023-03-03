@@ -1,12 +1,11 @@
 import Cart from '../models/cart.js'
 import cartManager from '../daos/daoCarts.js';
 import productManager from '../daos/daoProducts.js';
-import { user } from "../services/sessionsServices.js";
 import { errorLog } from '../utils/logger.js';
 import cartDTO from '../daos/dtos/dtoCarts.js';
 import { productCounter, totalCounter } from '../utils/productCounter.js';
 
-const getNewCart = async () => {
+const getNewCart = async (user) => {
     let newCart = new Cart()
     newCart.buyerID = user._id
     newCart.buyerEmail = user.email

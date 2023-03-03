@@ -10,11 +10,6 @@
       integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
       crossorigin="anonymous"
     />
-    <script
-      src="https://cdn.socket.io/4.5.0/socket.io.min.js"
-      integrity="sha384-7EyYLQZgWBi67fBtVxw60/OWl1kjsfrPFcaU0pp0nAh+i8FD068QogUvg85Ewy1k"
-      crossorigin="anonymous"
-    ></script>
   </head>
 
   <body>
@@ -63,7 +58,7 @@
 
     <h1 class="text-center mb-2 mt-2">Log in!</h1>
     <div class="d-flex justify-content-center m-3">
-      <form action="../api/auth/login" method="post">
+      <form onsubmit="login()">
         <div class="mb-3">
           <label for="user-email" class="form-label">Email address</label>
           <input
@@ -71,7 +66,7 @@
             class="form-control"
             id="user-email"
             placeholder="name@example.com"
-            name="username"
+            name="email"
             required
           />
         </div>
@@ -89,5 +84,7 @@
         <a href="/pages/signUp.html">Sign Up!</a>
       </form>
     </div>
+
+    <script type="text/javascript" src="../index.js"></script>
   </body>
 </html>

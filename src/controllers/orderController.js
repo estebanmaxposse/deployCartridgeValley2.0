@@ -3,7 +3,7 @@ import { errorLog } from '../utils/logger.js';
 
 const getNewOrderController = async (req, res) => {
     try {
-        const query = await getNewOrder(req.params.id)
+        const query = await getNewOrder(req.params.id, req.user)
         res.status(query.status).json(query.response)
     } catch (error) {
         errorLog(error);

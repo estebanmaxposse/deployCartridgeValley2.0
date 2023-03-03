@@ -62,12 +62,12 @@ class ContainerMongoDB {
         }
     }
 
-    async getByUsername(username) {
+    async getUserByEmail(email) {
         let foundUser;
         try {
-            foundUser = await this.content.findOne({ 'username': username });
+            foundUser = await this.content.findOne({ 'email': email });
         } catch (error) {
-            errorLog(error, `Couldn't find ${username} object! ${error}`)
+            errorLog(error, `Couldn't find ${email} object! ${error}`)
         }
         if (!foundUser) {
             errorLog("User not found")

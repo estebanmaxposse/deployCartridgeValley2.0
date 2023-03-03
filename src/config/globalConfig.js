@@ -14,6 +14,7 @@ export default {
     PORT: process.env.PORT || '8080',
     DATABASE: process.env.DATABASE || 'mongo',
     SESSION_KEY: process.env.SESSION_KEY || 'secret',
+    SESSION_TIME: process.env.SESSION_TIME || '10m',
     MONGOATLAS_URL: process.env.MONGOATLAS_URL || 'mongodb+srv://estebanmaxposse:GetStuff8@ecommerce.qwzmjs0.mongodb.net/?retryWrites=true&w=majority',
     SERVER_MODE: process.env.SERVER_MODE || 'fork',
     SENT_MAIL: process.env.SENT_MAIL || 'estebanposse98@gmail.com',

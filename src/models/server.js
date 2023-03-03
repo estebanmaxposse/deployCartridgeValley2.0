@@ -1,21 +1,19 @@
 import config from '../config/globalConfig.js';
 import express, { json, urlencoded, static as staticFiles } from 'express';
 import { Server as HttpServer } from 'http'; 
-import { Server as IOServer } from 'socket.io';
 import { join } from 'path';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { verifyToken } from '../services/sessionsServices.js';
 import productRouter from '../routes/productRoutes.js';
 import cartRouter from '../routes/cartRoutes.js'
-import sessionRouter from '../routes/sessionRoutes.js';
+import { entryRoutes, sessionRouter } from '../routes/sessionRoutes.js';
 import orderRouter from '../routes/orderRoutes.js';
 import {miscRouter, errorRouter, docsRouter} from '../routes/miscRoutes.js'
 import forkRouter from '../utils/serverFork.js'
-import socketConfig from '../utils/socket.js';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
-import passport from 'passport';
 import compression from  'compression'
 import { routeLog, invalidRouteLog, log } from '../utils/logger.js';
 import serverConfig from '../config/serverConfig.js';
@@ -29,7 +27,6 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const app = express();
 const httpServer = new HttpServer(app);
-const io = new IOServer(httpServer)
 app.use(cors())
 
 //Session Manager
@@ -48,8 +45,6 @@ app.use(session({
         maxAge: 600000
     }
 }))
-app.use(passport.initialize());
-app.use(passport.session());
 
 //Views Engine
 app.set('view engine', 'pug');
@@ -61,6 +56,7 @@ app.use(staticFiles(join(__dirname, '../../public')));
 app.use(cookieParser());
 
 //Routes
+app.use('/api/auth', compression(), routeLog, entryRoutes)
 app.use(compression(), routeLog, productRouter);
 app.use('/api/auth', compression(), routeLog, sessionRouter);
 app.use(compression(), routeLog, miscRouter)
@@ -72,7 +68,5 @@ app.use('/api/order', compression(), routeLog, orderRouter);
 app.use(invalidRouteLog, errorRouter);
 
 const startServer = () => serverConfig(httpServer, PORT)
-
-io.on('connection', async (socket) => socketConfig(io, socket))
 
 export default startServer;
