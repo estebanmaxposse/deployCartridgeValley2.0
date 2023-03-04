@@ -6,7 +6,9 @@ const cartTotal = document.getElementById('cart-total')
 
 const filterCart = async () => {
     try {
-        await fetch(`/api/auth/user`)
+        await fetch(`/api/auth/user`, {
+            headers: { authorization: 'Bearer ' + localStorage.getItem('token') }
+        })
             .then(res => {
                 return res.json();
             })
@@ -14,12 +16,17 @@ const filterCart = async () => {
                 currentUser = user
                 return currentUser
             });
-        await fetch(`/api/cart`)
+        await fetch(`/api/cart`, {
+            headers: { authorization: 'Bearer ' + localStorage.getItem('token') }
+        })
             .then(res => {
                 return res.json()
             })
             .then(carts => {
+                console.log(carts);
+                console.log(currentUser._id);
                 filteredCart = carts.find(cart => cart.buyerID === currentUser._id)
+                console.log(filteredCart);
                 if (filteredCart.products.length === 0) {
                     cartList.innerHTML = `
                         <h4> You haven't added any products yet! </h4>
@@ -27,7 +34,9 @@ const filterCart = async () => {
                     `
                 } else {
                     let cartProducts
-                    fetch(`/api/cart/${filteredCart._id}/products`)
+                    fetch(`/api/cart/${filteredCart._id}/products`, {
+                        headers: { authorization: 'Bearer ' + localStorage.getItem('token') }
+                    })
                         .then(res => { return res.json() })
                         .then(cart => {
                             cartTotal.innerHTML = `
@@ -99,9 +108,11 @@ filterCart()
 
 const completePurchase = async () => {
     try {
+        console.log(filteredCart._id);
         const response = await fetch(`/api/order/${filteredCart._id}`, {
             method: 'post',
-            body: filteredCart._id
+            body: filteredCart._id,
+            headers: { authorization: 'Bearer ' + localStorage.getItem('token') }
         })
         console.log('Completed!', response);
         document.getElementById('purchase-button').innerHTML = 'Purchased!'

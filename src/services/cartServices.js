@@ -5,7 +5,8 @@ import { errorLog } from '../utils/logger.js';
 import cartDTO from '../daos/dtos/dtoCarts.js';
 import { productCounter, totalCounter } from '../utils/productCounter.js';
 
-const getNewCart = async (user) => {
+const getNewCart = async ({user}) => {
+    console.log(user);
     let newCart = new Cart()
     newCart.buyerID = user._id
     newCart.buyerEmail = user.email

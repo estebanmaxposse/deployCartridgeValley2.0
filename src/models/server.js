@@ -1,6 +1,7 @@
 import config from '../config/globalConfig.js';
 import express, { json, urlencoded, static as staticFiles } from 'express';
-import { Server as HttpServer } from 'http'; 
+import { Server as HttpServer } from 'http';
+import { Server as IOServer } from 'socket.io';
 import { join } from 'path';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
@@ -10,12 +11,14 @@ import cartRouter from '../routes/cartRoutes.js'
 import { entryRoutes, sessionRouter } from '../routes/sessionRoutes.js';
 import orderRouter from '../routes/orderRoutes.js';
 import {miscRouter, errorRouter, docsRouter} from '../routes/miscRoutes.js'
+import chatRouter from '../routes/chatRoutes.js'
 import forkRouter from '../utils/serverFork.js'
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import compression from  'compression'
 import { routeLog, invalidRouteLog, log } from '../utils/logger.js';
+import socketConfig from '../utils/socket.js';
 import serverConfig from '../config/serverConfig.js';
 import cors from 'cors'
 
@@ -27,6 +30,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const app = express();
 const httpServer = new HttpServer(app);
+const io = new IOServer(httpServer)
 app.use(cors())
 
 //Session Manager
@@ -57,6 +61,7 @@ app.use(cookieParser());
 
 //Routes
 app.use('/api/auth', compression(), routeLog, entryRoutes)
+app.use(verifyToken)
 app.use(compression(), routeLog, productRouter);
 app.use('/api/auth', compression(), routeLog, sessionRouter);
 app.use(compression(), routeLog, miscRouter)
@@ -64,9 +69,11 @@ app.use(docsRouter)
 app.use(compression(), routeLog, forkRouter)
 app.use('/api/cart', compression(), routeLog, cartRouter);
 app.use('/api/order', compression(), routeLog, orderRouter);
+app.use('/api/chat', compression(), routeLog, chatRouter);
 
 app.use(invalidRouteLog, errorRouter);
 
 const startServer = () => serverConfig(httpServer, PORT)
+io.on('connection', async (socket) => socketConfig(io, socket))
 
 export default startServer;

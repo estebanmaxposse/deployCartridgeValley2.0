@@ -2,7 +2,9 @@ const logOut = () => {
     window.location.href = '/api/auth/logout'
 }
 
-fetch(`/api/auth/user`)
+fetch(`/api/auth/user`, {
+    headers: { authorization: 'Bearer ' + localStorage.getItem('token') }
+})
     .then(res => res.json())
     .then(user => {
         let profilePicture = document.getElementById('profile-pic')

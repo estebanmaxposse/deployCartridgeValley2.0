@@ -9,7 +9,7 @@ import cartManager from "../daos/daoCarts.js";
 import userManager from "../daos/daoUsers.js";
 import { getProducts, clearCart } from "./cartServices.js";
 
-const getNewOrder = async (id, user) => {
+const getNewOrder = async (id, {user}) => {
     try {
         let cart = await cartManager.getById(id);
         let products = await getProducts(id);

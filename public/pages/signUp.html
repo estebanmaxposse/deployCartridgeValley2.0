@@ -37,6 +37,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="chat.html">Chat</a>
                     </li>
+                    <button class="btn btn-outline-success" type="button" onclick="logout()" id="logout" hidden>Logout</button>
                 </ul>
             </div>
         </div>
@@ -52,8 +53,7 @@
             </div>
             <div class="mb-3">
                 <label for="user-email" class="form-label">Username</label>
-                <input type="text" class="form-control" id="user-username" placeholder="Your Username" name="username"
-                    required />
+                <input type="text" class="form-control" id="user-username" placeholder="Your Username" name="username" />
             </div>
             <div class="mb-3">
                 <label for="user-password" class="form-label">Password</label>
@@ -61,35 +61,34 @@
             </div>
             <div class="mb-3">
                 <label for="user-fullName" class="form-label">Name</label>
-                <input type="text" class="form-control" id="user-fullName" placeholder="John Johnson" name="fullName"
-                    required />
+                <input type="text" class="form-control" id="user-fullName" placeholder="John Johnson" name="fullName" />
             </div>
             <div class="mb-3">
                 <p for="user-phone" class="form-label">Phone Number</p>
-                <input type="tel" class="form-control" id="user-phone" placeholder="3874106249" onchange="formatPhone()"
-                    required />
+                <input type="tel" class="form-control" id="user-phone" placeholder="3874106249" onchange="formatPhone()" />
             </div>
             <div class="mb-3">
                 <label for="user-address" class="form-label">Address</label>
                 <input type="text" class="form-control" id="user-address" placeholder="Argentina, Salta"
-                    name="shippingAddress" required />
+                    name="shippingAddress" />
             </div>
             <div class="mb-3">
                 <label for="user-age" class="form-label">Age</label>
-                <input type="number" class="form-control" id="user-age" name="age" required />
+                <input type="number" class="form-control" id="user-age" name="age" />
             </div>
             <div class="mb-3">
                 <label for="user-avatar" class="form-label">Avatar</label>
-                <input type="text" class="form-control" id="user-avatar" name="avatar" required />
+                <input type="text" class="form-control" id="user-avatar" name="avatar" />
             </div>
             <button type="submit" class="btn btn-primary">Sign Up!</button>
             <a href="/pages/login.html">Log in!</a>
-            <input type="hidden" id="formated-phone" name="phoneNumber"></form>
+            <input type="hidden" id="formated-phone" name="phoneNumber">
+        </form>
         </form>
     </div>
 
     <script type="text/javascript" src="../scripts/phoneHandler.js"></script>
-    <script type="text/javascript" src="../index.js"></script>
+    <script type="text/javascript" src="../scripts/auth.js"></script>
 </body>
 
 </html>
