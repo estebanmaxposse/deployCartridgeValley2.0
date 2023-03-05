@@ -10,15 +10,12 @@ import isValidPassword from "../utils/passwordValidator.js";
 
 const verifyToken = (req, res, next) => {
     const authHeader = req.headers.authorization;
-    console.log('REQ VERIFYING ', authHeader);
     const token = authHeader && authHeader.split(' ')[1];
-    console.log(token);
     if (!token) {
         res.status(401).json('Access denied');
         return { response: 'Token not provided', status: 401 };
     }
     try {
-        console.log('Unverified Token ', token);
         const decoded = verify(token, config.SESSION_KEY);
         console.log('Verify Token ', decoded);
         req.user = decoded;
@@ -56,7 +53,6 @@ const loginUser = async (userCredentials) => {
             if (isValidPassword(user, password)) {
                 const token = sign( {user} , config.SESSION_KEY, { expiresIn: config.SESSION_TIME })
                 console.log('LOGIN TOKEN ', {token});
-                console.warn(token[0]);
                 return { response: token, status: 200 }
             } else {
                 return { response: 'Invalid password', status: 401 }
@@ -92,16 +88,15 @@ const signUpUser = async (userCredentials) => {
     }
 }
 
-const logout = async (userCredentials) => {
+const updateUser = async (userCredentials) => {
     try {
-        console.log('LOGOUT USER: ', userCredentials.user);
-        userCredentials.user = null
-        console.log('LOGGED OUT USER: ', userCredentials.user);
-        return { response: 'Logged out successfully', status: 200 }
+        console.log('UPDATE USER: ', userCredentials.user);
+        const updateUser = await userManager.updateItem(userCredentials.user)
+        return { response: updateUser, status: 200 }
     } catch (error) {
         errorLog(error)
         return { response: error, status: 500 }
     }
 }
 
-export { getUser, loginUser, signUpUser, logout, verifyToken }
+export { getUser, loginUser, signUpUser, verifyToken, updateUser }

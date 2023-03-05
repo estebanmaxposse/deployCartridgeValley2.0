@@ -1,5 +1,5 @@
 import { errorLog } from "../utils/logger.js";
-import { getUser, loginUser, signUpUser, logout } from "../services/sessionsServices.js";
+import { getUser, loginUser, signUpUser, updateUser } from "../services/sessionsServices.js";
 
 const getUserController = async (req, res) => {
     console.log('Get user controller ', req.user);
@@ -30,15 +30,15 @@ const signUpUserController = async (req, res) => {
     }
 }
 
-const logoutController = async (req, res) => {
+const updateUserController = async (req, res) => {
     try {
-        console.log('LOGOUT: ', req.user);
-        let user = await logout(req)
-        console.log('LOGOUT: ', user);
+        console.log('UPDATE: ', req.body);
+        let user = await updateUser(req.body)
         res.status(user.status).json(user.response)
     } catch (error) {
-        errorLog(error, "Couldn't log out!")
+        errorLog(error, "Couldn't update user!")
     }
 }
 
-export { getUserController, loginUserController, signUpUserController, logoutController }
+
+export { getUserController, loginUserController, signUpUserController, updateUserController }
