@@ -1,5 +1,4 @@
 const productCounter = (products, cart) => {
-    // console.log('CART: ', cart);
     let uniqueProducts = cart.products.reduce((acc, item) => {
         acc[item._id] = {
           count: item.count,
@@ -8,13 +7,10 @@ const productCounter = (products, cart) => {
         return acc;
       }, {});
 
-    console.log('OLD CART: ', uniqueProducts);
     for (const product of products) {
-        console.log(product.price);
         if (uniqueProducts.hasOwnProperty(product._id)) {
             uniqueProducts[product._id].count++;
             uniqueProducts[product._id].totalPrice += product.price;
-            console.log('TOTAL PRICE: ', uniqueProducts[product._id].totalPrice);
         } else {
             uniqueProducts[product._id] = {
                 count: 1,

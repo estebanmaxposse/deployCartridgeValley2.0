@@ -13,18 +13,15 @@ const verifyToken = (req, res, next) => {
     const token = authHeader && authHeader.split(' ')[1];
     if (!token) {
         res.status(401).json('Access denied');
-        return { response: 'Token not provided', status: 401 };
     }
     try {
         const decoded = verify(token, config.SESSION_KEY);
-        console.log('Verify Token ', decoded);
         req.user = decoded;
         next();
     } catch (error) {
         errorLog(error)
         req.user = null
         res.status(401).json('Access denied');
-        return { response: 'Invalid token', status: 403 };
     }
 };
 
@@ -46,6 +43,7 @@ const getUser = async (id) => {
 
 const loginUser = async (userCredentials) => {
     try {
+        console.log(config.SESSION_TIME)
         const { email, password } = userCredentials
         const userExists = await userManager.getUserByEmail(email)
         if (userExists) {

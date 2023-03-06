@@ -14,7 +14,7 @@ const getNewCart = async ({user}) => {
     let cart = new cartDTO(newCart)
     try {
         let savedCart = await cartManager.save(cart)
-        return { response: 'Cart created!', status: 201 }
+        return { response: savedCart, status: 201 }
     } catch (error) {
         errorLog(error);
         return { response: "Couldn't create cart", status: 500 }
@@ -33,6 +33,7 @@ const getAllCarts = async () => {
 }
 
 const addProducts = async (id, products) => {
+    console.log(products);
     try {
         let cart = await cartManager.getById(id);
         let body = products;
@@ -118,8 +119,12 @@ const deleteProduct = async (id, id_prod) => {
         let cart = await cartManager.getById(id);
         let newProducts = cart.products.filter((product) => (product._id).toString() !== id_prod);
         cart.products = newProducts;
+        let totalAmounts = totalCounter(cart.products)
+        cart.cartTotalProducts = totalAmounts.totalCount
+        cart.cartTotalPrice = totalAmounts.totalPrice
+        console.log(cart);
         let updatedCart = await cartManager.updateItem(cart);
-        return { response: 'Cart updated!', status: 201 }
+        return { response: `Removed product with ID: ${id_prod} from cart ${id}`, status: 201 }
     } catch (error) {
         errorLog(error)
         return { response: "Couldn't update cart", status: 500 }
