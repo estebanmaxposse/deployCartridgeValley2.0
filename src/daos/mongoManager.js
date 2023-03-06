@@ -56,6 +56,9 @@ class ContainerMongoDB {
     async getByParameter(parameter) {
         try {
             const content = await this.content.find(parameter);
+            if (Array.isArray(content) && content.length === 0) {
+                return false
+            }
             return content
         } catch (error) {
             errorLog(error, `Couldn't find objects with parameter: ${parameter}!`)

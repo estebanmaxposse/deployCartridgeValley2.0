@@ -104,6 +104,23 @@ const getCart = async (id) => {
     }
 }
 
+const getCartByUserID = async (userID) => {
+    try {
+        let rawCart = await cartManager.getByParameter({buyerID: userID})
+        console.log(rawCart);
+        if (!rawCart) {
+            return { response: "Couldn't find cart!", status: 404 }
+        } else {
+            let cart = new cartDTO(rawCart[0])
+            console.log(cart);
+            return { response: cart, status: 200 }
+        }
+    } catch (error) {
+        errorLog(error)
+        return { response: "Error fetching cart!", status: 500 }
+    }
+}
+
 const deleteCart = async (id) => {
     try {
         await cartManager.deleteById(id)
@@ -135,6 +152,8 @@ const clearCart = async (id) => {
     try {
         let cart = await cartManager.getById(id);
         cart.products = [];
+        cart.cartTotalProducts = 0;
+        cart.totalPrice = 0
         let updatedCart = await cartManager.updateItem(cart);
         return { response: 'Cart updated!', status: 201 }
     } catch (error) {
@@ -143,4 +162,4 @@ const clearCart = async (id) => {
     }
 }
 
-export { getNewCart, getAllCarts, addProducts, getProducts, getCart, deleteCart, deleteProduct, clearCart }
+export { getNewCart, getAllCarts, addProducts, getProducts, getCart, deleteCart, deleteProduct, clearCart, getCartByUserID }

@@ -1,4 +1,4 @@
-import { getNewCart, getAllCarts, addProducts, getProducts, getCart, deleteCart, deleteProduct, clearCart } from '../services/cartServices.js'
+import { getNewCart, getAllCarts, addProducts, getProducts, getCart, deleteCart, deleteProduct, clearCart, getCartByUserID } from '../services/cartServices.js'
 import { errorLog } from '../utils/logger.js';
 
 const getNewCartController = async (req, res) => {
@@ -55,6 +55,21 @@ const getCartController = async (req, res) => {
     }
 }
 
+const getCartByUserIDController = async (req, res) => {
+    let { id } = req.params;
+    try {
+        let query = await getCartByUserID(id)
+        if (query.status === 200) {
+            res.status(query.status).json(query.response)
+        } else {
+            //TO MANAGE ERRORS LATER
+            res.status(query.status).json(query.response)
+        }
+    } catch (error) {
+        errorLog(error)
+    }
+}
+
 const deleteCartController = async (req, res) => {
     let { id } = req.params;
     try {
@@ -85,4 +100,4 @@ const clearCartController = async (req, res) => {
     }
 }
 
-export { getNewCartController, getAllCartsController, addProductsController, getProductsController, getCartController, deleteCartController, deleteProductCartController, clearCartController }
+export { getNewCartController, getAllCartsController, addProductsController, getProductsController, getCartController, deleteCartController, deleteProductCartController, clearCartController, getCartByUserIDController }
