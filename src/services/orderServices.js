@@ -1,7 +1,6 @@
 import Order from "../models/order.js";
 import orderDTO from "../daos/dtos/dtoOrders.js";
 import orderManager from "../daos/daoOrders.js";
-import { user } from "../services/sessionsServices.js";
 import { sendSMS, sendWpp } from "../utils/twilio.js";
 import { mailPurchaseToAdmin, mailPurchaseToUser } from "../utils/nodemailer.js";
 import config from "../config/globalConfig.js";
@@ -10,7 +9,7 @@ import cartManager from "../daos/daoCarts.js";
 import userManager from "../daos/daoUsers.js";
 import { getProducts, clearCart } from "./cartServices.js";
 
-const getNewOrder = async (id) => {
+const getNewOrder = async (id, {user}) => {
     try {
         let cart = await cartManager.getById(id);
         let products = await getProducts(id);
@@ -26,7 +25,7 @@ const getNewOrder = async (id) => {
         let savedOrder = await orderManager.save(order);
         let sentOrder = await sendOrder(order)
         let clearedCart = await clearCart(id);
-        return { response: "Order created!", status: 201 };
+        return { response: savedOrder, status: 201 };
     } catch (error) {
         errorLog(error);
         return { response: "Couldn't create order", status: 500 };
@@ -51,6 +50,16 @@ const getOrder = async (id) => {
     } catch (error) {
         errorLog(error);
         return { response: "Couldn't fetch order", status: 500 };
+    }
+}
+
+const getOrdersByUser = async (id) => {
+    try {
+        let orders = await orderManager.getByParameter({ buyerID: id });
+        return { response: orders, status: 200 };
+    } catch (error) {
+        errorLog(error);
+        return { response: "Couldn't fetch orders", status: 500 };
     }
 }
 
@@ -100,4 +109,4 @@ const sendOrder = async (order) => {
     }
 }
 
-export { getNewOrder, getAllOrders, getOrder, updateOrder, deleteOrder }
+export { getNewOrder, getAllOrders, getOrder, updateOrder, deleteOrder, getOrdersByUser }

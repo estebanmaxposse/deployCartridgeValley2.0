@@ -56,18 +56,21 @@ class ContainerMongoDB {
     async getByParameter(parameter) {
         try {
             const content = await this.content.find(parameter);
+            if (Array.isArray(content) && content.length === 0) {
+                return false
+            }
             return content
         } catch (error) {
             errorLog(error, `Couldn't find objects with parameter: ${parameter}!`)
         }
     }
 
-    async getByUsername(username) {
+    async getUserByEmail(email) {
         let foundUser;
         try {
-            foundUser = await this.content.findOne({ 'username': username });
+            foundUser = await this.content.findOne({ 'email': email });
         } catch (error) {
-            errorLog(error, `Couldn't find ${username} object! ${error}`)
+            errorLog(error, `Couldn't find ${email} object! ${error}`)
         }
         if (!foundUser) {
             errorLog("User not found")
@@ -77,7 +80,7 @@ class ContainerMongoDB {
 
     async updateItem(item) {
         try {
-            const updateItem = await this.content.updateOne({ '_id': item.id }, item)
+            const updateItem = await this.content.updateOne({ '_id': item._id || item.id }, item)
             return updateItem
         } catch (error) {
             errorLog(error, `Error updating ${item}`)

@@ -1,16 +1,14 @@
 import { Schema } from "mongoose";
 
 const authorSchema = new Schema({
-    name: { type: String },
-    surname: { type: String },
-    age: { type: Number },
-    nick: { type: String },
+    name: { type: String, required: true },
     avatar: { type: String },
-    id: { type: String }
 })
 
 const messageSchema = new Schema({
     author: authorSchema,
+    senderID: { type: String, required: true },
+    admin: { type: Boolean },
     text: { type: String },
     date: { type: String }
 });

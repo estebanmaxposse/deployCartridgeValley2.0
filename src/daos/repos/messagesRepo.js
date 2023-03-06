@@ -13,6 +13,7 @@ class messagesRepo {
     }
 
     async saveMessage(rawMessage) {
+        console.log(rawMessage);
         const message = new messageDTO(rawMessage)
         await this.dao.save(message);
     }

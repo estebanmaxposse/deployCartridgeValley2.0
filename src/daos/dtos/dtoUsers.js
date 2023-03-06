@@ -9,6 +9,7 @@ class userDTO {
         this.admin = user.admin
         this.age = user.age
         this.avatar = user.avatar
+        this.password = user.password
     }
 }
 

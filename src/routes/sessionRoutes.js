@@ -1,24 +1,14 @@
 import { Router } from "express";
-const router = Router();
-import passport from '../config/passportStrats.js'
-import { getSessionController, getUserController, loginUserController, authLoginController, loginFailedController, signUpUserController, authSignUpController, signUpFailedController, logoutController } from '../controllers/sessionController.js'
+const entryRoutes = Router();
+const sessionRouter = Router();
+import { getUserController, loginUserController, signUpUserController, updateUserController } from '../controllers/sessionController.js'
 
-router.get('/session', getSessionController)
+entryRoutes.post('/login', loginUserController)
 
-router.get('/user', getUserController)
+entryRoutes.post('/signUp', signUpUserController)
 
-router.get('/login', loginUserController)
+sessionRouter.get('/user', getUserController)
 
-router.post('/login', passport.authenticate('login', {failureRedirect: '/api/auth/loginFailed'}), authLoginController)
+sessionRouter.put('/update', updateUserController)
 
-router.get('/loginFailed', loginFailedController)
-
-router.get('/signUp', signUpUserController)
-
-router.post('/signUp', passport.authenticate('signUp', {failureRedirect: '/api/auth/signUpFailed'}), authSignUpController)
-
-router.get('/signUpFailed', signUpFailedController)
-
-router.get('/logout', logoutController)
-
-export default router;
+export { entryRoutes, sessionRouter };

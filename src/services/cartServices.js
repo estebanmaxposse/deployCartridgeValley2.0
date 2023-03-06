@@ -1,12 +1,11 @@
 import Cart from '../models/cart.js'
 import cartManager from '../daos/daoCarts.js';
 import productManager from '../daos/daoProducts.js';
-import { user } from "../services/sessionsServices.js";
 import { errorLog } from '../utils/logger.js';
 import cartDTO from '../daos/dtos/dtoCarts.js';
 import { productCounter, totalCounter } from '../utils/productCounter.js';
 
-const getNewCart = async () => {
+const getNewCart = async ({user}) => {
     let newCart = new Cart()
     newCart.buyerID = user._id
     newCart.buyerEmail = user.email
@@ -14,7 +13,7 @@ const getNewCart = async () => {
     let cart = new cartDTO(newCart)
     try {
         let savedCart = await cartManager.save(cart)
-        return { response: 'Cart created!', status: 201 }
+        return { response: savedCart, status: 201 }
     } catch (error) {
         errorLog(error);
         return { response: "Couldn't create cart", status: 500 }
@@ -103,6 +102,21 @@ const getCart = async (id) => {
     }
 }
 
+const getCartByUserID = async (userID) => {
+    try {
+        let rawCart = await cartManager.getByParameter({buyerID: userID})
+        if (!rawCart) {
+            return { response: "Couldn't find cart!", status: 404 }
+        } else {
+            let cart = new cartDTO(rawCart[0])
+            return { response: cart, status: 200 }
+        }
+    } catch (error) {
+        errorLog(error)
+        return { response: "Error fetching cart!", status: 500 }
+    }
+}
+
 const deleteCart = async (id) => {
     try {
         await cartManager.deleteById(id)
@@ -118,8 +132,11 @@ const deleteProduct = async (id, id_prod) => {
         let cart = await cartManager.getById(id);
         let newProducts = cart.products.filter((product) => (product._id).toString() !== id_prod);
         cart.products = newProducts;
+        let totalAmounts = totalCounter(cart.products)
+        cart.cartTotalProducts = totalAmounts.totalCount
+        cart.cartTotalPrice = totalAmounts.totalPrice
         let updatedCart = await cartManager.updateItem(cart);
-        return { response: 'Cart updated!', status: 201 }
+        return { response: `Removed product with ID: ${id_prod} from cart ${id}`, status: 201 }
     } catch (error) {
         errorLog(error)
         return { response: "Couldn't update cart", status: 500 }
@@ -130,6 +147,8 @@ const clearCart = async (id) => {
     try {
         let cart = await cartManager.getById(id);
         cart.products = [];
+        cart.cartTotalProducts = 0;
+        cart.totalPrice = 0
         let updatedCart = await cartManager.updateItem(cart);
         return { response: 'Cart updated!', status: 201 }
     } catch (error) {
@@ -138,4 +157,4 @@ const clearCart = async (id) => {
     }
 }
 
-export { getNewCart, getAllCarts, addProducts, getProducts, getCart, deleteCart, deleteProduct, clearCart }
+export { getNewCart, getAllCarts, addProducts, getProducts, getCart, deleteCart, deleteProduct, clearCart, getCartByUserID }

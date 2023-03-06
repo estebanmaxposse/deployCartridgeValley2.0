@@ -1,6 +1,6 @@
 import { Router } from "express";
 const router = Router();
-import { getNewCartController, getAllCartsController, addProductsController, getProductsController, getCartController, deleteCartController, deleteProductCartController, clearCartController } from '../controllers/cartController.js'
+import { getNewCartController, getAllCartsController, addProductsController, getProductsController, getCartController, deleteCartController, deleteProductCartController, clearCartController, getCartByUserIDController } from '../controllers/cartController.js'
 
 router.post("/", getNewCartController);
 
@@ -11,6 +11,8 @@ router.post("/:id/products", addProductsController);
 router.get("/:id/products", getProductsController);
 
 router.get("/:id", getCartController)
+
+router.get("/user/:id", getCartByUserIDController)
 
 router.delete("/:id", deleteCartController)
 

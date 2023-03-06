@@ -1,24 +1,23 @@
-import productsRepo from '../daos/repos/productsRepo.js';
 import messagesRepo from '../daos/repos/messagesRepo.js';
-import { log } from './logger.js';
 
-const productsRepository = new productsRepo()
 const messagesRepository = new messagesRepo()
 
 const socketConfig = async (io, socket) => {
-    socket.emit('products', await productsRepository.getAll());
-    socket.emit('messages', await messagesRepository.getMessages())
 
-    socket.on('new-product', async data => {
-        await productsRepository.postProduct(data)
-        io.sockets.emit('products', await productsRepository.getAll());
-    });
+    // socket.emit('messages', () => {
+    //     console.log(messagesRepository.getMessages())
+    //     return messagesRepository.getMessages()
+    // })
 
     socket.on('new-message', async data => {
-        data.date = new Date().toLocaleString();
-        log(data);
+        console.log('SOCKET DATA' , data)
+        data.date = new Date().toLocaleString()
         await messagesRepository.saveMessage(data)
-        io.sockets.emit('messages', await messagesRepository.getMessages());
+        io.sockets.emit('messages', await messagesRepository.getMessages())
+    })
+
+    socket.on('disconnect', () => {
+        console.log('Client disconnected');
     })
 }
 

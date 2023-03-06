@@ -3,23 +3,9 @@ const logOut = () => {
     window.location.href = '/api/auth/logout'
 }
 
-let user
+// let token = localStorage.getItem('token')
+let sender = jwt_decode(user)
 
-fetch(`/api/auth/user`)
-    .then(res => {
-        if (res.status !== 200) {
-            document.getElementById('login-button').innerHTML = `
-                <a class="nav-link btn btn-success" href="/pages/login.html">Login</a>
-            `
-            throw "User not found";
-        }
-        return res.json();
-    })
-    .catch((error) => {
-        console.log(error);
-        window.location.href = '/pages/login.html'
-    })
-//Messages & Chat
 const server = io()
 
 const renderMessages = (data) => {
@@ -41,9 +27,17 @@ const renderMessages = (data) => {
 let text = document.getElementById('message-text');
 
 const addMessage = (e) => {
+    console.log('addMessage');
     const message = {
+        author: {
+            name: sender.user.username,
+            email: sender.user.email,
+            avatar: sender.user.avatar
+        },
+        senderID: sender.user._id,
         text: text.value,
     };
+    console.log(message);
     server.emit('new-message', message);
     text.value = ''
     text.focus()
@@ -52,5 +46,6 @@ const addMessage = (e) => {
 }
 
 server.on('messages', data => {
+    console.log('messages', data);
     renderMessages(data);
 });
