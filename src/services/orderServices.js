@@ -25,7 +25,7 @@ const getNewOrder = async (id, {user}) => {
         let savedOrder = await orderManager.save(order);
         let sentOrder = await sendOrder(order)
         let clearedCart = await clearCart(id);
-        return { response: "Order created!", status: 201 };
+        return { response: savedOrder, status: 201 };
     } catch (error) {
         errorLog(error);
         return { response: "Couldn't create order", status: 500 };
@@ -50,6 +50,17 @@ const getOrder = async (id) => {
     } catch (error) {
         errorLog(error);
         return { response: "Couldn't fetch order", status: 500 };
+    }
+}
+
+const getOrdersByUser = async (id) => {
+    try {
+        let orders = await orderManager.getByParameter({ buyerID: id });
+        console.log(orders);
+        return { response: orders, status: 200 };
+    } catch (error) {
+        errorLog(error);
+        return { response: "Couldn't fetch orders", status: 500 };
     }
 }
 
@@ -99,4 +110,4 @@ const sendOrder = async (order) => {
     }
 }
 
-export { getNewOrder, getAllOrders, getOrder, updateOrder, deleteOrder }
+export { getNewOrder, getAllOrders, getOrder, updateOrder, deleteOrder, getOrdersByUser }

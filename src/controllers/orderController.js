@@ -1,4 +1,4 @@
-import { getNewOrder, getAllOrders, getOrder, updateOrder, deleteOrder } from '../services/orderServices.js';
+import { getNewOrder, getAllOrders, getOrder, updateOrder, deleteOrder, getOrdersByUser } from '../services/orderServices.js';
 import { errorLog } from '../utils/logger.js';
 
 const getNewOrderController = async (req, res) => {
@@ -29,6 +29,16 @@ const getOrderController = async (req, res) => {
     }
 }
 
+const getOrdersByUserController = async (req, res) => {
+    let { id } = req.params;
+    try {
+        const query = await getOrdersByUser(id)
+        res.status(query.status).json(query.response)
+    } catch (error) {
+        errorLog(error)
+    }
+}
+
 const updateOrderController = async (req, res) => {
     let { id } = req.params;
     try {
@@ -49,4 +59,4 @@ const deleteOrderController = async (req, res) => {
     }
 }
 
-export { getNewOrderController, getAllOrdersController, getOrderController, updateOrderController, deleteOrderController }
+export { getNewOrderController, getAllOrdersController, getOrderController, updateOrderController, deleteOrderController, getOrdersByUserController }
