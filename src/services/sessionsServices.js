@@ -43,7 +43,6 @@ const getUser = async (id) => {
 
 const loginUser = async (userCredentials) => {
     try {
-        console.log(config.SESSION_TIME)
         const { email, password } = userCredentials
         const userExists = await userManager.getUserByEmail(email)
         if (userExists) {

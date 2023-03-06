@@ -12,6 +12,8 @@ export default {
     NODE_ENV: process.env.NODE_ENV || 'development',
     HOST: process.env.HOST || '127.0.0.1',
     PORT: process.env.PORT || '8080',
+    BACKEND_URL: process.env.BACKEND_URL || 'http://localhost:8080',
+    FRONTEND_URL: process.env.FRONTEND_URL || 'http://localhost:3000',
     DATABASE: process.env.DATABASE || 'mongo',
     SESSION_KEY: process.env.SESSION_KEY || 'secret',
     SESSION_TIME: process.env.SESSION_TIME || '10m',

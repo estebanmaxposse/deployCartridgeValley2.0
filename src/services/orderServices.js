@@ -56,7 +56,6 @@ const getOrder = async (id) => {
 const getOrdersByUser = async (id) => {
     try {
         let orders = await orderManager.getByParameter({ buyerID: id });
-        console.log(orders);
         return { response: orders, status: 200 };
     } catch (error) {
         errorLog(error);

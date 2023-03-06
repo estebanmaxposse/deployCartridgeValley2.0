@@ -2,7 +2,6 @@ import { errorLog } from "../utils/logger.js";
 import { getUser, loginUser, signUpUser, updateUser } from "../services/sessionsServices.js";
 
 const getUserController = async (req, res) => {
-    console.log('Get user controller ', req.user);
     // const {id} = req.user
     let query = await getUser(req.user.user._id)
     if (query.status === 200) {
@@ -32,7 +31,6 @@ const signUpUserController = async (req, res) => {
 
 const updateUserController = async (req, res) => {
     try {
-        console.log('UPDATE: ', req.body);
         let user = await updateUser(req.body)
         res.status(user.status).json(user.response)
     } catch (error) {

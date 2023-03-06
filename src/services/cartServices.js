@@ -6,7 +6,6 @@ import cartDTO from '../daos/dtos/dtoCarts.js';
 import { productCounter, totalCounter } from '../utils/productCounter.js';
 
 const getNewCart = async ({user}) => {
-    console.log(user);
     let newCart = new Cart()
     newCart.buyerID = user._id
     newCart.buyerEmail = user.email
@@ -33,7 +32,6 @@ const getAllCarts = async () => {
 }
 
 const addProducts = async (id, products) => {
-    console.log(products);
     try {
         let cart = await cartManager.getById(id);
         let body = products;
@@ -107,12 +105,10 @@ const getCart = async (id) => {
 const getCartByUserID = async (userID) => {
     try {
         let rawCart = await cartManager.getByParameter({buyerID: userID})
-        console.log(rawCart);
         if (!rawCart) {
             return { response: "Couldn't find cart!", status: 404 }
         } else {
             let cart = new cartDTO(rawCart[0])
-            console.log(cart);
             return { response: cart, status: 200 }
         }
     } catch (error) {
@@ -139,7 +135,6 @@ const deleteProduct = async (id, id_prod) => {
         let totalAmounts = totalCounter(cart.products)
         cart.cartTotalProducts = totalAmounts.totalCount
         cart.cartTotalPrice = totalAmounts.totalPrice
-        console.log(cart);
         let updatedCart = await cartManager.updateItem(cart);
         return { response: `Removed product with ID: ${id_prod} from cart ${id}`, status: 201 }
     } catch (error) {

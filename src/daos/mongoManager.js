@@ -80,9 +80,7 @@ class ContainerMongoDB {
 
     async updateItem(item) {
         try {
-            console.log(item._id);
             const updateItem = await this.content.updateOne({ '_id': item._id || item.id }, item)
-            console.log('UPDATE ITEM: ', updateItem);
             return updateItem
         } catch (error) {
             errorLog(error, `Error updating ${item}`)

@@ -46,5 +46,6 @@ const addMessage = (e) => {
 }
 
 server.on('messages', data => {
+    console.log('messages', data);
     renderMessages(data);
 });
