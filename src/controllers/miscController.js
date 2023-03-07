@@ -1,4 +1,5 @@
 import { getInfo } from '../services/miscServices.js';
+import globalConfig from '../config/globalConfig.js';
 
 const getInfoController = async (req, res) => {
     try {
@@ -14,7 +15,7 @@ const notFound404 = async (req, res, next) => {
         error: {
           'message':'Invalid Request',
           'statusCode':404,
-          'stack':'http://localhost:8080/'
+          'stack': globalConfig.BACKEND_URL
         },
          message: 'Page not found!'
       });
