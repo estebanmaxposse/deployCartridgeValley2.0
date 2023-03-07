@@ -31,11 +31,11 @@ const addMessage = (e) => {
     const message = {
         author: {
             name: sender.user.username,
-            email: sender.user.email,
             avatar: sender.user.avatar
         },
         senderID: sender.user._id,
         text: text.value,
+        senderEmail: sender.user.email,
     };
     console.log(message);
     server.emit('new-message', message);

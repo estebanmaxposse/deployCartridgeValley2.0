@@ -1,5 +1,6 @@
 class messageDTO {
     constructor(messageData) {
+        this.senderEmail = messageData.senderEmail
         this.senderID = messageData.senderID
         this.name = messageData.author.name,
         this.avatar = messageData.author.avatar

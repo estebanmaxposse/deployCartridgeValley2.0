@@ -13,17 +13,24 @@ const transporter = createTransport({
     }
 });
 
-const mailOptions = {
-    from: 'Node Server API PUG',
+const mailAdminOptions = {
+    from: 'Cartridge Valley Server',
     to: config.RECIEVE_MAIL,
     subject: '',
     html: ''
 };
 
-const mailUser = async (user) => {
+const mailUserOptions = {
+    from: 'Cartridge Valley Server',
+    to: '',
+    subject: '',
+    html: ''
+}
+
+const mailAdmin = async (user) => {
     try {
-        mailOptions.subject = 'New user registered!'
-        mailOptions.html= `
+        mailAdminOptions.subject = 'New user registered!'
+        mailAdminOptions.html= `
             <h1>New User Registered!</h1>
             <br/>
             <img
@@ -38,7 +45,7 @@ const mailUser = async (user) => {
             <p id="profile-phone-number">Phone number: ${user.phoneNumber}</p>
             <p id="profile-age">Age: ${user.age}</p>
             `
-        const info = await transporter.sendMail(mailOptions)
+        const info = await transporter.sendMail(mailAdminOptions)
     } catch (error) {
         errorLog(error);
     }
@@ -47,35 +54,37 @@ const mailUser = async (user) => {
 const mailPurchaseToAdmin = async (user, order) => {
     console.log(order);
     try {
-        mailOptions.subject = `New purchase from ${user.fullName} with email ${user.email}`
-        mailOptions.html= `
+        mailAdminOptions.subject = `New purchase from ${user.fullName} with email ${user.email}`
+        mailAdminOptions.html= `
             <h1>Objects purchased: </h1>
             <br/>
             <ul>
             ${order.products.map(product => `
                 <li>
-                   <p>Title: ${product.title}</p>
-                   <p>Price: ${product.price}</p>
+                   <p>Title: ${product.product.title}</p>
+                   <p>Price: ${product.product.price}</p>
                 </li>
             `)}
             </ul>
             `
-        const info = await transporter.sendMail(mailOptions)
+        const info = await transporter.sendMail(mailAdminOptions)
     } catch (error) {
         errorLog(error);
     }
 };
 
 const mailPurchaseToUser = async (order) => {
+    console.log(order);
     try {
-        mailOptions.subject = `Purchase completed! Your order is being processed.`
-        mailOptions.html= `
+        mailUserOptions.to = order.buyerEmail
+        mailUserOptions.subject = `Purchase completed! Your order is being processed.`
+        mailUserOptions.html= `
             <h1>Objects purchased: </h1>
             <ul>
             ${order.products.map(product => `
                 <li>
-                   <p>Title: ${product.title}</p>
-                   <p>Price: ${product.price}</p>
+                   <p>Title: ${product.product.title}</p>
+                   <p>Price: ${product.product.price}</p>
                 </li>
             `)}
             </ul>
@@ -86,10 +95,10 @@ const mailPurchaseToUser = async (order) => {
             <h2>Total Price: </h2>
             <p>${order.orderTotalPrice}</p>
             `
-        const info = await transporter.sendMail(mailOptions)
+        const info = await transporter.sendMail(mailUserOptions)
     } catch (error) {
         errorLog(error);
     }
 }
 
-export {mailUser, mailPurchaseToAdmin, mailPurchaseToUser}
+export {mailAdmin, mailPurchaseToAdmin, mailPurchaseToUser}

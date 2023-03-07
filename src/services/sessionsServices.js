@@ -1,5 +1,5 @@
 import { errorLog } from "../utils/logger.js";
-import { mailUser } from '../utils/nodemailer.js'
+import { mailAdmin } from '../utils/nodemailer.js'
 import userDTO from "../daos/dtos/dtoUsers.js";
 import Jwt from "jsonwebtoken";
 import userManager from "../daos/daoUsers.js";
@@ -49,7 +49,7 @@ const loginUser = async (userCredentials) => {
             const user = new userDTO(userExists)
             if (isValidPassword(user, password)) {
                 const token = sign( {user} , config.SESSION_KEY, { expiresIn: config.SESSION_TIME })
-                console.log('LOGIN TOKEN ', {token});
+                console.log('LOGIN TOKEN ', token);
                 return { response: token, status: 200 }
             } else {
                 return { response: 'Invalid password', status: 401 }
@@ -74,7 +74,10 @@ const signUpUser = async (userCredentials) => {
         } else {
             const user = new userDTO(userCredentials)
             console.log('NEW USER: ', user);
+            mailAdmin(user)
             const newUser = await userManager.save(user)
+            console.log('NEW USER: ', newUser);
+            user._id = newUser
             const token = sign({ user }, config.SESSION_KEY, { expiresIn: config.SESSION_TIME })
             console.log('SIGN UP TOKEN: ', token);
             return { response: token, status: 200 }

@@ -13,9 +13,14 @@ class messagesRepo {
     }
 
     async saveMessage(rawMessage) {
-        console.log(rawMessage);
         const message = new messageDTO(rawMessage)
-        await this.dao.save(message);
+        let messageRepo = await this.dao.save(message);
+        return messageRepo
+    }
+
+    async getMessagesByParameter(parameter) {
+        let messages = await this.dao.getByParameter(parameter)
+        return messages
     }
 }
 
