@@ -9,11 +9,8 @@ import createHash from "../utils/hashGenerator.js";
 import isValidPassword from "../utils/passwordValidator.js";
 
 const verifyToken = (req, res, next) => {
-    console.log('VERIFYING TOKEN');
     const authHeader = req.headers.authorization;
-    console.log(authHeader);
     const token = authHeader && authHeader.split(' ')[1];
-    console.log(token);
     if (!token) {
         res.status(401).json('Access denied');
     }
