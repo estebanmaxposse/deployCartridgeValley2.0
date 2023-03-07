@@ -21,7 +21,7 @@ const verifyToken = (req, res, next) => {
     } catch (error) {
         errorLog(error)
         req.user = null
-        res.status(401).json('Access denied');
+        res.status(401);
     }
 };
 
