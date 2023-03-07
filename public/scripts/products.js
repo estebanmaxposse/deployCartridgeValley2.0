@@ -1,4 +1,5 @@
 const renderProducts = () => {
+    console.log(localStorage.getItem('token'));
     fetch('/api/products', {
         method: 'GET',
         headers: { authorization: 'Bearer ' + localStorage.getItem('token') }

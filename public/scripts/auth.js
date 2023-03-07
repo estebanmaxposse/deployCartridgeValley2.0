@@ -1,30 +1,53 @@
+// const login = async () => {
+//     console.log('LOGIN');
+//     const email = document.getElementById('user-email').value;
+//     const password = document.getElementById('user-password').value;
+//     return await fetch('/api/auth/login', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify({ email: email, password: password })
+//     })
+//         .then(async response => {
+//             console.log('RESPONSE', response);
+//             let data = await response.json();
+//             console.log(data);
+//             return data
+//         })
+//         .then(data => {
+//             console.log('HERE');
+//             console.log(data);
+//             localStorage.setItem('token', data);
+//             window.location.href = '/';
+//         })
+//         .catch(error => {
+//             console.error(error);
+//         })
+// };
+
 const login = async () => {
-    console.log('LOGIN');
     const email = document.getElementById('user-email').value;
     const password = document.getElementById('user-password').value;
-    await fetch('/api/auth/login', {
+    return await fetch('/api/auth/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({ email: email, password: password })
     })
-        .then(async response => {
-            console.log('RESPONSE');
-            let data = await response.json();
-            console.log(data);
+        .then(response => {
+            console.log('RESPONSE', response);
+            let data = response.json();
             return data
         })
-        .then(data => {
-            console.log('HERE');
-            console.log(data);
-            localStorage.setItem('token', data);
-            window.location.href = '/';
+        .then(token => {
+            localStorage.setItem('token', token);
+            return token
         })
-        // .catch(error => {
-        //     console.log('SOMETHING WENT TERRIBLY WRONG');
-        //     console.error(error);
-        // });
+        .catch(error => {
+            console.error(error);
+        });
 };
 
 const signUp = () => {

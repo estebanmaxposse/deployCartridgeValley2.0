@@ -4,6 +4,9 @@ import globalConfig from '../config/globalConfig.js';
 const getInfoController = async (req, res) => {
     try {
         let info = await getInfo()
+        const {globalConfig}  = info
+        info = {...globalConfig}
+        console.log(info);
         res.render('info.pug', { info })
     } catch (error) {
         throw new Error(error);
