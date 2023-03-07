@@ -14,7 +14,6 @@ import orderRouter from '../routes/orderRoutes.js';
 import { miscRouter, errorRouter, docsRouter } from '../routes/miscRoutes.js'
 import chatRouter from '../routes/chatRoutes.js'
 import messagesRepo from '../daos/repos/messagesRepo.js';
-
 import cookieParser from 'cookie-parser';
 import compression from 'compression'
 import { routeLog, invalidRouteLog, log } from '../utils/logger.js';
@@ -49,6 +48,7 @@ app.use(staticFiles(join(__dirname, '../../public')));
 app.use(cookieParser());
 
 //Routes
+app.get('/favicon.ico', (req, res) => res.status(204));
 app.use('/api/auth', compression(), routeLog, entryRoutes)
 app.use(docsRouter)
 app.use(compression(), routeLog, miscRouter)

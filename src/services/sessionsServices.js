@@ -21,7 +21,7 @@ const verifyToken = (req, res, next) => {
     } catch (error) {
         errorLog(error)
         req.user = null
-        res.status(401).json('Access denied');
+        res.status(401);
     }
 };
 
@@ -47,7 +47,6 @@ const loginUser = async (userCredentials) => {
             const user = new userDTO(userExists)
             if (isValidPassword(user, password)) {
                 const token = sign( {user} , config.SESSION_KEY, { expiresIn: config.SESSION_TIME })
-                log('LOGIN TOKEN FOR TESTING ', token);
                 return { response: token, status: 200 }
             } else {
                 return { response: 'Invalid password', status: 401 }
