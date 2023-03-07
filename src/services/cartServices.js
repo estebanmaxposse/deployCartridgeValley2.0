@@ -148,7 +148,7 @@ const clearCart = async (id) => {
         let cart = await cartManager.getById(id);
         cart.products = [];
         cart.cartTotalProducts = 0;
-        cart.totalPrice = 0
+        cart.cartTotalPrice = 0
         let updatedCart = await cartManager.updateItem(cart);
         return { response: 'Cart updated!', status: 201 }
     } catch (error) {

@@ -1,5 +1,5 @@
-import { errorLog } from "../utils/logger.js";
-import { mailUser } from '../utils/nodemailer.js'
+import { errorLog, log } from "../utils/logger.js";
+import { mailAdmin } from '../utils/nodemailer.js'
 import userDTO from "../daos/dtos/dtoUsers.js";
 import Jwt from "jsonwebtoken";
 import userManager from "../daos/daoUsers.js";
@@ -26,10 +26,8 @@ const verifyToken = (req, res, next) => {
 };
 
 const getUser = async (id) => {
-    console.log('GET USER ID: ', id);
     try {
         let userDB = await userManager.getById(id)
-        console.log('GET USER: ', userDB);
         if (userDB) {
             const user = new userDTO(userDB)
             return { response: user, status: 200 }
@@ -49,7 +47,7 @@ const loginUser = async (userCredentials) => {
             const user = new userDTO(userExists)
             if (isValidPassword(user, password)) {
                 const token = sign( {user} , config.SESSION_KEY, { expiresIn: config.SESSION_TIME })
-                console.log('LOGIN TOKEN ', {token});
+                log('LOGIN TOKEN FOR TESTING ', token);
                 return { response: token, status: 200 }
             } else {
                 return { response: 'Invalid password', status: 401 }
@@ -67,16 +65,16 @@ const signUpUser = async (userCredentials) => {
     try {
         const { email, password } = userCredentials
         userCredentials.password = createHash(password)
-        // const userExists = await userManager.getUserByEmail(email)
-        const userExists = null
+        const userExists = await userManager.getUserByEmail(email)
         if (userExists) {
             return { response: 'User already exists', status: 409 }
         } else {
             const user = new userDTO(userCredentials)
-            console.log('NEW USER: ', user);
+            mailAdmin(user)
             const newUser = await userManager.save(user)
+            user._id = newUser
             const token = sign({ user }, config.SESSION_KEY, { expiresIn: config.SESSION_TIME })
-            console.log('SIGN UP TOKEN: ', token);
+            log('SIGNUP TOKEN FOR TESTING ', token);
             return { response: token, status: 200 }
         }
     } catch (error) {
@@ -87,7 +85,6 @@ const signUpUser = async (userCredentials) => {
 
 const updateUser = async (userCredentials) => {
     try {
-        console.log('UPDATE USER: ', userCredentials.user);
         const updateUser = await userManager.updateItem(userCredentials.user)
         return { response: updateUser, status: 200 }
     } catch (error) {

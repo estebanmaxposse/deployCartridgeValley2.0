@@ -1,9 +1,7 @@
 import Order from "../models/order.js";
 import orderDTO from "../daos/dtos/dtoOrders.js";
 import orderManager from "../daos/daoOrders.js";
-import { sendSMS, sendWpp } from "../utils/twilio.js";
 import { mailPurchaseToAdmin, mailPurchaseToUser } from "../utils/nodemailer.js";
-import config from "../config/globalConfig.js";
 import { errorLog } from "../utils/logger.js";
 import cartManager from "../daos/daoCarts.js";
 import userManager from "../daos/daoUsers.js";
@@ -89,17 +87,6 @@ const deleteOrder = async (id) => {
 const sendOrder = async (order) => {
     try {
         let buyer = await userManager.getById(order.buyerID);
-        sendWpp(
-            config.TEST_PHONE,
-            `New purchase from ${buyer.fullName}
-            with email ${buyer.email}.
-            Products purchased:
-            ${order.products.map(product => product.product.title).join(', ')}
-            `
-        );
-        sendSMS(
-            buyer.phoneNumber, `Purchase completed! Your order #${order.orderNumber} is being processed.`
-        )
         mailPurchaseToAdmin(buyer, order)
         mailPurchaseToUser(order)
         return { response: "Order sent!", status: 201 }
