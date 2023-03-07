@@ -1,4 +1,5 @@
 import messagesRepo from '../daos/repos/messagesRepo.js';
+import { log } from './logger.js';
 
 const messagesRepository = new messagesRepo()
 
@@ -11,7 +12,7 @@ const socketConfig = async (io, socket) => {
     })
 
     socket.on('disconnect', () => {
-        console.log('Client disconnected');
+        log('Client disconnected');
     })
 }
 

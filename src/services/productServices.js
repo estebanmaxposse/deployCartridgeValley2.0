@@ -1,10 +1,8 @@
 import productValidation from "../utils/validator.js";
 import Product from "../models/product.js";
-import mockProducts from "../utils/mockProducts.js";
 import { errorLog } from "../utils/logger.js";
 import productsRepo from "../daos/repos/productsRepo.js";
 
-const generateProducts = new mockProducts()
 const productsRepository = new productsRepo()
 
 const admin = true;
@@ -24,11 +22,6 @@ const getProducts = async () => {
         errorLog(error)
         return { response: error, status: 500 }
     };
-}
-
-const getRandomProducts = async () => {
-    const RandomProducts = generateProducts.populate();
-    return RandomProducts
 }
 
 const getProduct = async (id) => {
@@ -114,4 +107,4 @@ const deleteProduct = async (id) => {
     };
 }
 
-export { getProducts, getRandomProducts, getProduct, getProductsByCategory, postProduct, updateProduct, deleteProduct }
+export { getProducts , getProduct, getProductsByCategory, postProduct, updateProduct, deleteProduct }

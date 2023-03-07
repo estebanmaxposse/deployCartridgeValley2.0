@@ -1,6 +1,5 @@
 import config from '../config/globalConfig.js'
 import daoCartsMongo from './mongo/daoCartsMongo.js';
-import daoCartsFile from './file/daoCartsFile.js';
 
 const selectedDB = config.DATABASE;
 let instance = null
@@ -27,9 +26,6 @@ class cartFactory {
         switch (selectedDB) {
             case 'mongo':
                 return new daoCartsMongo()
-                break;
-            case 'file':
-                return daoCartsFile()
                 break;
             default:
                 return new daoCartsMongo()

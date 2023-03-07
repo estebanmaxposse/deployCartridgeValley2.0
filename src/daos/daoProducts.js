@@ -1,6 +1,5 @@
 import config from '../config/globalConfig.js'
 import daoProductsMongo from './mongo/daoProductsMongo.js'
-import daoProductsFile from './file/daoProductsFile.js'
 
 let selectedDB = config.DATABASE;
 let instance = null
@@ -27,9 +26,6 @@ class productFactory {
         switch (selectedDB) {
             case 'mongo':
                 return new daoProductsMongo()
-                break;
-            case 'file':
-                return new daoProductsFile()
                 break;
             default:
                 return new daoProductsMongo()

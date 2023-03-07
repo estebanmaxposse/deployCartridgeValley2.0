@@ -52,7 +52,6 @@ const mailAdmin = async (user) => {
 };
 
 const mailPurchaseToAdmin = async (user, order) => {
-    console.log(order);
     try {
         mailAdminOptions.subject = `New purchase from ${user.fullName} with email ${user.email}`
         mailAdminOptions.html= `
@@ -74,7 +73,6 @@ const mailPurchaseToAdmin = async (user, order) => {
 };
 
 const mailPurchaseToUser = async (order) => {
-    console.log(order);
     try {
         mailUserOptions.to = order.buyerEmail
         mailUserOptions.subject = `Purchase completed! Your order is being processed.`
