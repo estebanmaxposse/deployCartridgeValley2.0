@@ -35,4 +35,4 @@ paths:
           description: Can't access this page
 
 components:
-  $ref: '../../schemas/newProduct.yaml'
+  $ref: '../../schemas/products/newProduct.yaml'
