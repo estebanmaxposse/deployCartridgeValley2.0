@@ -7,6 +7,8 @@ const checkUser = () => {
     if (!user) {
         window.location.href = '/pages/login.html'
         return
+    } else {
+        window.location.href = '/api/products'
     }
     const decodedToken = jwt_decode(user);
     if (decodedToken.exp < Date.now() / 1000) {

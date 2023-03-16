@@ -60,7 +60,7 @@
 
     <h1 class="text-center mb-2 mt-2">Log in!</h1>
     <div class="d-flex justify-content-center m-3">
-      <form onsubmit="login()">
+      <form onsubmit="login(); return false" id="login-form">
         <div class="mb-3">
           <label for="user-email" class="form-label">Email address</label>
           <input
