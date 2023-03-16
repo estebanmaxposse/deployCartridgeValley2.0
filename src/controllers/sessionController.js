@@ -2,7 +2,6 @@ import { errorLog } from "../utils/logger.js";
 import { getUser, loginUser, signUpUser, updateUser } from "../services/sessionsServices.js";
 
 const getUserController = async (req, res) => {
-    // const {id} = req.user
     let query = await getUser(req.user.user._id)
     if (query.status === 200) {
         res.status(query.status).json(query.response)

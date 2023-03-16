@@ -41,4 +41,4 @@ paths:
           description: Can't access this page
 
 components:
-  $ref: '../../schemas/updateProduct.yaml'
+  $ref: '../../schemas/products/updateProduct.yaml'

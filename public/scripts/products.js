@@ -1,8 +1,11 @@
-const renderProducts = () => {
-    console.log(localStorage.getItem('token'));
-    fetch('/api/products', {
+const renderProducts = async () => {
+    const token = localStorage.getItem('token')
+    await fetch('/api/products', {
         method: 'GET',
-        headers: { authorization: 'Bearer ' + localStorage.getItem('token') }
+        headers: {
+            'Content-Type': 'application/json',
+            'authorization': 'Bearer ' + token 
+        }
     })
         .then(res => res.json())
         .then(data => {
@@ -24,4 +27,13 @@ const renderProducts = () => {
         .catch(error => console.error(error))
 }
 
-renderProducts()
+let renderCondition = true
+
+const render = async () => {
+    if (renderCondition) {
+        await renderProducts()
+        renderCondition = false
+    }
+}
+
+render()

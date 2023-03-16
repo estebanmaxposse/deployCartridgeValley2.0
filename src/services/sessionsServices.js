@@ -10,7 +10,9 @@ import isValidPassword from "../utils/passwordValidator.js";
 
 const verifyToken = (req, res, next) => {
     const authHeader = req.headers.authorization;
+    console.log(req.headers);
     const token = authHeader && authHeader.split(' ')[1];
+    console.log(token);
     if (!token) {
         res.status(401).json('Access denied');
     }
@@ -55,6 +57,7 @@ const loginUser = async (userCredentials) => {
             return { response: 'User not found', status: 404 }
         }
     } catch (error) {
+        console.log(error);
         errorLog(error)
         return { response: "Couldn't log in!", status: 500 }
     }

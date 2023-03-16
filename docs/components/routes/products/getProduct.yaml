@@ -25,4 +25,4 @@ paths:
           description: Internal server error
 
 components:
-  $ref: '../../schemas/products.yaml'
+  $ref: '../../schemas/products/products.yaml'

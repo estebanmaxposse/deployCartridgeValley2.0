@@ -1,0 +1,18 @@
+# New user
+components:
+  requestBodies:
+    LoginUser:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          description: The user's email address.
+        password:
+          type: string
+          description: The encrypted user's password.
+      example:
+        email: johndoe98@gmail.com
+        password: $2b$10$

@@ -7,7 +7,7 @@ const checkUser = () => {
     if (!user) {
         window.location.href = '/pages/login.html'
         return
-    }
+    } 
     const decodedToken = jwt_decode(user);
     if (decodedToken.exp < Date.now() / 1000) {
         localStorage.removeItem('token');
