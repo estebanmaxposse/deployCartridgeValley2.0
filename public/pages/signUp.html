@@ -46,7 +46,7 @@
 
     <h1 class="text-center mb-2 mt-2">Sign Up!</h1>
     <div class="d-flex justify-content-center m-3">
-        <form onsubmit="signUp()">
+        <form onsubmit="signUp(); return false">
             <div class="mb-3">
                 <label for="user-email" class="form-label">Email address</label>
                 <input type="email" class="form-control" id="user-email" placeholder="name@example.com" name="email"
