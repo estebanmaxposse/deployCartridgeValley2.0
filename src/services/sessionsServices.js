@@ -10,9 +10,7 @@ import isValidPassword from "../utils/passwordValidator.js";
 
 const verifyToken = (req, res, next) => {
     const authHeader = req.headers.authorization;
-    console.log(req.headers);
     const token = authHeader && authHeader.split(' ')[1];
-    console.log(token);
     if (!token) {
         res.status(401).json('Access denied');
     }
