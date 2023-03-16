@@ -9,8 +9,8 @@ import createHash from "../utils/hashGenerator.js";
 import isValidPassword from "../utils/passwordValidator.js";
 
 const verifyToken = (req, res, next) => {
-    console.log('Verifying token');
     const authHeader = req.headers.authorization;
+    console.log(req.headers);
     const token = authHeader && authHeader.split(' ')[1];
     console.log(token);
     if (!token) {
@@ -42,7 +42,6 @@ const getUser = async (id) => {
 }
 
 const loginUser = async (userCredentials) => {
-    console.log('LOGIN USER');
     try {
         const { email, password } = userCredentials
         const userExists = await userManager.getUserByEmail(email)
@@ -50,7 +49,6 @@ const loginUser = async (userCredentials) => {
             const user = new userDTO(userExists)
             if (isValidPassword(user, password)) {
                 const token = sign( {user} , config.SESSION_KEY, { expiresIn: config.SESSION_TIME })
-                console.log('LOGIN TOKEN FOR TESTING ', token);
                 return { response: token, status: 200 }
             } else {
                 return { response: 'Invalid password', status: 401 }
