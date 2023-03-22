@@ -19,6 +19,12 @@ const verifyToken = (req, res, next) => {
         req.user = decoded;
         next();
     } catch (error) {
+        if (error.name === 'TokenExpiredError') {
+            res.status(401).json('Token expired, please log in again');
+        }
+        if (error.name === 'JsonWebTokenError') {
+            res.status(401).json('Invalid token, please log in again');
+        }
         errorLog(error)
         req.user = null
         res.status(401);
