@@ -1,12 +1,20 @@
 # Get specific product
 paths:
-  /api/products/{id}:
-    get: 
+  /api/products/product/{id}:
+    get:
+      security:
+        - bearerAuth: []  
       tags: 
         - Products
       summary: Gets the product with the corresponding id
       description: Gets the product with the corresponding id. If it does not exists returns 404.
       parameters:
+        - in: header
+          name: Authorization
+          required: true
+          schema: 
+            type: string
+            format: JWT
         - in: path
           name: id
           required: true
@@ -23,6 +31,10 @@ paths:
           description: Couldn't find product
         '500':
           description: Internal server error
+        '403':
+          description: Can't access this page
+        '401':
+          description: Unauthorized access to this page
 
 components:
   $ref: '../../schemas/products/products.yaml'

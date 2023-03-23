@@ -5,7 +5,6 @@ import { Server as IOServer } from 'socket.io';
 import { join } from 'path';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
-
 import { verifyToken } from '../services/sessionsServices.js';
 import productRouter from '../routes/productRoutes.js';
 import cartRouter from '../routes/cartRoutes.js'
@@ -54,7 +53,7 @@ app.use(docsRouter)
 app.use(compression(), routeLog, miscRouter)
 
 //Protected Routes
-app.use(verifyToken)
+// app.use(verifyToken)
 app.use(compression(), routeLog, productRouter);
 app.use('/api/auth', compression(), routeLog, sessionRouter);
 app.use('/api/cart', compression(), routeLog, cartRouter);

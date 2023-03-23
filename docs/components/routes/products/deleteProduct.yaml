@@ -1,12 +1,20 @@
 # Delete product
 paths:
-  /api/products/{id}:
-    delete: 
+  /api/products/product/{id}:
+    delete:
+      security:
+        - bearerAuth: [] 
       tags: 
         - Products
       summary: Deletes the product with the corresponding id
       description: Deletes the product with the corresponding id.
       parameters:
+        - in: header
+          name: Authorization
+          required: true
+          schema: 
+            type: string
+            format: JWT
         - in: path
           name: id
           required: true
@@ -33,6 +41,8 @@ paths:
           description: Internal server error
         '403':
           description: Can't access this page
+        '401':
+          description: Unauthorized access to this page
 
 components:
   $ref: '../../schemas/products/products.yaml'

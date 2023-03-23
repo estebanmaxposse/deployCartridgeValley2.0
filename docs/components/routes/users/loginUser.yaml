@@ -1,7 +1,8 @@
 # Login user
 paths:
-  /api/users/login:
+  /api/auth/login:
     post: 
+      security: []
       tags: 
         - Users
       summary: Logs in a user
@@ -25,6 +26,9 @@ paths:
                     description: JWT token
                 example:
                   token: eyJhbGciOiJIUzI1NiIsInR5c
+          links:
+            userToken: 
+              $ref: '../../links.yaml#/components/links/userToken'
         '401':
           description: Invalid credentials
         '500':

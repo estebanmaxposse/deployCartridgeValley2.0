@@ -1,0 +1,19 @@
+components:
+  links:
+    userToken:
+      operationId: accessProtectedRoutes
+      parameters:
+        token: $request.body#/token
+      description: Access protected routes
+      # requestBody:
+      #   required: true
+      #   content:
+      #     application/json:
+      #       schema:
+      #         type: object
+      #         properties:
+      #           token:
+      #             type: string
+      #             description: JWT token
+      #         example:
+      #           token: eyJhbGciOiJIUzI1NiIsInR5c

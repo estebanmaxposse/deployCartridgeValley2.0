@@ -1,11 +1,20 @@
 # Get all products
 paths:
   /api/products:
-    get: 
+    get:
+      security:
+        - bearerAuth: [] 
       tags: 
         - Products
       summary: Gets all products
       description: Gets all products from database.
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          schema: 
+            type: string
+            format: JWT
       responses:
         '200':
           description: Fetched products successfully
@@ -17,6 +26,10 @@ paths:
                   $ref: '#components/schemas/Product'
         '500':
           description: Internal server error
+        '403':
+          description: Can't access this page
+        '401':
+          description: Unauthorized access to this page
 
 components:
   $ref: '../../schemas/products/products.yaml'

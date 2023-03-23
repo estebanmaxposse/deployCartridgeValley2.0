@@ -1,11 +1,20 @@
 # Post product
 paths:
   /api/products:
-    post: 
+    post:
+      security:
+        - bearerAuth: [] 
       tags: 
         - Products
       summary: Posts a product
       description: Uploads a product to the database.
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          schema: 
+            type: string
+            format: JWT
       requestBody: 
         required: true
         content:
@@ -29,6 +38,8 @@ paths:
           description: Internal server error
         '403':
           description: Can't access this page
+        '401':
+          description: Unauthorized access to this page
 
 components:
   $ref: '../../schemas/products/newProduct.yaml'
