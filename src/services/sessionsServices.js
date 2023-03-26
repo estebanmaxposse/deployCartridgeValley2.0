@@ -61,7 +61,6 @@ const loginUser = async (userCredentials) => {
             return { response: 'User not found', status: 404 }
         }
     } catch (error) {
-        console.log(error);
         errorLog(error)
         return { response: "Couldn't log in!", status: 500 }
     }

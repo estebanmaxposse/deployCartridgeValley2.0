@@ -2,8 +2,8 @@
   "openapi": "3.0.0",
   "info": {
     "title": "Cartridge Valley API",
-    "description": "Documentation for the ecommerce Cartridge Valley API.\n\n[Cartridge Valley API Repository](https://github.com/estebanmaxposse/deployCartridgeValley2.0.git)",
-    "version": "0.1.1"
+    "description": "Documentation for the ecommerce Cartridge Valley API.\n\nYou can use the login POST route to get the auth token and access all the protected routes by clicking the authorize button below and pasting the token.\n\n[Cartridge Valley API Repository](https://github.com/estebanmaxposse/deployCartridgeValley2.0.git)",
+    "version": "1.0.0"
   },
   "servers": [
     {
@@ -25,17 +25,6 @@
         "summary": "Gets all products",
         "description": "Gets all products from database.",
         "operationId": "getProducts",
-        "parameters": [
-          {
-            "in": "header",
-            "name": "Authorization",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "JWT"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Fetched products successfully",
@@ -99,6 +88,462 @@
                       "category": "games",
                       "thumbnail": "https://i.imgur.com/zbjM3Ni.png"
                     }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access to this page"
+          },
+          "403": {
+            "description": "Can't access this page"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Products"
+        ],
+        "summary": "Posts a product",
+        "description": "Uploads a product to the database.",
+        "operationId": "newProduct",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "title",
+                  "description",
+                  "price",
+                  "stock",
+                  "code",
+                  "category",
+                  "thumbnail"
+                ],
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "description": "The title of the product."
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "The description of the product."
+                  },
+                  "price": {
+                    "type": "number",
+                    "description": "The price of the product."
+                  },
+                  "stock": {
+                    "type": "number",
+                    "description": "The stock of the product."
+                  },
+                  "code": {
+                    "type": "number",
+                    "description": "The code of the product."
+                  },
+                  "category": {
+                    "type": "number",
+                    "description": "The category of the product."
+                  },
+                  "thumbnail": {
+                    "type": "string",
+                    "description": "The URL of the product thumbnail."
+                  }
+                },
+                "example": {
+                  "title": "Dying Light 1",
+                  "description": "Use your agility and combat skills to survive, and change the fate of The City. Upgrade your Dying Light 2 Standard Edition to get the Deluxe content.",
+                  "price": 60,
+                  "stock": 5,
+                  "code": "randomcode",
+                  "category": "games",
+                  "thumbnail": "https://i.imgur.com/zbjM3Ni.png"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Uplaoded product successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "productId": {
+                      "type": "string",
+                      "description": "ID generated of the new product"
+                    }
+                  },
+                  "example": {
+                    "message": "Product 6420a7334e4afe6bf6ba391c saved",
+                    "product": "6420a7334e4afe6bf6ba391c"
+                  }
+                }
+              }
+            },
+            "links": {
+              "getProduct": {
+                "operationId": "getProduct",
+                "parameters": {
+                  "id": "$response.body#/product"
+                }
+              },
+              "updateProduct": {
+                "operationId": "updateProduct",
+                "parameters": {
+                  "id": "$response.body#/product"
+                }
+              },
+              "deleteProduct": {
+                "operationId": "deleteProduct",
+                "parameters": {
+                  "id": "$response.body#/product"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access to this page"
+          },
+          "403": {
+            "description": "Can't access this page"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/api/products/product/{id}": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Products"
+        ],
+        "summary": "Gets the product with the corresponding id",
+        "description": "Gets the product with the corresponding id. If it does not exists returns 404.",
+        "operationId": "getProduct",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Fetched product successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "title",
+                    "description",
+                    "price",
+                    "stock",
+                    "code",
+                    "category",
+                    "thumbnail"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "The auto-generated id of the product."
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "The title of the product."
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "The description of the product."
+                    },
+                    "price": {
+                      "type": "number",
+                      "description": "The price of the product."
+                    },
+                    "stock": {
+                      "type": "number",
+                      "description": "The stock of the product."
+                    },
+                    "code": {
+                      "type": "number",
+                      "description": "The code of the product."
+                    },
+                    "category": {
+                      "type": "number",
+                      "description": "The category of the product."
+                    },
+                    "thumbnail": {
+                      "type": "string",
+                      "description": "The URL of the product thumbnail."
+                    }
+                  },
+                  "example": {
+                    "id": "63e5b0f38e49c6dfc2ad4db1",
+                    "title": "Dying Light 1",
+                    "description": "Use your agility and combat skills to survive, and change the fate of The City. Upgrade your Dying Light 2 Standard Edition to get the Deluxe content.",
+                    "price": 60,
+                    "stock": 5,
+                    "code": "randomcode",
+                    "category": "games",
+                    "thumbnail": "https://i.imgur.com/zbjM3Ni.png"
+                  }
+                }
+              }
+            },
+            "links": {
+              "updateProduct": {
+                "operationId": "updateProduct",
+                "parameters": {
+                  "id": "$response.body#/product"
+                }
+              },
+              "deleteProduct": {
+                "operationId": "deleteProduct",
+                "parameters": {
+                  "id": "$response.body#/product"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access to this page"
+          },
+          "403": {
+            "description": "Can't access this page"
+          },
+          "404": {
+            "description": "Couldn't find product"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "put": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Products"
+        ],
+        "summary": "Updates a specific product",
+        "description": "Upadtes a product in the database.",
+        "operationId": "updateProduct",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "oneOf": [
+                  {
+                    "required": [
+                      "title"
+                    ],
+                    "properties": {
+                      "title": {
+                        "type": "string",
+                        "description": "The title of the product."
+                      }
+                    }
+                  },
+                  {
+                    "required": [
+                      "description"
+                    ],
+                    "properties": {
+                      "description": {
+                        "type": "string",
+                        "description": "The description of the product."
+                      }
+                    }
+                  },
+                  {
+                    "required": [
+                      "price"
+                    ],
+                    "properties": {
+                      "price": {
+                        "type": "number",
+                        "description": "The price of the product."
+                      }
+                    }
+                  },
+                  {
+                    "required": [
+                      "stock"
+                    ],
+                    "properties": {
+                      "stock": {
+                        "type": "number",
+                        "description": "The stock of the product."
+                      }
+                    }
+                  },
+                  {
+                    "required": [
+                      "code"
+                    ],
+                    "properties": {
+                      "code": {
+                        "type": "string",
+                        "description": "The code of the product."
+                      }
+                    }
+                  },
+                  {
+                    "required": [
+                      "category"
+                    ],
+                    "properties": {
+                      "category": {
+                        "type": "string",
+                        "description": "The category of the product."
+                      }
+                    }
+                  },
+                  {
+                    "required": [
+                      "thumbnail"
+                    ],
+                    "properties": {
+                      "thumbnail": {
+                        "type": "string",
+                        "description": "The URL of the product thumbnail."
+                      }
+                    }
+                  }
+                ],
+                "example": {
+                  "title": "Dying Light 1",
+                  "description": "Use your agility and combat skills to survive, and change the fate of The City. Upgrade your Dying Light 2 Standard Edition to get the Deluxe content.",
+                  "price": 60,
+                  "stock": 5,
+                  "code": "randomcode",
+                  "category": "games",
+                  "thumbnail": "https://i.imgur.com/zbjM3Ni.png"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Updated product successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Message from the server"
+                    },
+                    "productId": {
+                      "type": "string",
+                      "description": "ID generated of the new product"
+                    }
+                  },
+                  "example": {
+                    "message": "Product 6420a7334e4afe6bf6ba391c updated",
+                    "product": "6420a7334e4afe6bf6ba391c"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access to this page"
+          },
+          "403": {
+            "description": "Can't access this page"
+          },
+          "404": {
+            "description": "Couldn't find product"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Products"
+        ],
+        "summary": "Deletes the product with the corresponding id",
+        "description": "Deletes the product with the corresponding id.",
+        "operationId": "deleteProduct",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Deleted product successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Message from the server"
+                    },
+                    "productId": {
+                      "type": "string",
+                      "description": "ID  of deleted product"
+                    }
+                  },
+                  "example": {
+                    "message": "Product 63efecc343df49b6c6054189 deleted",
+                    "productId": "63efecc343df49b6c6054189"
                   }
                 }
               }
@@ -968,6 +1413,26 @@
               }
             }
           }
+        }
+      }
+    },
+    "links": {
+      "getProduct": {
+        "operationId": "getProduct",
+        "parameters": {
+          "id": "$response.body#/product"
+        }
+      },
+      "updateProduct": {
+        "operationId": "updateProduct",
+        "parameters": {
+          "id": "$response.body#/product"
+        }
+      },
+      "deleteProduct": {
+        "operationId": "deleteProduct",
+        "parameters": {
+          "id": "$response.body#/product"
         }
       }
     }

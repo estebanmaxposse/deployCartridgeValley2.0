@@ -32,7 +32,7 @@ const getProduct = async (id) => {
             productExists = false;
         };
         if (productExists) {
-             return { response: product, status: 200 }
+            return { response: product, status: 200 }
         } else {
             return { response: "Couldn't find product!", status: 404 }
         }
@@ -68,12 +68,13 @@ const postProduct = async (rawProduct) => {
     } else {
         try {
             const savedProduct = await productsRepository.postProduct(validatedProduct)
-            return { 
+            return {
                 response: {
                     message: `Product ${savedProduct} saved`,
                     product: savedProduct
-                }, 
-                status: 201 }
+                },
+                status: 201
+            }
         } catch (error) {
             errorLog(error)
             return { response: "Couldn't save product", status: 500 }
@@ -87,7 +88,13 @@ const updateProduct = async (id, rawProduct) => {
     }
     try {
         const updatedProduct = await productsRepository.updateProduct(id, rawProduct)
-        return { response: `Product ${id} updated`, status: 201 }
+        return {
+            response: {
+                message: `Product ${id} updated`,
+                product: id
+            },
+            status: 201
+        }
     } catch (error) {
         errorLog(error)
         return { response: "Couldn't update product", status: 500 }
@@ -98,13 +105,19 @@ const deleteProduct = async (id) => {
     if (!checkAdmin()) {
         return { response: "Can't access this page", status: 403 }
     }
-    try { 
-         const deletedProduct = await productsRepository.deleteProduct(id)
-         return { response: `Product ${id} deleted`, status: 201 }
+    try {
+        const deletedProduct = await productsRepository.deleteProduct(id)
+        return {
+            response: {
+                message: `Product ${id} deleted`,
+                product: id
+            },
+            status: 201
+        }
     } catch (error) {
         errorLog(error)
         return { response: "Couldn't delete product", status: 500 }
     };
 }
 
-export { getProducts , getProduct, getProductsByCategory, postProduct, updateProduct, deleteProduct }
+export { getProducts, getProduct, getProductsByCategory, postProduct, updateProduct, deleteProduct }

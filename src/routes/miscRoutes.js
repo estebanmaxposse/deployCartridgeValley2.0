@@ -12,6 +12,5 @@ errorRouter.get('*', notFound404)
 const docsRouter = Router()
 docsRouter.use('/api-docs', SwaggerUI.serve)
 docsRouter.get('/api-docs', SwaggerUI.setup(swaggerDocs))
-console.log(swaggerDocs);
 
 export {miscRouter, errorRouter, docsRouter}
