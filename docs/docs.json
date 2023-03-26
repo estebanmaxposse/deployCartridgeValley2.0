@@ -1,0 +1,985 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Cartridge Valley API",
+    "description": "Documentation for the ecommerce Cartridge Valley API.\n\n[Cartridge Valley API Repository](https://github.com/estebanmaxposse/deployCartridgeValley2.0.git)",
+    "version": "0.1.1"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Main server"
+    }
+  ],
+  "paths": {
+    "/api/products": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Products"
+        ],
+        "summary": "Gets all products",
+        "description": "Gets all products from database.",
+        "operationId": "getProducts",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "JWT"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Fetched products successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "title",
+                      "description",
+                      "price",
+                      "stock",
+                      "code",
+                      "category",
+                      "thumbnail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "The auto-generated id of the product."
+                      },
+                      "title": {
+                        "type": "string",
+                        "description": "The title of the product."
+                      },
+                      "description": {
+                        "type": "string",
+                        "description": "The description of the product."
+                      },
+                      "price": {
+                        "type": "number",
+                        "description": "The price of the product."
+                      },
+                      "stock": {
+                        "type": "number",
+                        "description": "The stock of the product."
+                      },
+                      "code": {
+                        "type": "number",
+                        "description": "The code of the product."
+                      },
+                      "category": {
+                        "type": "number",
+                        "description": "The category of the product."
+                      },
+                      "thumbnail": {
+                        "type": "string",
+                        "description": "The URL of the product thumbnail."
+                      }
+                    },
+                    "example": {
+                      "id": "63e5b0f38e49c6dfc2ad4db1",
+                      "title": "Dying Light 1",
+                      "description": "Use your agility and combat skills to survive, and change the fate of The City. Upgrade your Dying Light 2 Standard Edition to get the Deluxe content.",
+                      "price": 60,
+                      "stock": 5,
+                      "code": "randomcode",
+                      "category": "games",
+                      "thumbnail": "https://i.imgur.com/zbjM3Ni.png"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access to this page"
+          },
+          "403": {
+            "description": "Can't access this page"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "security": [],
+        "tags": [
+          "Users"
+        ],
+        "summary": "Logs in a user",
+        "description": "Logs in a user and returns a JWT token.",
+        "requestBody": {
+          "description": "A JSON object with the login credentials",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "password"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "The user's email address."
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "The encrypted user's password."
+                  }
+                },
+                "example": {
+                  "email": "johndoe98@gmail.com",
+                  "password": "$2b$10$"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Logged in successfully. Use the token for authentication.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "description": "JWT token"
+                    }
+                  },
+                  "example": {
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5c"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid credentials"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "Product": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "description",
+          "price",
+          "stock",
+          "code",
+          "category",
+          "thumbnail"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The auto-generated id of the product."
+          },
+          "title": {
+            "type": "string",
+            "description": "The title of the product."
+          },
+          "description": {
+            "type": "string",
+            "description": "The description of the product."
+          },
+          "price": {
+            "type": "number",
+            "description": "The price of the product."
+          },
+          "stock": {
+            "type": "number",
+            "description": "The stock of the product."
+          },
+          "code": {
+            "type": "number",
+            "description": "The code of the product."
+          },
+          "category": {
+            "type": "number",
+            "description": "The category of the product."
+          },
+          "thumbnail": {
+            "type": "string",
+            "description": "The URL of the product thumbnail."
+          }
+        },
+        "example": {
+          "id": "63e5b0f38e49c6dfc2ad4db1",
+          "title": "Dying Light 1",
+          "description": "Use your agility and combat skills to survive, and change the fate of The City. Upgrade your Dying Light 2 Standard Edition to get the Deluxe content.",
+          "price": 60,
+          "stock": 5,
+          "code": "randomcode",
+          "category": "games",
+          "thumbnail": "https://i.imgur.com/zbjM3Ni.png"
+        }
+      },
+      "NewProduct": {
+        "type": "object",
+        "required": [
+          "title",
+          "description",
+          "price",
+          "stock",
+          "code",
+          "category",
+          "thumbnail"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "The title of the product."
+          },
+          "description": {
+            "type": "string",
+            "description": "The description of the product."
+          },
+          "price": {
+            "type": "number",
+            "description": "The price of the product."
+          },
+          "stock": {
+            "type": "number",
+            "description": "The stock of the product."
+          },
+          "code": {
+            "type": "number",
+            "description": "The code of the product."
+          },
+          "category": {
+            "type": "number",
+            "description": "The category of the product."
+          },
+          "thumbnail": {
+            "type": "string",
+            "description": "The URL of the product thumbnail."
+          }
+        },
+        "example": {
+          "title": "Dying Light 1",
+          "description": "Use your agility and combat skills to survive, and change the fate of The City. Upgrade your Dying Light 2 Standard Edition to get the Deluxe content.",
+          "price": 60,
+          "stock": 5,
+          "code": "randomcode",
+          "category": "games",
+          "thumbnail": "https://i.imgur.com/zbjM3Ni.png"
+        }
+      },
+      "UpdateProduct": {
+        "type": "object",
+        "oneOf": [
+          {
+            "required": [
+              "title"
+            ],
+            "properties": {
+              "title": {
+                "type": "string",
+                "description": "The title of the product."
+              }
+            }
+          },
+          {
+            "required": [
+              "description"
+            ],
+            "properties": {
+              "description": {
+                "type": "string",
+                "description": "The description of the product."
+              }
+            }
+          },
+          {
+            "required": [
+              "price"
+            ],
+            "properties": {
+              "price": {
+                "type": "number",
+                "description": "The price of the product."
+              }
+            }
+          },
+          {
+            "required": [
+              "stock"
+            ],
+            "properties": {
+              "stock": {
+                "type": "number",
+                "description": "The stock of the product."
+              }
+            }
+          },
+          {
+            "required": [
+              "code"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "description": "The code of the product."
+              }
+            }
+          },
+          {
+            "required": [
+              "category"
+            ],
+            "properties": {
+              "category": {
+                "type": "string",
+                "description": "The category of the product."
+              }
+            }
+          },
+          {
+            "required": [
+              "thumbnail"
+            ],
+            "properties": {
+              "thumbnail": {
+                "type": "string",
+                "description": "The URL of the product thumbnail."
+              }
+            }
+          }
+        ],
+        "example": {
+          "title": "Dying Light 1",
+          "description": "Use your agility and combat skills to survive, and change the fate of The City. Upgrade your Dying Light 2 Standard Edition to get the Deluxe content.",
+          "price": 60,
+          "stock": 5,
+          "code": "randomcode",
+          "category": "games",
+          "thumbnail": "https://i.imgur.com/zbjM3Ni.png"
+        }
+      },
+      "User": {
+        "type": "object",
+        "required": [
+          "id",
+          "username",
+          "fullName",
+          "phoneNumber",
+          "shippingAddress",
+          "email",
+          "password",
+          "admin",
+          "age",
+          "avatar"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The auto-generated id of the user."
+          },
+          "username": {
+            "type": "string",
+            "description": "The username of the user."
+          },
+          "fullName": {
+            "type": "string",
+            "description": "The name and surname of the user."
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "The user's phone number, including area code."
+          },
+          "shippingAddress": {
+            "type": "string",
+            "description": "The user's shipping address."
+          },
+          "email": {
+            "type": "string",
+            "description": "The user's email address."
+          },
+          "password": {
+            "type": "string",
+            "description": "The encrypted user's password."
+          },
+          "admin": {
+            "type": "boolean",
+            "description": "Describes if user has administrator privileges."
+          },
+          "age": {
+            "type": "number",
+            "description": "The user's age."
+          },
+          "avatar": {
+            "type": "string",
+            "description": "The URL of the user's avatar."
+          }
+        },
+        "example": {
+          "id": "64068dd92d3fe9de624b9725",
+          "username": "JohnDoe",
+          "fullName": "John Doe",
+          "phoneNumber": "+1 555 555 555",
+          "shippingAddress": "1234 Main St, Anytown, CA 12345",
+          "email": "johndoe98@gmail.com",
+          "password": "$2b$10$",
+          "admin": false,
+          "age": 22,
+          "avatar": "https://i.imgur.com/8UYsXOS.jpg"
+        }
+      },
+      "NewUser": {
+        "type": "object",
+        "required": [
+          "email",
+          "password"
+        ],
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "The username of the user."
+          },
+          "fullName": {
+            "type": "string",
+            "description": "The name and surname of the user."
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "The user's phone number, including area code."
+          },
+          "shippingAddress": {
+            "type": "string",
+            "description": "The user's shipping address."
+          },
+          "email": {
+            "type": "string",
+            "description": "The user's email address."
+          },
+          "password": {
+            "type": "string",
+            "description": "The encrypted user's password."
+          },
+          "age": {
+            "type": "number",
+            "description": "The user's age."
+          },
+          "avatar": {
+            "type": "string",
+            "description": "The URL of the user's avatar."
+          }
+        },
+        "example": {
+          "username": "JohnDoe",
+          "fullName": "John Doe",
+          "phoneNumber": "+1 555 555 555",
+          "shippingAddress": "1234 Main St, Anytown, CA 12345",
+          "email": "johndoe98@gmail.com",
+          "password": "$2b$10$",
+          "age": 22,
+          "avatar": "https://i.imgur.com/8UYsXOS.jpg"
+        }
+      },
+      "LoginUser": {
+        "type": "object",
+        "required": [
+          "email",
+          "password"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "The user's email address."
+          },
+          "password": {
+            "type": "string",
+            "description": "The encrypted user's password."
+          }
+        },
+        "example": {
+          "email": "johndoe98@gmail.com",
+          "password": "$2b$10$"
+        }
+      },
+      "UpdateUser": {
+        "type": "object",
+        "oneOf": [
+          {
+            "required": [
+              "username"
+            ],
+            "properties": {
+              "username": {
+                "type": "string",
+                "description": "The username of the user."
+              }
+            }
+          },
+          {
+            "required": [
+              "fullName"
+            ],
+            "properties": {
+              "fullName": {
+                "type": "string",
+                "description": "The name and surname of the user."
+              }
+            }
+          },
+          {
+            "required": [
+              "phoneNumber"
+            ],
+            "properties": {
+              "phoneNumber": {
+                "type": "string",
+                "description": "The user's phone number, including area code."
+              }
+            }
+          },
+          {
+            "required": [
+              "shippingAddress"
+            ],
+            "properties": {
+              "shippingAddress": {
+                "type": "string",
+                "description": "The user's shipping address."
+              }
+            }
+          },
+          {
+            "required": [
+              "email"
+            ],
+            "properties": {
+              "email": {
+                "type": "string",
+                "description": "The user's email address."
+              }
+            }
+          },
+          {
+            "required": [
+              "age"
+            ],
+            "properties": {
+              "age": {
+                "type": "number",
+                "description": "The user's age."
+              }
+            }
+          },
+          {
+            "required": [
+              "avatar"
+            ],
+            "properties": {
+              "avatar": {
+                "type": "string",
+                "description": "The URL of the user's avatar."
+              }
+            }
+          }
+        ],
+        "example": {
+          "username": "JohnDoe",
+          "fullName": "John Doe",
+          "phoneNumber": "+1 555 555 555",
+          "shippingAddress": "1234 Main St, Anytown, CA 12345",
+          "email": "johndoe98@gmail.com",
+          "age": 22,
+          "avatar": "https://i.imgur.com/8UYsXOS.jpg"
+        }
+      }
+    },
+    "requestBodies": {
+      "NewProduct": {
+        "description": "A JSON object with the product to be added",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "title",
+                "description",
+                "price",
+                "stock",
+                "code",
+                "category",
+                "thumbnail"
+              ],
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "description": "The title of the product."
+                },
+                "description": {
+                  "type": "string",
+                  "description": "The description of the product."
+                },
+                "price": {
+                  "type": "number",
+                  "description": "The price of the product."
+                },
+                "stock": {
+                  "type": "number",
+                  "description": "The stock of the product."
+                },
+                "code": {
+                  "type": "number",
+                  "description": "The code of the product."
+                },
+                "category": {
+                  "type": "number",
+                  "description": "The category of the product."
+                },
+                "thumbnail": {
+                  "type": "string",
+                  "description": "The URL of the product thumbnail."
+                }
+              },
+              "example": {
+                "title": "Dying Light 1",
+                "description": "Use your agility and combat skills to survive, and change the fate of The City. Upgrade your Dying Light 2 Standard Edition to get the Deluxe content.",
+                "price": 60,
+                "stock": 5,
+                "code": "randomcode",
+                "category": "games",
+                "thumbnail": "https://i.imgur.com/zbjM3Ni.png"
+              }
+            }
+          }
+        }
+      },
+      "UpdateProduct": {
+        "description": "A JSON object with the updated product",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "oneOf": [
+                {
+                  "required": [
+                    "title"
+                  ],
+                  "properties": {
+                    "title": {
+                      "type": "string",
+                      "description": "The title of the product."
+                    }
+                  }
+                },
+                {
+                  "required": [
+                    "description"
+                  ],
+                  "properties": {
+                    "description": {
+                      "type": "string",
+                      "description": "The description of the product."
+                    }
+                  }
+                },
+                {
+                  "required": [
+                    "price"
+                  ],
+                  "properties": {
+                    "price": {
+                      "type": "number",
+                      "description": "The price of the product."
+                    }
+                  }
+                },
+                {
+                  "required": [
+                    "stock"
+                  ],
+                  "properties": {
+                    "stock": {
+                      "type": "number",
+                      "description": "The stock of the product."
+                    }
+                  }
+                },
+                {
+                  "required": [
+                    "code"
+                  ],
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "description": "The code of the product."
+                    }
+                  }
+                },
+                {
+                  "required": [
+                    "category"
+                  ],
+                  "properties": {
+                    "category": {
+                      "type": "string",
+                      "description": "The category of the product."
+                    }
+                  }
+                },
+                {
+                  "required": [
+                    "thumbnail"
+                  ],
+                  "properties": {
+                    "thumbnail": {
+                      "type": "string",
+                      "description": "The URL of the product thumbnail."
+                    }
+                  }
+                }
+              ],
+              "example": {
+                "title": "Dying Light 1",
+                "description": "Use your agility and combat skills to survive, and change the fate of The City. Upgrade your Dying Light 2 Standard Edition to get the Deluxe content.",
+                "price": 60,
+                "stock": 5,
+                "code": "randomcode",
+                "category": "games",
+                "thumbnail": "https://i.imgur.com/zbjM3Ni.png"
+              }
+            }
+          }
+        }
+      },
+      "LoginUser": {
+        "description": "A JSON object with the login credentials",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "email",
+                "password"
+              ],
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "description": "The user's email address."
+                },
+                "password": {
+                  "type": "string",
+                  "description": "The encrypted user's password."
+                }
+              },
+              "example": {
+                "email": "johndoe98@gmail.com",
+                "password": "$2b$10$"
+              }
+            }
+          }
+        }
+      },
+      "NewUser": {
+        "description": "A JSON object with the sign-up credentials",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "email",
+                "password"
+              ],
+              "properties": {
+                "username": {
+                  "type": "string",
+                  "description": "The username of the user."
+                },
+                "fullName": {
+                  "type": "string",
+                  "description": "The name and surname of the user."
+                },
+                "phoneNumber": {
+                  "type": "string",
+                  "description": "The user's phone number, including area code."
+                },
+                "shippingAddress": {
+                  "type": "string",
+                  "description": "The user's shipping address."
+                },
+                "email": {
+                  "type": "string",
+                  "description": "The user's email address."
+                },
+                "password": {
+                  "type": "string",
+                  "description": "The encrypted user's password."
+                },
+                "age": {
+                  "type": "number",
+                  "description": "The user's age."
+                },
+                "avatar": {
+                  "type": "string",
+                  "description": "The URL of the user's avatar."
+                }
+              },
+              "example": {
+                "username": "JohnDoe",
+                "fullName": "John Doe",
+                "phoneNumber": "+1 555 555 555",
+                "shippingAddress": "1234 Main St, Anytown, CA 12345",
+                "email": "johndoe98@gmail.com",
+                "password": "$2b$10$",
+                "age": 22,
+                "avatar": "https://i.imgur.com/8UYsXOS.jpg"
+              }
+            }
+          }
+        }
+      },
+      "UpdateUser": {
+        "description": "A JSON object with updated user credentials",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "oneOf": [
+                {
+                  "required": [
+                    "username"
+                  ],
+                  "properties": {
+                    "username": {
+                      "type": "string",
+                      "description": "The username of the user."
+                    }
+                  }
+                },
+                {
+                  "required": [
+                    "fullName"
+                  ],
+                  "properties": {
+                    "fullName": {
+                      "type": "string",
+                      "description": "The name and surname of the user."
+                    }
+                  }
+                },
+                {
+                  "required": [
+                    "phoneNumber"
+                  ],
+                  "properties": {
+                    "phoneNumber": {
+                      "type": "string",
+                      "description": "The user's phone number, including area code."
+                    }
+                  }
+                },
+                {
+                  "required": [
+                    "shippingAddress"
+                  ],
+                  "properties": {
+                    "shippingAddress": {
+                      "type": "string",
+                      "description": "The user's shipping address."
+                    }
+                  }
+                },
+                {
+                  "required": [
+                    "email"
+                  ],
+                  "properties": {
+                    "email": {
+                      "type": "string",
+                      "description": "The user's email address."
+                    }
+                  }
+                },
+                {
+                  "required": [
+                    "age"
+                  ],
+                  "properties": {
+                    "age": {
+                      "type": "number",
+                      "description": "The user's age."
+                    }
+                  }
+                },
+                {
+                  "required": [
+                    "avatar"
+                  ],
+                  "properties": {
+                    "avatar": {
+                      "type": "string",
+                      "description": "The URL of the user's avatar."
+                    }
+                  }
+                }
+              ],
+              "example": {
+                "username": "JohnDoe",
+                "fullName": "John Doe",
+                "phoneNumber": "+1 555 555 555",
+                "shippingAddress": "1234 Main St, Anytown, CA 12345",
+                "email": "johndoe98@gmail.com",
+                "age": 22,
+                "avatar": "https://i.imgur.com/8UYsXOS.jpg"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Products",
+      "description": "Manage ecommerce products"
+    },
+    {
+      "name": "Users",
+      "description": "Manage ecommerce users & admins"
+    }
+  ]
+}
