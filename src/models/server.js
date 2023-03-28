@@ -8,6 +8,7 @@ import { fileURLToPath } from 'url';
 import productRouter from '../routes/productRoutes.js';
 import cartRouter from '../routes/cartRoutes.js'
 import { entryRoutes, sessionRouter } from '../routes/sessionRoutes.js';
+import { verifyToken } from '../services/sessionsServices.js';
 import orderRouter from '../routes/orderRoutes.js';
 import { miscRouter, errorRouter, docsRouter } from '../routes/miscRoutes.js'
 import chatRouter from '../routes/chatRoutes.js'
@@ -52,7 +53,7 @@ app.use(routeLog, docsRouter)
 app.use(compression(), routeLog, miscRouter)
 
 //Protected Routes
-// app.use(verifyToken)
+app.use(verifyToken)
 app.use(compression(), routeLog, productRouter);
 app.use('/api/auth', compression(), routeLog, sessionRouter);
 app.use('/api/cart', compression(), routeLog, cartRouter);

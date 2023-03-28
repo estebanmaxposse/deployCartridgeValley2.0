@@ -11,21 +11,31 @@ import isValidPassword from "../utils/passwordValidator.js";
 const verifyToken = (req, res, next) => {
     const authHeader = req.headers.authorization;
     const token = authHeader && authHeader.split(' ')[1];
-    if (!token) {
-        res.status(401).json('Access denied');
-    }
     try {
         const decoded = verify(token, config.SESSION_KEY);
         req.user = decoded;
         next();
     } catch (error) {
+        errorLog(error)
         if (error.name === 'TokenExpiredError') {
             res.status(401).json('Token expired, please log in again');
         }
         if (error.name === 'JsonWebTokenError') {
-            res.status(401).json('Invalid token, please log in again');
+            if (error.message === 'invalid signature') {
+                return res.status(401).json('Invalid signature. Either the token has been tampered with or the secret key was modified after the token was issued. Please log in again or restart the application to generate a new token');
+            }
+            if (error.message === 'invalid token') {
+                return res.status(401).json("The token's header or payload could not be parsed, please log in again");
+            }
+            if (error.message === 'jwt must be provided') {
+                return res.status(401).json('No token provided. Please log in again');
+            }
+            if (error.message === 'jwt malformed') {
+                return res.status(401).json('The token is malformed, it does not have three components, please log in again');
+            } else {
+                return res.status(401).json('Invalid token, please log in again');
+            }
         }
-        errorLog(error)
         req.user = null
         res.status(401);
     }
@@ -52,7 +62,7 @@ const loginUser = async (userCredentials) => {
         if (userExists) {
             const user = new userDTO(userExists)
             if (isValidPassword(user, password)) {
-                const token = sign( {user} , config.SESSION_KEY, { expiresIn: config.SESSION_TIME })
+                const token = sign({ user }, config.SESSION_KEY, { expiresIn: config.SESSION_TIME })
                 return { response: token, status: 200 }
             } else {
                 return { response: 'Invalid password', status: 401 }
@@ -88,10 +98,17 @@ const signUpUser = async (userCredentials) => {
     }
 }
 
-const updateUser = async (userCredentials) => {
+const updateUser = async (userUpdateData, userID) => {
     try {
-        const updateUser = await userManager.updateItem(userCredentials.user)
-        return { response: updateUser, status: 200 }
+        const userDB = await userManager.getById(userID)
+        if (userDB) {
+            const user = new userDTO(userDB)
+            const newUser = { ...user, ...userUpdateData }
+            const updateUser = await userManager.updateItem(newUser)
+            return { response: updateUser, status: 200 }           
+        } else {
+            return { response: 'User not found', status: 404 }
+        }
     } catch (error) {
         errorLog(error)
         return { response: error, status: 500 }

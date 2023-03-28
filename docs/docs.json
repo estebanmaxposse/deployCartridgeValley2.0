@@ -621,6 +621,427 @@
           "401": {
             "description": "Invalid credentials"
           },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/api/auth/signup": {
+      "post": {
+        "security": [],
+        "tags": [
+          "Users"
+        ],
+        "summary": "Signs up a user",
+        "description": "signs up an user and returns a JWT token.",
+        "requestBody": {
+          "description": "A JSON object with the sign-up credentials",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "password"
+                ],
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "description": "The username of the user."
+                  },
+                  "fullName": {
+                    "type": "string",
+                    "description": "The name and surname of the user."
+                  },
+                  "phoneNumber": {
+                    "type": "string",
+                    "description": "The user's phone number, including area code."
+                  },
+                  "shippingAddress": {
+                    "type": "string",
+                    "description": "The user's shipping address."
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "The user's email address."
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "The encrypted user's password."
+                  },
+                  "age": {
+                    "type": "number",
+                    "description": "The user's age."
+                  },
+                  "avatar": {
+                    "type": "string",
+                    "description": "The URL of the user's avatar."
+                  }
+                },
+                "example": {
+                  "username": "JohnDoe",
+                  "fullName": "John Doe",
+                  "phoneNumber": "+1 555 555 555",
+                  "shippingAddress": "1234 Main St, Anytown, CA 12345",
+                  "email": "johndoe98@gmail.com",
+                  "password": "$2b$10$",
+                  "age": 22,
+                  "avatar": "https://i.imgur.com/8UYsXOS.jpg"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sign up in successfully. Use the token for authentication.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "description": "JWT token"
+                    }
+                  },
+                  "example": {
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5c"
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "User already exists"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/api/auth/user": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Users"
+        ],
+        "summary": "Fetches info of currently logged in user",
+        "description": "Fectches data from the currently logged in user",
+        "responses": {
+          "200": {
+            "description": "Successfully fetched user info",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "username",
+                    "fullName",
+                    "phoneNumber",
+                    "shippingAddress",
+                    "email",
+                    "password",
+                    "admin",
+                    "age",
+                    "avatar"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "The auto-generated id of the user."
+                    },
+                    "username": {
+                      "type": "string",
+                      "description": "The username of the user."
+                    },
+                    "fullName": {
+                      "type": "string",
+                      "description": "The name and surname of the user."
+                    },
+                    "phoneNumber": {
+                      "type": "string",
+                      "description": "The user's phone number, including area code."
+                    },
+                    "shippingAddress": {
+                      "type": "string",
+                      "description": "The user's shipping address."
+                    },
+                    "email": {
+                      "type": "string",
+                      "description": "The user's email address."
+                    },
+                    "password": {
+                      "type": "string",
+                      "description": "The encrypted user's password."
+                    },
+                    "admin": {
+                      "type": "boolean",
+                      "description": "Describes if user has administrator privileges."
+                    },
+                    "age": {
+                      "type": "number",
+                      "description": "The user's age."
+                    },
+                    "avatar": {
+                      "type": "string",
+                      "description": "The URL of the user's avatar."
+                    }
+                  },
+                  "example": {
+                    "id": "64068dd92d3fe9de624b9725",
+                    "username": "JohnDoe",
+                    "fullName": "John Doe",
+                    "phoneNumber": "+1 555 555 555",
+                    "shippingAddress": "1234 Main St, Anytown, CA 12345",
+                    "email": "johndoe98@gmail.com",
+                    "password": "$2b$10$",
+                    "admin": false,
+                    "age": 22,
+                    "avatar": "https://i.imgur.com/8UYsXOS.jpg"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access to this page"
+          },
+          "403": {
+            "description": "Can't access this page"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/api/auth/update": {
+      "put": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Users"
+        ],
+        "summary": "Updates currently logged in user",
+        "description": "Updates the data of the currently logged in user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "oneOf": [
+                  {
+                    "required": [
+                      "username"
+                    ],
+                    "properties": {
+                      "username": {
+                        "type": "string",
+                        "description": "The username of the user."
+                      }
+                    }
+                  },
+                  {
+                    "required": [
+                      "fullName"
+                    ],
+                    "properties": {
+                      "fullName": {
+                        "type": "string",
+                        "description": "The name and surname of the user."
+                      }
+                    }
+                  },
+                  {
+                    "required": [
+                      "phoneNumber"
+                    ],
+                    "properties": {
+                      "phoneNumber": {
+                        "type": "string",
+                        "description": "The user's phone number, including area code."
+                      }
+                    }
+                  },
+                  {
+                    "required": [
+                      "shippingAddress"
+                    ],
+                    "properties": {
+                      "shippingAddress": {
+                        "type": "string",
+                        "description": "The user's shipping address."
+                      }
+                    }
+                  },
+                  {
+                    "required": [
+                      "email"
+                    ],
+                    "properties": {
+                      "email": {
+                        "type": "string",
+                        "description": "The user's email address."
+                      }
+                    }
+                  },
+                  {
+                    "required": [
+                      "age"
+                    ],
+                    "properties": {
+                      "age": {
+                        "type": "number",
+                        "description": "The user's age."
+                      }
+                    }
+                  },
+                  {
+                    "required": [
+                      "avatar"
+                    ],
+                    "properties": {
+                      "avatar": {
+                        "type": "string",
+                        "description": "The URL of the user's avatar."
+                      }
+                    }
+                  }
+                ],
+                "example": {
+                  "username": "JohnDoe",
+                  "fullName": "John Doe",
+                  "phoneNumber": "+1 555 555 555",
+                  "shippingAddress": "1234 Main St, Anytown, CA 12345",
+                  "email": "johndoe98@gmail.com",
+                  "age": 22,
+                  "avatar": "https://i.imgur.com/8UYsXOS.jpg"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully fetched user info",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "oneOf": [
+                    {
+                      "required": [
+                        "username"
+                      ],
+                      "properties": {
+                        "username": {
+                          "type": "string",
+                          "description": "The username of the user."
+                        }
+                      }
+                    },
+                    {
+                      "required": [
+                        "fullName"
+                      ],
+                      "properties": {
+                        "fullName": {
+                          "type": "string",
+                          "description": "The name and surname of the user."
+                        }
+                      }
+                    },
+                    {
+                      "required": [
+                        "phoneNumber"
+                      ],
+                      "properties": {
+                        "phoneNumber": {
+                          "type": "string",
+                          "description": "The user's phone number, including area code."
+                        }
+                      }
+                    },
+                    {
+                      "required": [
+                        "shippingAddress"
+                      ],
+                      "properties": {
+                        "shippingAddress": {
+                          "type": "string",
+                          "description": "The user's shipping address."
+                        }
+                      }
+                    },
+                    {
+                      "required": [
+                        "email"
+                      ],
+                      "properties": {
+                        "email": {
+                          "type": "string",
+                          "description": "The user's email address."
+                        }
+                      }
+                    },
+                    {
+                      "required": [
+                        "age"
+                      ],
+                      "properties": {
+                        "age": {
+                          "type": "number",
+                          "description": "The user's age."
+                        }
+                      }
+                    },
+                    {
+                      "required": [
+                        "avatar"
+                      ],
+                      "properties": {
+                        "avatar": {
+                          "type": "string",
+                          "description": "The URL of the user's avatar."
+                        }
+                      }
+                    }
+                  ],
+                  "example": {
+                    "username": "JohnDoe",
+                    "fullName": "John Doe",
+                    "phoneNumber": "+1 555 555 555",
+                    "shippingAddress": "1234 Main St, Anytown, CA 12345",
+                    "email": "johndoe98@gmail.com",
+                    "age": 22,
+                    "avatar": "https://i.imgur.com/8UYsXOS.jpg"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access to this page"
+          },
+          "403": {
+            "description": "Can't access this page"
+          },
           "500": {
             "description": "Internal server error"
           }
