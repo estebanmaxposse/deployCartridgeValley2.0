@@ -7,8 +7,12 @@
   },
   "servers": [
     {
+      "url": "https://deploycartridgevalley20-production.up.railway.app/",
+      "description": "Main official server"
+    },
+    {
       "url": "http://localhost:8080",
-      "description": "Main server"
+      "description": "Local test server"
     }
   ],
   "paths": {
