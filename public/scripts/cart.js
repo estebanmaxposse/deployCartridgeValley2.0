@@ -10,7 +10,13 @@ const filterCart = async () => {
             headers: { authorization: 'Bearer ' + localStorage.getItem('token') }
         })
             .then(res => {
-                return res.json();
+                if (!res.ok) {
+                    if (res.status === 401) {
+                        console.log('Unauthorized');
+                    }
+                    throw new Error('Error fetching user')
+                }
+                return res.json()
             })
             .then(user => {
                 currentUser = user

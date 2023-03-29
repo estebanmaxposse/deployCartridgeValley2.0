@@ -7,9 +7,17 @@ const renderProducts = async () => {
             'authorization': 'Bearer ' + token 
         }
     })
-        .then(res => res.json())
+        .then(res => {
+            if (!res.ok) {
+                if (res.status === 401) {
+                    console.log('Unauthorized');
+                }
+                throw new Error('Error fetching products')
+            }
+            return res.json()
+        })
         .then(data => renderProductsTable(data))
-        .catch(error => console.error(error))
+        .catch(error => console.log(error))
 }
 
 renderProducts()

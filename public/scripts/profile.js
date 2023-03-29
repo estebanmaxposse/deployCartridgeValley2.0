@@ -1,11 +1,15 @@
-const logOut = () => {
-    window.location.href = '/api/auth/logout'
-}
-
 fetch(`/api/auth/user`, {
     headers: { authorization: 'Bearer ' + localStorage.getItem('token') }
 })
-    .then(res => res.json())
+    .then(res => {
+        if (!res.ok) {
+            if (res.status === 401) {
+                console.log('Unauthorized');
+            }
+            throw new Error('Error fetching profile')
+        }
+        return res.json()
+    })
     .then(user => {
         let profilePicture = document.getElementById('profile-pic')
         profilePicture.setAttribute("src", user.avatar)
