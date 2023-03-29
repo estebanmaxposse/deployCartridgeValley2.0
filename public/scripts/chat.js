@@ -9,7 +9,6 @@ let sender = jwt_decode(user)
 const server = io()
 
 const renderMessages = (data) => {
-    console.log(data);
     const htmlMessage = data.map((element) => {
         return (`
         <div class='text-center d-flex flex-column align-items-start m-2'>
@@ -27,7 +26,6 @@ const renderMessages = (data) => {
 let text = document.getElementById('message-text');
 
 const addMessage = (e) => {
-    console.log('addMessage');
     const message = {
         author: {
             name: sender.user.username,
@@ -37,7 +35,6 @@ const addMessage = (e) => {
         text: text.value,
         senderEmail: sender.user.email,
     };
-    console.log(message);
     server.emit('new-message', message);
     text.value = ''
     text.focus()
@@ -45,7 +42,10 @@ const addMessage = (e) => {
     return false;
 }
 
+server.on('load-messages' , (data) => {
+    renderMessages(data);
+})
+
 server.on('messages', data => {
-    console.log('messages', data);
     renderMessages(data);
 });

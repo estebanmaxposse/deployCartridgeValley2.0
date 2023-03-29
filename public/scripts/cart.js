@@ -10,7 +10,13 @@ const filterCart = async () => {
             headers: { authorization: 'Bearer ' + localStorage.getItem('token') }
         })
             .then(res => {
-                return res.json();
+                if (!res.ok) {
+                    if (res.status === 401) {
+                        console.log('Unauthorized');
+                    }
+                    throw new Error('Error fetching user')
+                }
+                return res.json()
             })
             .then(user => {
                 currentUser = user
@@ -23,10 +29,7 @@ const filterCart = async () => {
                 return res.json()
             })
             .then(carts => {
-                console.log(carts);
-                console.log(currentUser._id);
                 filteredCart = carts.find(cart => cart.buyerID === currentUser._id)
-                console.log(filteredCart);
                 if (filteredCart.products.length === 0) {
                     cartList.innerHTML = `
                         <h4> You haven't added any products yet! </h4>
@@ -46,7 +49,6 @@ const filterCart = async () => {
                             cartProducts = cart.products
                             return cartProducts
                         })
-                        // .then(console.log(cartProducts))
                         .then(products => {
                             cartList.innerHTML = products.map(p =>
                                 `
@@ -108,7 +110,6 @@ filterCart()
 
 const completePurchase = async () => {
     try {
-        console.log(filteredCart._id);
         const response = await fetch(`/api/order/${filteredCart._id}`, {
             method: 'post',
             body: filteredCart._id,

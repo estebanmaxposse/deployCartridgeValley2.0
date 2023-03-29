@@ -7,15 +7,22 @@ const renderProducts = async () => {
             'authorization': 'Bearer ' + token 
         }
     })
-        .then(res => res.json())
+        .then(res => {
+            if (!res.ok) {
+                if (res.status === 401) {
+                    console.log('Unauthorized');
+                }
+                throw new Error('Error fetching products')
+            }
+            return res.json()
+        })
         .then(data => renderProductsTable(data))
-        .catch(error => console.error(error))
+        .catch(error => console.log(error))
 }
 
 renderProducts()
 
 const renderByCategory = async (category) => {
-    console.log(category);
     const token = localStorage.getItem('token')
     await fetch(`/api/products/${category}`, {
         method: 'GET',
@@ -32,13 +39,13 @@ const renderByCategory = async (category) => {
 const renderProductsTable = (data) => {
     document.getElementById('product-container').innerHTML = ''
     let table = '<table class="table table-stripped w-75 m-auto table-hover table-bordered">'
-    table += '<thead><tr><th scope="col">ID #</th><th scope="col">Title</th><th scope="col">price</th><th scope="col">Thumnbnail</th></tr></thead>'
+    table += '<thead><tr><th scope="col">ID #</th><th scope="col">Title</th><th scope="col">price</th><th scope="col">Thumbnail</th></tr></thead>'
     table += '<tbody>'
     data.forEach(product => {
         table += `
         <tr class='text-center'>
             <th scope='row'> ${product._id} </th>
-            <td class='text-center'><a href=${product.url}>${product.title}</a></td>
+            <td class='text-center'>${product.title}</td>
             <td class='text-center'>${product.price}</td>
             <td class='text-center'><img src=${product.thumbnail} class='w-25 h-auto' />
         </tr>`
