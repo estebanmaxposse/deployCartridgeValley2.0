@@ -32,7 +32,7 @@ const renderByCategory = async (category) => {
 const renderProductsTable = (data) => {
     document.getElementById('product-container').innerHTML = ''
     let table = '<table class="table table-stripped w-75 m-auto table-hover table-bordered">'
-    table += '<thead><tr><th scope="col">ID #</th><th scope="col">Title</th><th scope="col">price</th><th scope="col">Thumnbnail</th></tr></thead>'
+    table += '<thead><tr><th scope="col">ID #</th><th scope="col">Title</th><th scope="col">price</th><th scope="col">Thumbnail</th></tr></thead>'
     table += '<tbody>'
     data.forEach(product => {
         table += `

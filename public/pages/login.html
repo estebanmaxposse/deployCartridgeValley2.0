@@ -10,7 +10,7 @@
       integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
       crossorigin="anonymous"
     />
-    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
   </head>
 
   <body>
@@ -46,9 +46,17 @@
               <a class="nav-link" href="profile.html" disabled>Profile</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="chat.html">Chat</a>
+              <a class="nav-link" href="chat.html">Chat</a>
             </li>
-            <button class="btn btn-outline-success" type="button" onclick="logout()" id="logout" hidden>Log out</button>
+            <button
+              class="btn btn-outline-success"
+              type="button"
+              onclick="logout()"
+              id="logout"
+              hidden
+            >
+              Log out
+            </button>
           </ul>
         </div>
       </div>
@@ -78,11 +86,29 @@
             required
           />
         </div>
-        <button type="submit" class="btn btn-primary">Log in!</button>
+        <div class="mb-3">
+          <label for="user-password-confirm" class="form-label"
+            >Confirm Password</label
+          >
+          <input
+            type="password"
+            class="form-control"
+            id="user-password-confirm"
+            name="password-confirm"
+            required
+          />
+          <small
+            class="text-danger"
+            id="password-mismatch-error"
+            style="display: none"
+            >Passwords do not match</small
+          >
+        </div>
+        <button type="submit" class="btn btn-primary" id="login-button">Log in!</button>
         <a href="/pages/signUp.html">Sign Up!</a>
       </form>
     </div>
 
-    <script type="text/javascript" src="../scripts/auth.js"></script>
+    <script type="text/javascript" src="../scripts/login.js"></script>
   </body>
 </html>
