@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "title": "Cartridge Valley API",
-    "description": "Documentation for the ecommerce Cartridge Valley API.\n\nYou can use the login POST route to get the auth token and access all the protected routes by clicking the authorize button below and pasting the token.\n\n[Cartridge Valley API Repository](https://github.com/estebanmaxposse/deployCartridgeValley2.0.git)",
+    "description": "Documentation for the ecommerce Cartridge Valley API.\n\nYou can use the login POST route to get the auth token and access all the protected routes by clicking the authorize button below and pasting the token.\n\nRemember to choose the server according to your testing enviroment (local or online).\n\n[Cartridge Valley API Repository](https://github.com/estebanmaxposse/deployCartridgeValley2.0.git)",
     "version": "1.0.0"
   },
   "servers": [
