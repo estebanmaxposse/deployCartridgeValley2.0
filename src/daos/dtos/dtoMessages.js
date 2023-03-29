@@ -2,11 +2,9 @@ class messageDTO {
     constructor(messageData) {
         this.senderEmail = messageData.senderEmail
         this.senderID = messageData.senderID
-        this.name = messageData.author.name,
-        this.avatar = messageData.author.avatar
         this.author = {
-            name: this.name,
-            avatar: this.avatar
+            name: messageData.author.name,
+            avatar: messageData.author.avatar
         }
         this.admin = messageData.admin
         this.text = messageData.text

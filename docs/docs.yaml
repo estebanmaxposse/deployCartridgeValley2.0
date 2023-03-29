@@ -677,7 +677,69 @@ paths:
           description: Can't access this page
         '401':
           description: Unauthorized access to this page
-                  
+  
+  #CHAT ROUTES
+  /api/chat:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Chat
+      summary: Fetches all messages
+      description: Fetches all messages from DB
+      operationId: getMessages
+      responses:
+        '200':
+          description: Fetched messages successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Message'
+        '500':
+          description: Internal server error
+        '403':
+          description: Can't access this page
+        '401':
+          description: Unauthorized access to this page
+        '404':
+          description: No messages found
+
+  /api/chat/{email}:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Chat
+      summary: Fetches messages from specific user
+      description: Fetches messages from specific user by email from DB
+      operationId: getMessagesFromUser
+      parameters:
+        - in: path
+          name: email
+          required: true
+          description: Email of user
+          schema: 
+            type: string
+      responses:
+        '200':
+          description: Fetched messages successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Message'
+        '500':
+          description: Internal server error
+        '403':
+          description: Can't access this page
+        '401':
+          description: Unauthorized access to this page
+        '404':
+          description: No messages found for this user
+               
 components:
   securitySchemes:
     bearerAuth:
@@ -1068,7 +1130,64 @@ components:
         age: 22
         avatar: https://i.imgur.com/8UYsXOS.jpg
         
+  # CHAT SCHEMAS
+    Message:
+      type: object
+      required:
+        - id
+        - author
+        - senderID
+        - senderEmail
+        - text
+        - date
+      properties:
+        id:
+          type: string
+          description: The auto-generated id of the message.
+        author:
+          $ref: '#/components/schemas/MessageAuthor'
+        senderID:
+          type: string
+          description: The id of the message sender.
+        senderEmail:
+          type: string
+          description: The email of the message sender.
+        text:
+          type: string
+          description: The text of the message.
+        date:
+          type: string
+          description: The date and hour the message was sent.
+      example:
+        senderEmail: estebanposse98@gmail.com
+        senderID: 64015ee93df47041a3837a23
+        author:
+          name: Bebe
+          avatar: https://i.imgur.com/3oHh4La.png
+        text: Welcome to Cartridge Valley!
+        date: 3/16/2023, 6:02:26 PM
         
+    MessageAuthor:
+      type: object
+      required:
+        - id
+        - name
+        - avatar
+      properties:
+        id:
+          type: string
+          description: The auto-generated id of the message author.
+        name:
+          type: string
+          description: The name of the message author.
+        avatar:
+          type: string
+          description: The URL of the message author's avatar.
+      example:
+        id: 64068dd92d3fe9de624b9725
+        name: John Doe
+        avatar: https://i.imgur.com/8UYsXOS.jpg
+
   requestBodies:
     NewProduct:
       description: A JSON object with the product to be added
@@ -1130,3 +1249,7 @@ tags:
     description: Manage ecommerce users & admins
   - name: Carts
     description: Manage ecommerce carts
+  - name: Orders
+    description: Manage ecommerce orders
+  - name: Chat
+    description: Manage ecommerce chat
