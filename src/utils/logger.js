@@ -26,7 +26,6 @@ const invalidRouteLog = (req, res, next) => {
 }
 
 const errorLog = async (error, message) => {
-    loggerInfo.info(error, message)
     loggerError.error(error, message)
     return
 }

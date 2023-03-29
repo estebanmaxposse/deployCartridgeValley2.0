@@ -23,7 +23,6 @@ const renderProducts = async () => {
 renderProducts()
 
 const renderByCategory = async (category) => {
-    console.log(category);
     const token = localStorage.getItem('token')
     await fetch(`/api/products/${category}`, {
         method: 'GET',
@@ -46,7 +45,7 @@ const renderProductsTable = (data) => {
         table += `
         <tr class='text-center'>
             <th scope='row'> ${product._id} </th>
-            <td class='text-center'><a href=${product.url}>${product.title}</a></td>
+            <td class='text-center'>${product.title}</td>
             <td class='text-center'>${product.price}</td>
             <td class='text-center'><img src=${product.thumbnail} class='w-25 h-auto' />
         </tr>`

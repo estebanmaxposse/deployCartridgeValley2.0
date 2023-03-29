@@ -16,7 +16,6 @@ const login = async () => {
             body: JSON.stringify({ email: email, password: password })
         })
         const result = await response.json();
-        console.log('TOKEN', result);
         const token = localStorage.setItem('token', result);
         window.location.href = '/';
     } catch (error) {
@@ -28,7 +27,6 @@ loginButton.addEventListener('click', (event) => {
     if (document.getElementById('user-password').value !== document.getElementById('user-password-confirm').value) {
         console.log('Passwords do not match');
         event.preventDefault();
-        // Display an error message to the user
         const errorDiv = document.createElement('div');
         errorDiv.innerHTML = 'Passwords do not match';
         errorDiv.style.color = 'red';

@@ -24,7 +24,6 @@ const signUp = () => {
             return response.json();
         })
         .then(data => {
-            console.log(data);
             localStorage.setItem('token', data);
             window.location.href = '/';
         })
