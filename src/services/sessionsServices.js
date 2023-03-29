@@ -11,6 +11,7 @@ import isValidPassword from "../utils/passwordValidator.js";
 const verifyToken = (req, res, next) => {
     const authHeader = req.headers.authorization;
     const token = authHeader && authHeader.split(' ')[1];
+    console.log(token);
     try {
         const decoded = verify(token, config.SESSION_KEY);
         req.user = decoded;

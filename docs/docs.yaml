@@ -4,8 +4,10 @@ info:
   description: |- 
     Documentation for the ecommerce Cartridge Valley API.
 
+    You can use the login POST route to get the auth token and access all the protected routes by clicking the authorize button below and pasting the token.
+
     [Cartridge Valley API Repository](https://github.com/estebanmaxposse/deployCartridgeValley2.0.git)
-  version: 0.1.1
+  version: 1.0.0
 
 servers:
   - url: http://localhost:8080
@@ -13,7 +15,7 @@ servers:
 
 paths:
   #PRODUCT ROUTES
-  /products:
+  /api/products:
     get:
       security:
         - bearerAuth: [] 
@@ -22,13 +24,6 @@ paths:
       summary: Gets all products
       description: Gets all products from database.
       operationId: getProducts
-      parameters:
-        - in: header
-          name: Authorization
-          required: true
-          schema: 
-            type: string
-            format: JWT
       responses:
         '200':
           description: Fetched products successfully
@@ -45,8 +40,538 @@ paths:
         '401':
           description: Unauthorized access to this page
 
+    post:
+      security:
+        - bearerAuth: [] 
+      tags: 
+        - Products
+      summary: Posts a product
+      description: Uploads a product to the database.
+      operationId: newProduct
+      requestBody: 
+        description: JSON with new product data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewProduct'
+      responses:
+        '201':
+          description: Uplaoded product successfully
+          content: 
+            application/json: 
+              schema:
+                type: object
+                properties:
+                  productId:
+                    type: string
+                    description: ID generated of the new product
+                example:
+                    message: Product 6420a7334e4afe6bf6ba391c saved
+                    product: 6420a7334e4afe6bf6ba391c
+          links:
+            getProduct:
+              $ref: '#/components/links/getProduct'
+            updateProduct:
+              $ref: '#/components/links/updateProduct'
+            deleteProduct:
+              $ref: '#/components/links/deleteProduct'
+        '500':
+          description: Internal server error
+        '403':
+          description: Can't access this page
+        '401':
+          description: Unauthorized access to this page
+  
+  /api/products/product/{id}:
+    get:
+      security:
+        - bearerAuth: []  
+      tags: 
+        - Products
+      summary: Gets the product with the corresponding id
+      description: Gets the product with the corresponding id. If it does not exists returns 404.
+      operationId: getProduct
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: 
+            type: string
+      responses:
+        '200':
+          description: Fetched product successfully
+          content: 
+            application/json: 
+              schema:
+                $ref: '#/components/schemas/Product'
+          links:
+            updateProduct:
+              $ref: '#/components/links/updateProduct'
+            deleteProduct:
+              $ref: '#/components/links/deleteProduct'
+        '404': 
+          description: Couldn't find product
+        '500':
+          description: Internal server error
+        '403':
+          description: Can't access this page
+        '401':
+          description: Unauthorized access to this page
+
+    put:
+      security:
+        - bearerAuth: []
+      tags: 
+        - Products
+      summary: Updates a specific product
+      description: Upadtes a product in the database.
+      operationId: updateProduct
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: 
+            type: string
+      requestBody:
+        description: JSON with info to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProduct'
+      responses:
+        '201':
+          description: Updated product successfully
+          content: 
+            application/json: 
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Message from the server
+                  productId:
+                    type: string
+                    description: ID generated of the new product
+                example:
+                    message: Product 6420a7334e4afe6bf6ba391c updated
+                    product: 6420a7334e4afe6bf6ba391c
+        '500':
+          description: Internal server error
+        '403':
+          description: Can't access this page
+        '404':
+          description: Couldn't find product
+        '401':
+          description: Unauthorized access to this page
+
+    delete:
+      security:
+        - bearerAuth: [] 
+      tags: 
+        - Products
+      summary: Deletes the product with the corresponding id
+      description: Deletes the product with the corresponding id.
+      operationId: deleteProduct
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: 
+            type: string
+      responses:
+        '201':
+          description: Deleted product successfully
+          content: 
+            application/json: 
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Message from the server
+                  productId:
+                    type: string
+                    description: ID  of deleted product
+                example:
+                  message: Product 63efecc343df49b6c6054189 deleted
+                  productId: 63efecc343df49b6c6054189
+        '500':
+          description: Internal server error
+        '403':
+          description: Can't access this page
+        '401':
+          description: Unauthorized access to this page
+
+  #CART ROUTES
+  /api/cart:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Carts
+      summary: Creates a new cart
+      description: Creates a new cart for the user
+      operationId: newCart
+      responses:
+        '201':
+          description: Cart created successfully. Returns ID of created cart
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "642351a5ef4a86c0b2e11c5e"
+                description: ID of created cart
+        '500':
+          description: Internal server error
+        '403':
+          description: Can't access this page
+        '401':
+          description: Unauthorized access to this page
+
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Carts
+      summary: Fetches all carts from DB
+      description: Fetches all carts from DB
+      operationId: getCarts
+      responses:
+        '200':
+          description: Fetched carts successfully
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cart'
+        '500':
+          description: Internal server error
+        '403':
+          description: Can't access this page
+        '401':
+          description: Unauthorized access to this page
+
+  /api/cart/{id}/products:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Carts
+      summary: Adds products to specific cart
+      description: Adds array of products to the cart selected
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: 
+            type: string
+      requestBody: 
+        description: Array of products to add
+        required: true
+        content: 
+          application/json:
+            schema: 
+              type: array
+              items:
+                $ref: '#/components/schemas/Product'
+            example:
+              - _id: 636bd97f8b94654de74ee25a
+                title: Super Mario 3D World + Bowser's Fury
+                description: >-
+                  Pounce and climb through dozens of colorful courses! Multiply the fun by teaming up with or competing against friends locally** or online*** to reach each stage’s goal. Work together to explore and uncover collectibles, or compete for the crown by earning the highest score, making for a friendly frenzy!
+                price: 50
+                stock: 9
+                code: dsadas
+                category: games
+                thumbnail: https://i.imgur.com/6r9fYzL.png
+              - _id: 636bd97f8b94654de74ee252
+                title: Dying Light 2. Deluxe Edition
+                description: >-
+                  Use your agility and combat skills to survive, and change the fate of The City. Upgrade your Dying Light 2 Standard Edition to get the Deluxe content.
+                price: 80
+                stock: 5
+                code: dsadas
+                category: games
+                thumbnail: https://i.imgur.com/zbjM3Ni.png
+      responses:
+        '201':
+          description: Product added successfully
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Cart updated!
+        '500':
+          description: Internal server error
+        '403':
+          description: Can't access this page
+        '401':
+          description: Unauthorized access to this page
+
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Carts
+      summary: Fetches products of specific cart
+      description: Fetches products of specific cart from DB
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: 
+            type: string
+      responses:
+        '204':
+          description: The cart has no products
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: This cart has no products
+        '200':
+          description: Fetched products of cart successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  cartId:
+                    type: string
+                    description: ID of cart
+                  products:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        product:
+                          $ref: '#/components/schemas/Product'
+                        quantity:
+                          type: number
+                          description: Quantity of product in cart
+                        subtotal:
+                          type: number
+                          description: Subtotal of product in cart
+                  buyerID: 
+                    type: string
+                    description: ID of user
+                  cartLength:
+                    type: number
+                    description: Number of products in cart
+                  total:
+                    type: number
+                    description: Total price of products in cart
+                example:
+                  cartId: 64068dd92d3fe9de624b972a
+                  products:
+                    - product:
+                        _id: 636bd97f8b94654de74ee25a
+                        title: Super Mario 3D World + Bowser's Fury
+                        description: >-
+                          Pounce and climb through dozens of colorful courses! Multiply the fun by teaming up with or competing against friends locally** or online*** to reach each stage’s goal. Work together to explore and uncover collectibles, or compete for the crown by earning the highest score, making for a friendly frenzy!
+                        price: 50
+                        stock: 9
+                        code: dsadas
+                        category: games
+                        thumbnail: https://i.imgur.com/6r9fYzL.png
+                      quantity: 1
+                      subtotal: 50
+                    - product:
+                        _id: 636bd97f8b94654de74ee252
+                        title: Dying Light 2. Deluxe Edition
+                        description: >-
+                          Use your agility and combat skills to survive, and change the fate of The City. Upgrade your Dying Light 2 Standard Edition to get the Deluxe content.
+                        price: 80
+                        stock: 5
+                        code: dsadas
+                        category: games
+                        thumbnail: https://i.imgur.com/zbjM3Ni.png
+                      quantity: 1
+                      subtotal: 80
+                  buyerID: 64068dd92d3fe9de624b9726
+                  cartLength: 2
+                  total: 130
+        '500':
+          description: Internal server error
+        '403':
+          description: Can't access this page
+        '401':
+          description: Unauthorized access to this page
+        '404':
+          description: Cart not found
+
+  /api/cart/{id}/products/{id_prod}:
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - Carts
+      summary: Deletes product from specific cart and updates cart
+      description: Deletes product from specific cart and updates cart
+      operationId: deleteProductFromCart
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of cart
+          schema: 
+            type: string
+        - in: path
+          name: id_prod
+          required: true
+          description: ID of product
+          schema: 
+            type: string
+      responses:
+        '200':
+          description: Product deleted successfully
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Removed product with ID 636bd97f8b94654de74ee254 from cart 64068dd92d3fe9de624b972a
+        '500':
+          description: Internal server error
+        '403':
+          description: Can't access this page
+        '401':
+          description: Unauthorized access to this page
+        '404':
+          description: Cart not found
+
+  /api/cart/{id}:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Carts
+      summary: Fetches specific cart
+      description: Fetches specific cart from DB
+      operationId: getCart
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of cart
+          schema: 
+            type: string
+      responses:
+        '200':
+          description: Fetched cart successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        '500':
+          description: Internal server error
+        '403':
+          description: Can't access this page
+        '401':
+          description: Unauthorized access to this page
+        '404':
+          description: Cart not found
+    
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - Carts
+      summary: Deletes specific cart
+      description: Deletes specific cart from DB
+      operationId: deleteCart
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of cart
+          schema: 
+            type: string
+      responses:
+        '201':
+          description: Cart deleted successfully
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Cart deleted successfully
+        '500':
+          description: Internal server error
+        '403':
+          description: Can't access this page
+        '401':
+          description: Unauthorized access to this page
+        '404':
+          description: Cart not found
+    
+    put:
+      security:
+        - bearerAuth: []
+      tags:
+        - Carts
+      summary: Clears products from specific cart
+      description: Clears products from specific cart and updates it in DB
+      operationId: clearCart
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of cart
+          schema: 
+            type: string
+      responses:
+        '200':
+          description: Cart cleared successfully
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Cart cleared successfully
+        '500':
+          description: Internal server error
+        '403':
+          description: Can't access this page
+        '401':
+          description: Unauthorized access to this page
+        '404':
+          description: Cart not found
+
+  /api/cart/user/{id}:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Carts
+      summary: Fetches cart from user
+      description: Fetches cart from user from DB. Useful for getting the cart of the logged in user.
+      operationId: getCartFromUser
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of user
+          schema: 
+            type: string
+      responses:
+        '200':
+          description: Fetched cart successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        '500':
+          description: Internal server error
+        '403':
+          description: Can't access this page
+        '401':
+          description: Unauthorized access to this page
+        '404':
+          description: Cart not found
+
   #SESSION ROUTES
-  /auth/login:
+  /api/auth/login:
     post: 
       security: []
       tags: 
@@ -68,10 +593,90 @@ paths:
                     description: JWT token
                 example:
                   token: eyJhbGciOiJIUzI1NiIsInR5c
+        '404':
+          description: User not found
         '401':
           description: Invalid credentials
         '500':
           description: Internal server error
+
+  /api/auth/signup:
+    post:
+      security: []
+      tags:
+        - Users
+      summary: Signs up a user
+      description: signs up an user and returns a JWT token.
+      requestBody:
+        $ref: '#/components/requestBodies/NewUser'
+      responses:
+        '200':
+          description: Sign up in successfully. Use the token for authentication.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: JWT token
+                example:
+                  token: eyJhbGciOiJIUzI1NiIsInR5c
+        '500':
+          description: Internal server error
+        '409':
+          description: User already exists
+      
+  /api/auth/user:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Users
+      summary: Fetches info of currently logged in user
+      description: Fectches data from the currently logged in user
+      responses:
+        '200':
+          description: Successfully fetched user info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '500':
+          description: Internal server error
+        '403':
+          description: Can't access this page
+        '401':
+          description: Unauthorized access to this page
+
+  /api/auth/update:
+    put:
+      security:
+        - bearerAuth: []
+      tags:
+        - Users
+      summary: Updates currently logged in user
+      description: Updates the data of the currently logged in user
+      requestBody:
+        description: JSON with info to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUser'
+      responses:
+        '200':
+          description: Successfully fetched user info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateUser'
+        '500':
+          description: Internal server error
+        '403':
+          description: Can't access this page
+        '401':
+          description: Unauthorized access to this page
                   
 components:
   securitySchemes:
@@ -222,8 +827,81 @@ components:
         code: randomcode
         category: games
         thumbnail: https://i.imgur.com/zbjM3Ni.png
-        
-    #USER SCHEMAS
+
+  #CART SCHEMAS
+    Cart:
+      type: object
+      required:
+        - id
+        - timestamp
+        - products
+        - buyerID
+        - buyerEmail
+        - buyerShippingAddress
+        - cartTotalProducts
+        - cartTotalPrice
+      properties:
+        id:
+          type: string
+          description: The auto-generated id of the cart
+        timestamp:
+          type: string
+          description: The date when the cart was created
+        products:
+          type: array
+          description: Array of products in cart
+          items:
+            $ref: '#/components/schemas/CartProduct'
+        buyerID:
+          type: string
+          description: ID pointing to the user who created the cart
+        buyerEmail:
+          type: string
+          description: Email of the user who created the cart
+        buyerShippingAddress:
+          type: string
+          description: Shipping address of the user who created the cart
+        cartTotalProducts:
+          type: number
+          description: The total number of products in the cart
+        cartTotalPrice:
+          type: number
+          description: The total price of the cart
+      example:
+        id: 64068dd92d3fe9de624b972a
+        timestamp: 3/6/2023
+        products:
+          - id: 636bd97f8b94654de74ee254
+            count: 3
+            totalrice: 180
+        buyerID: 6420ee26686e0b9d0fa9bff6
+        buyerEmail: estebanmaxposse@hotmail.com
+        buyerShippingAddress: Emilio Civit 774
+        cartTotalProducts: 3
+        cartTotalPrice: 180
+            
+    CartProduct:
+      type: object
+      required:
+        - id
+        - count
+        - subtotal
+      properties:
+        id:
+          type: string
+          description: Id pointing to the product in the DB
+        count:
+          type: number
+          description: Quantity of the product in cart
+        totalPrice:
+          type: number
+          description: Total price of this sub-set of products
+      example:
+        id: 636bd97f8b94654de74ee254
+        count: 3
+        totalPrice: 180
+
+  #USER SCHEMAS
     User:
       type: object
       required:
@@ -431,9 +1109,24 @@ components:
         application/json:
           schema: 
             $ref: '#/components/schemas/UpdateUser'
+  links:
+    getProduct:
+      operationId: getProduct
+      parameters:
+        id: $response.body#/product
+    updateProduct:
+      operationId: updateProduct
+      parameters:
+        id: $response.body#/product
+    deleteProduct:
+      operationId: deleteProduct
+      parameters:
+        id: $response.body#/product
 
 tags:
   - name: Products
     description: Manage ecommerce products
   - name: Users
     description: Manage ecommerce users & admins
+  - name: Carts
+    description: Manage ecommerce carts
