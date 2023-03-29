@@ -30,7 +30,7 @@ const signUpUserController = async (req, res) => {
 
 const updateUserController = async (req, res) => {
     try {
-        let user = await updateUser(req.body)
+        let user = await updateUser(req.body, req.user.user._id)
         res.status(user.status).json(user.response)
     } catch (error) {
         errorLog(error, "Couldn't update user!")

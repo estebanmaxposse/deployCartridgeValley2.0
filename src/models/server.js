@@ -5,11 +5,10 @@ import { Server as IOServer } from 'socket.io';
 import { join } from 'path';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
-
-import { verifyToken } from '../services/sessionsServices.js';
 import productRouter from '../routes/productRoutes.js';
 import cartRouter from '../routes/cartRoutes.js'
 import { entryRoutes, sessionRouter } from '../routes/sessionRoutes.js';
+import { verifyToken } from '../services/sessionsServices.js';
 import orderRouter from '../routes/orderRoutes.js';
 import { miscRouter, errorRouter, docsRouter } from '../routes/miscRoutes.js'
 import chatRouter from '../routes/chatRoutes.js'
@@ -50,7 +49,7 @@ app.use(cookieParser());
 //Routes
 app.get('/favicon.ico', (req, res) => res.status(204));
 app.use('/api/auth', compression(), routeLog, entryRoutes)
-app.use(docsRouter)
+app.use(routeLog, docsRouter)
 app.use(compression(), routeLog, miscRouter)
 
 //Protected Routes

@@ -1,0 +1,2255 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Cartridge Valley API",
+    "description": "Documentation for the ecommerce Cartridge Valley API.\n\nYou can use the login POST route to get the auth token and access all the protected routes by clicking the authorize button below and pasting the token.\n\n[Cartridge Valley API Repository](https://github.com/estebanmaxposse/deployCartridgeValley2.0.git)",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Main server"
+    }
+  ],
+  "paths": {
+    "/api/products": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Products"
+        ],
+        "summary": "Gets all products",
+        "description": "Gets all products from database.",
+        "operationId": "getProducts",
+        "responses": {
+          "200": {
+            "description": "Fetched products successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access to this page"
+          },
+          "403": {
+            "description": "Can't access this page"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Products"
+        ],
+        "summary": "Posts a product",
+        "description": "Uploads a product to the database.",
+        "operationId": "newProduct",
+        "requestBody": {
+          "description": "JSON with new product data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewProduct"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Uplaoded product successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "productId": {
+                      "type": "string",
+                      "description": "ID generated of the new product"
+                    }
+                  },
+                  "example": {
+                    "message": "Product 6420a7334e4afe6bf6ba391c saved",
+                    "product": "6420a7334e4afe6bf6ba391c"
+                  }
+                }
+              }
+            },
+            "links": {
+              "getProduct": {
+                "$ref": "#/components/links/getProduct"
+              },
+              "updateProduct": {
+                "$ref": "#/components/links/updateProduct"
+              },
+              "deleteProduct": {
+                "$ref": "#/components/links/deleteProduct"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access to this page"
+          },
+          "403": {
+            "description": "Can't access this page"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/api/products/product/{id}": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Products"
+        ],
+        "summary": "Gets the product with the corresponding id",
+        "description": "Gets the product with the corresponding id. If it does not exists returns 404.",
+        "operationId": "getProduct",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Fetched product successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            },
+            "links": {
+              "updateProduct": {
+                "$ref": "#/components/links/updateProduct"
+              },
+              "deleteProduct": {
+                "$ref": "#/components/links/deleteProduct"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access to this page"
+          },
+          "403": {
+            "description": "Can't access this page"
+          },
+          "404": {
+            "description": "Couldn't find product"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "put": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Products"
+        ],
+        "summary": "Updates a specific product",
+        "description": "Upadtes a product in the database.",
+        "operationId": "updateProduct",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "JSON with info to update",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProduct"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Updated product successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Message from the server"
+                    },
+                    "productId": {
+                      "type": "string",
+                      "description": "ID generated of the new product"
+                    }
+                  },
+                  "example": {
+                    "message": "Product 6420a7334e4afe6bf6ba391c updated",
+                    "product": "6420a7334e4afe6bf6ba391c"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access to this page"
+          },
+          "403": {
+            "description": "Can't access this page"
+          },
+          "404": {
+            "description": "Couldn't find product"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Products"
+        ],
+        "summary": "Deletes the product with the corresponding id",
+        "description": "Deletes the product with the corresponding id.",
+        "operationId": "deleteProduct",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Deleted product successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Message from the server"
+                    },
+                    "productId": {
+                      "type": "string",
+                      "description": "ID  of deleted product"
+                    }
+                  },
+                  "example": {
+                    "message": "Product 63efecc343df49b6c6054189 deleted",
+                    "productId": "63efecc343df49b6c6054189"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access to this page"
+          },
+          "403": {
+            "description": "Can't access this page"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/api/cart": {
+      "post": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Carts"
+        ],
+        "summary": "Creates a new cart",
+        "description": "Creates a new cart for the user",
+        "operationId": "newCart",
+        "responses": {
+          "201": {
+            "description": "Cart created successfully. Returns ID of created cart",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "642351a5ef4a86c0b2e11c5e",
+                  "description": "ID of created cart"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access to this page"
+          },
+          "403": {
+            "description": "Can't access this page"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Carts"
+        ],
+        "summary": "Fetches all carts from DB",
+        "description": "Fetches all carts from DB",
+        "operationId": "getCarts",
+        "responses": {
+          "200": {
+            "description": "Fetched carts successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Cart"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access to this page"
+          },
+          "403": {
+            "description": "Can't access this page"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/api/cart/{id}/products": {
+      "post": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Carts"
+        ],
+        "summary": "Adds products to specific cart",
+        "description": "Adds array of products to the cart selected",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Array of products to add",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              },
+              "example": [
+                {
+                  "_id": "636bd97f8b94654de74ee25a",
+                  "title": "Super Mario 3D World + Bowser's Fury",
+                  "description": "Pounce and climb through dozens of colorful courses! Multiply the fun by teaming up with or competing against friends locally** or online*** to reach each stage’s goal. Work together to explore and uncover collectibles, or compete for the crown by earning the highest score, making for a friendly frenzy!",
+                  "price": 50,
+                  "stock": 9,
+                  "code": "dsadas",
+                  "category": "games",
+                  "thumbnail": "https://i.imgur.com/6r9fYzL.png"
+                },
+                {
+                  "_id": "636bd97f8b94654de74ee252",
+                  "title": "Dying Light 2. Deluxe Edition",
+                  "description": "Use your agility and combat skills to survive, and change the fate of The City. Upgrade your Dying Light 2 Standard Edition to get the Deluxe content.",
+                  "price": 80,
+                  "stock": 5,
+                  "code": "dsadas",
+                  "category": "games",
+                  "thumbnail": "https://i.imgur.com/zbjM3Ni.png"
+                }
+              ]
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Product added successfully",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "Cart updated!"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access to this page"
+          },
+          "403": {
+            "description": "Can't access this page"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Carts"
+        ],
+        "summary": "Fetches products of specific cart",
+        "description": "Fetches products of specific cart from DB",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Fetched products of cart successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "cartId": {
+                      "type": "string",
+                      "description": "ID of cart"
+                    },
+                    "products": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "product": {
+                            "$ref": "#/components/schemas/Product"
+                          },
+                          "quantity": {
+                            "type": "number",
+                            "description": "Quantity of product in cart"
+                          },
+                          "subtotal": {
+                            "type": "number",
+                            "description": "Subtotal of product in cart"
+                          }
+                        }
+                      }
+                    },
+                    "buyerID": {
+                      "type": "string",
+                      "description": "ID of user"
+                    },
+                    "cartLength": {
+                      "type": "number",
+                      "description": "Number of products in cart"
+                    },
+                    "total": {
+                      "type": "number",
+                      "description": "Total price of products in cart"
+                    }
+                  },
+                  "example": {
+                    "cartId": "64068dd92d3fe9de624b972a",
+                    "products": [
+                      {
+                        "product": {
+                          "_id": "636bd97f8b94654de74ee25a",
+                          "title": "Super Mario 3D World + Bowser's Fury",
+                          "description": "Pounce and climb through dozens of colorful courses! Multiply the fun by teaming up with or competing against friends locally** or online*** to reach each stage’s goal. Work together to explore and uncover collectibles, or compete for the crown by earning the highest score, making for a friendly frenzy!",
+                          "price": 50,
+                          "stock": 9,
+                          "code": "dsadas",
+                          "category": "games",
+                          "thumbnail": "https://i.imgur.com/6r9fYzL.png"
+                        },
+                        "quantity": 1,
+                        "subtotal": 50
+                      },
+                      {
+                        "product": {
+                          "_id": "636bd97f8b94654de74ee252",
+                          "title": "Dying Light 2. Deluxe Edition",
+                          "description": "Use your agility and combat skills to survive, and change the fate of The City. Upgrade your Dying Light 2 Standard Edition to get the Deluxe content.",
+                          "price": 80,
+                          "stock": 5,
+                          "code": "dsadas",
+                          "category": "games",
+                          "thumbnail": "https://i.imgur.com/zbjM3Ni.png"
+                        },
+                        "quantity": 1,
+                        "subtotal": 80
+                      }
+                    ],
+                    "buyerID": "64068dd92d3fe9de624b9726",
+                    "cartLength": 2,
+                    "total": 130
+                  }
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "The cart has no products",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "This cart has no products"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access to this page"
+          },
+          "403": {
+            "description": "Can't access this page"
+          },
+          "404": {
+            "description": "Cart not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/api/cart/{id}/products/{id_prod}": {
+      "delete": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Carts"
+        ],
+        "summary": "Deletes product from specific cart and updates cart",
+        "description": "Deletes product from specific cart and updates cart",
+        "operationId": "deleteProductFromCart",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "ID of cart",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "id_prod",
+            "required": true,
+            "description": "ID of product",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Product deleted successfully",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "Removed product with ID 636bd97f8b94654de74ee254 from cart 64068dd92d3fe9de624b972a"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access to this page"
+          },
+          "403": {
+            "description": "Can't access this page"
+          },
+          "404": {
+            "description": "Cart not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/api/cart/{id}": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Carts"
+        ],
+        "summary": "Fetches specific cart",
+        "description": "Fetches specific cart from DB",
+        "operationId": "getCart",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "ID of cart",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Fetched cart successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Cart"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access to this page"
+          },
+          "403": {
+            "description": "Can't access this page"
+          },
+          "404": {
+            "description": "Cart not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Carts"
+        ],
+        "summary": "Deletes specific cart",
+        "description": "Deletes specific cart from DB",
+        "operationId": "deleteCart",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "ID of cart",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Cart deleted successfully",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "Cart deleted successfully"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access to this page"
+          },
+          "403": {
+            "description": "Can't access this page"
+          },
+          "404": {
+            "description": "Cart not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "put": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Carts"
+        ],
+        "summary": "Clears products from specific cart",
+        "description": "Clears products from specific cart and updates it in DB",
+        "operationId": "clearCart",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "ID of cart",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cart cleared successfully",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "Cart cleared successfully"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access to this page"
+          },
+          "403": {
+            "description": "Can't access this page"
+          },
+          "404": {
+            "description": "Cart not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/api/cart/user/{id}": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Carts"
+        ],
+        "summary": "Fetches cart from user",
+        "description": "Fetches cart from user from DB. Useful for getting the cart of the logged in user.",
+        "operationId": "getCartFromUser",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "ID of user",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Fetched cart successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Cart"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access to this page"
+          },
+          "403": {
+            "description": "Can't access this page"
+          },
+          "404": {
+            "description": "Cart not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/api/order": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Fetches all orders",
+        "description": "Fetches all orders from DB",
+        "operationId": "getOrders",
+        "responses": {
+          "200": {
+            "description": "Fetched orders successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Order"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access to this page"
+          },
+          "403": {
+            "description": "Can't access this page"
+          },
+          "404": {
+            "description": "Orders not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/api/order/{id}": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Fetches specific order",
+        "description": "Fetches specific order from DB",
+        "operationId": "getOrder",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "ID of order",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Fetched order successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access to this page"
+          },
+          "403": {
+            "description": "Can't access this page"
+          },
+          "404": {
+            "description": "Order not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Creates an order",
+        "description": "Creates an order with the user and their cart info and adds it to DB. It also sends an email to the user with the order details, and to the admin with the order details and the user's contact info. Finally, it clears the user's cart.",
+        "operationId": "createOrder",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "ID of cart",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Order created successfully",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "64062bcd67d009dc58649d66",
+                  "description": "Id of the created order"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Cart is empty. Add some products first"
+          },
+          "401": {
+            "description": "Unauthorized access to this page"
+          },
+          "403": {
+            "description": "Can't access this page"
+          },
+          "404": {
+            "description": "Cart for order creation not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "put": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Updates specific order status",
+        "description": "Updates specific order status in DB",
+        "operationId": "updateOrderStatus",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "ID of order",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "New status of the order",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "description": "New status of the order",
+                    "enum": [
+                      "pending",
+                      "processing",
+                      "shipped",
+                      "delivered",
+                      "cancelled"
+                    ]
+                  }
+                },
+                "example": {
+                  "status": "shipped"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Order status updated successfully",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "Order status updated successfully"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access to this page"
+          },
+          "403": {
+            "description": "Can't access this page"
+          },
+          "404": {
+            "description": "Order not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Deletes specific order",
+        "description": "Deletes specific order from DB",
+        "operationId": "deleteOrder",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "ID of order",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Order deleted successfully",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "Order deleted!"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access to this page"
+          },
+          "403": {
+            "description": "Can't access this page"
+          },
+          "404": {
+            "description": "Order not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/api/order/user/{id}": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Fetches orders from user",
+        "description": "Fetches orders from user from DB. Useful for getting the orders of the logged in user.",
+        "operationId": "getOrdersFromUser",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "ID of user",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Fetched orders successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Order"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access to this page"
+          },
+          "403": {
+            "description": "Can't access this page"
+          },
+          "404": {
+            "description": "Orders not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "security": [],
+        "tags": [
+          "Users"
+        ],
+        "summary": "Logs in a user",
+        "description": "Logs in a user and returns a JWT token.",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/LoginUser"
+        },
+        "responses": {
+          "200": {
+            "description": "Logged in successfully. Use the token for authentication.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "description": "JWT token"
+                    }
+                  },
+                  "example": {
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5c"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid credentials"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/api/auth/signup": {
+      "post": {
+        "security": [],
+        "tags": [
+          "Users"
+        ],
+        "summary": "Signs up a user",
+        "description": "signs up an user and returns a JWT token.",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/NewUser"
+        },
+        "responses": {
+          "200": {
+            "description": "Sign up in successfully. Use the token for authentication.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "description": "JWT token"
+                    }
+                  },
+                  "example": {
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5c"
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "User already exists"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/api/auth/user": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Users"
+        ],
+        "summary": "Fetches info of currently logged in user",
+        "description": "Fectches data from the currently logged in user",
+        "responses": {
+          "200": {
+            "description": "Successfully fetched user info",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access to this page"
+          },
+          "403": {
+            "description": "Can't access this page"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/api/auth/update": {
+      "put": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Users"
+        ],
+        "summary": "Updates currently logged in user",
+        "description": "Updates the data of the currently logged in user",
+        "requestBody": {
+          "description": "JSON with info to update",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUser"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully fetched user info",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateUser"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access to this page"
+          },
+          "403": {
+            "description": "Can't access this page"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/api/chat": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Chat"
+        ],
+        "summary": "Fetches all messages",
+        "description": "Fetches all messages from DB",
+        "operationId": "getMessages",
+        "responses": {
+          "200": {
+            "description": "Fetched messages successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Message"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access to this page"
+          },
+          "403": {
+            "description": "Can't access this page"
+          },
+          "404": {
+            "description": "No messages found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/api/chat/{email}": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Chat"
+        ],
+        "summary": "Fetches messages from specific user",
+        "description": "Fetches messages from specific user by email from DB",
+        "operationId": "getMessagesFromUser",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "email",
+            "required": true,
+            "description": "Email of user",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Fetched messages successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Message"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access to this page"
+          },
+          "403": {
+            "description": "Can't access this page"
+          },
+          "404": {
+            "description": "No messages found for this user"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "Product": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "description",
+          "price",
+          "stock",
+          "code",
+          "category",
+          "thumbnail"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The auto-generated id of the product."
+          },
+          "title": {
+            "type": "string",
+            "description": "The title of the product."
+          },
+          "description": {
+            "type": "string",
+            "description": "The description of the product."
+          },
+          "price": {
+            "type": "number",
+            "description": "The price of the product."
+          },
+          "stock": {
+            "type": "number",
+            "description": "The stock of the product."
+          },
+          "code": {
+            "type": "number",
+            "description": "The code of the product."
+          },
+          "category": {
+            "type": "number",
+            "description": "The category of the product."
+          },
+          "thumbnail": {
+            "type": "string",
+            "description": "The URL of the product thumbnail."
+          }
+        },
+        "example": {
+          "id": "63e5b0f38e49c6dfc2ad4db1",
+          "title": "Dying Light 1",
+          "description": "Use your agility and combat skills to survive, and change the fate of The City. Upgrade your Dying Light 2 Standard Edition to get the Deluxe content.",
+          "price": 60,
+          "stock": 5,
+          "code": "randomcode",
+          "category": "games",
+          "thumbnail": "https://i.imgur.com/zbjM3Ni.png"
+        }
+      },
+      "NewProduct": {
+        "type": "object",
+        "required": [
+          "title",
+          "description",
+          "price",
+          "stock",
+          "code",
+          "category",
+          "thumbnail"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "The title of the product."
+          },
+          "description": {
+            "type": "string",
+            "description": "The description of the product."
+          },
+          "price": {
+            "type": "number",
+            "description": "The price of the product."
+          },
+          "stock": {
+            "type": "number",
+            "description": "The stock of the product."
+          },
+          "code": {
+            "type": "number",
+            "description": "The code of the product."
+          },
+          "category": {
+            "type": "number",
+            "description": "The category of the product."
+          },
+          "thumbnail": {
+            "type": "string",
+            "description": "The URL of the product thumbnail."
+          }
+        },
+        "example": {
+          "title": "Dying Light 1",
+          "description": "Use your agility and combat skills to survive, and change the fate of The City. Upgrade your Dying Light 2 Standard Edition to get the Deluxe content.",
+          "price": 60,
+          "stock": 5,
+          "code": "randomcode",
+          "category": "games",
+          "thumbnail": "https://i.imgur.com/zbjM3Ni.png"
+        }
+      },
+      "UpdateProduct": {
+        "type": "object",
+        "oneOf": [
+          {
+            "required": [
+              "title"
+            ],
+            "properties": {
+              "title": {
+                "type": "string",
+                "description": "The title of the product."
+              }
+            }
+          },
+          {
+            "required": [
+              "description"
+            ],
+            "properties": {
+              "description": {
+                "type": "string",
+                "description": "The description of the product."
+              }
+            }
+          },
+          {
+            "required": [
+              "price"
+            ],
+            "properties": {
+              "price": {
+                "type": "number",
+                "description": "The price of the product."
+              }
+            }
+          },
+          {
+            "required": [
+              "stock"
+            ],
+            "properties": {
+              "stock": {
+                "type": "number",
+                "description": "The stock of the product."
+              }
+            }
+          },
+          {
+            "required": [
+              "code"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "description": "The code of the product."
+              }
+            }
+          },
+          {
+            "required": [
+              "category"
+            ],
+            "properties": {
+              "category": {
+                "type": "string",
+                "description": "The category of the product."
+              }
+            }
+          },
+          {
+            "required": [
+              "thumbnail"
+            ],
+            "properties": {
+              "thumbnail": {
+                "type": "string",
+                "description": "The URL of the product thumbnail."
+              }
+            }
+          }
+        ],
+        "example": {
+          "title": "Dying Light 1",
+          "description": "Use your agility and combat skills to survive, and change the fate of The City. Upgrade your Dying Light 2 Standard Edition to get the Deluxe content.",
+          "price": 60,
+          "stock": 5,
+          "code": "randomcode",
+          "category": "games",
+          "thumbnail": "https://i.imgur.com/zbjM3Ni.png"
+        }
+      },
+      "Cart": {
+        "type": "object",
+        "required": [
+          "id",
+          "timestamp",
+          "products",
+          "buyerID",
+          "buyerEmail",
+          "buyerShippingAddress",
+          "cartTotalProducts",
+          "cartTotalPrice"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The auto-generated id of the cart"
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "The date when the cart was created"
+          },
+          "products": {
+            "type": "array",
+            "description": "Array of products in cart",
+            "items": {
+              "$ref": "#/components/schemas/CartProduct"
+            }
+          },
+          "buyerID": {
+            "type": "string",
+            "description": "ID pointing to the user who created the cart"
+          },
+          "buyerEmail": {
+            "type": "string",
+            "description": "Email of the user who created the cart"
+          },
+          "buyerShippingAddress": {
+            "type": "string",
+            "description": "Shipping address of the user who created the cart"
+          },
+          "cartTotalProducts": {
+            "type": "number",
+            "description": "The total number of products in the cart"
+          },
+          "cartTotalPrice": {
+            "type": "number",
+            "description": "The total price of the cart"
+          }
+        },
+        "example": {
+          "id": "64068dd92d3fe9de624b972a",
+          "timestamp": "3/6/2023",
+          "products": [
+            {
+              "id": "636bd97f8b94654de74ee254",
+              "count": 3,
+              "totalrice": 180
+            }
+          ],
+          "buyerID": "6420ee26686e0b9d0fa9bff6",
+          "buyerEmail": "estebanmaxposse@hotmail.com",
+          "buyerShippingAddress": "Emilio Civit 774",
+          "cartTotalProducts": 3,
+          "cartTotalPrice": 180
+        }
+      },
+      "CartProduct": {
+        "type": "object",
+        "required": [
+          "id",
+          "count",
+          "subtotal"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Id pointing to the product in the DB"
+          },
+          "count": {
+            "type": "number",
+            "description": "Quantity of the product in cart"
+          },
+          "totalPrice": {
+            "type": "number",
+            "description": "Total price of this sub-set of products"
+          }
+        },
+        "example": {
+          "id": "636bd97f8b94654de74ee254",
+          "count": 3,
+          "totalPrice": 180
+        }
+      },
+      "User": {
+        "type": "object",
+        "required": [
+          "id",
+          "username",
+          "fullName",
+          "phoneNumber",
+          "shippingAddress",
+          "email",
+          "password",
+          "admin",
+          "age",
+          "avatar"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The auto-generated id of the user."
+          },
+          "username": {
+            "type": "string",
+            "description": "The username of the user."
+          },
+          "fullName": {
+            "type": "string",
+            "description": "The name and surname of the user."
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "The user's phone number, including area code."
+          },
+          "shippingAddress": {
+            "type": "string",
+            "description": "The user's shipping address."
+          },
+          "email": {
+            "type": "string",
+            "description": "The user's email address."
+          },
+          "password": {
+            "type": "string",
+            "description": "The encrypted user's password."
+          },
+          "admin": {
+            "type": "boolean",
+            "description": "Describes if user has administrator privileges."
+          },
+          "age": {
+            "type": "number",
+            "description": "The user's age."
+          },
+          "avatar": {
+            "type": "string",
+            "description": "The URL of the user's avatar."
+          }
+        },
+        "example": {
+          "id": "64068dd92d3fe9de624b9725",
+          "username": "JohnDoe",
+          "fullName": "John Doe",
+          "phoneNumber": "+1 555 555 555",
+          "shippingAddress": "1234 Main St, Anytown, CA 12345",
+          "email": "johndoe98@gmail.com",
+          "password": "$2b$10$",
+          "admin": false,
+          "age": 22,
+          "avatar": "https://i.imgur.com/8UYsXOS.jpg"
+        }
+      },
+      "NewUser": {
+        "type": "object",
+        "required": [
+          "email",
+          "password"
+        ],
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "The username of the user."
+          },
+          "fullName": {
+            "type": "string",
+            "description": "The name and surname of the user."
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "The user's phone number, including area code."
+          },
+          "shippingAddress": {
+            "type": "string",
+            "description": "The user's shipping address."
+          },
+          "email": {
+            "type": "string",
+            "description": "The user's email address."
+          },
+          "password": {
+            "type": "string",
+            "description": "The encrypted user's password."
+          },
+          "age": {
+            "type": "number",
+            "description": "The user's age."
+          },
+          "avatar": {
+            "type": "string",
+            "description": "The URL of the user's avatar."
+          }
+        },
+        "example": {
+          "username": "JohnDoe",
+          "fullName": "John Doe",
+          "phoneNumber": "+1 555 555 555",
+          "shippingAddress": "1234 Main St, Anytown, CA 12345",
+          "email": "johndoe98@gmail.com",
+          "password": "$2b$10$",
+          "age": 22,
+          "avatar": "https://i.imgur.com/8UYsXOS.jpg"
+        }
+      },
+      "LoginUser": {
+        "type": "object",
+        "required": [
+          "email",
+          "password"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "The user's email address."
+          },
+          "password": {
+            "type": "string",
+            "description": "The encrypted user's password."
+          }
+        },
+        "example": {
+          "email": "johndoe98@gmail.com",
+          "password": "$2b$10$"
+        }
+      },
+      "UpdateUser": {
+        "type": "object",
+        "oneOf": [
+          {
+            "required": [
+              "username"
+            ],
+            "properties": {
+              "username": {
+                "type": "string",
+                "description": "The username of the user."
+              }
+            }
+          },
+          {
+            "required": [
+              "fullName"
+            ],
+            "properties": {
+              "fullName": {
+                "type": "string",
+                "description": "The name and surname of the user."
+              }
+            }
+          },
+          {
+            "required": [
+              "phoneNumber"
+            ],
+            "properties": {
+              "phoneNumber": {
+                "type": "string",
+                "description": "The user's phone number, including area code."
+              }
+            }
+          },
+          {
+            "required": [
+              "shippingAddress"
+            ],
+            "properties": {
+              "shippingAddress": {
+                "type": "string",
+                "description": "The user's shipping address."
+              }
+            }
+          },
+          {
+            "required": [
+              "email"
+            ],
+            "properties": {
+              "email": {
+                "type": "string",
+                "description": "The user's email address."
+              }
+            }
+          },
+          {
+            "required": [
+              "age"
+            ],
+            "properties": {
+              "age": {
+                "type": "number",
+                "description": "The user's age."
+              }
+            }
+          },
+          {
+            "required": [
+              "avatar"
+            ],
+            "properties": {
+              "avatar": {
+                "type": "string",
+                "description": "The URL of the user's avatar."
+              }
+            }
+          }
+        ],
+        "example": {
+          "username": "JohnDoe",
+          "fullName": "John Doe",
+          "phoneNumber": "+1 555 555 555",
+          "shippingAddress": "1234 Main St, Anytown, CA 12345",
+          "email": "johndoe98@gmail.com",
+          "age": 22,
+          "avatar": "https://i.imgur.com/8UYsXOS.jpg"
+        }
+      },
+      "Order": {
+        "type": "object",
+        "required": [
+          "id",
+          "orderNumber",
+          "timestamp",
+          "status",
+          "buyerID",
+          "buyerEmail",
+          "buyerShippingAddress",
+          "products",
+          "orderTotalProducts",
+          "orderTotalPrice"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The auto-generated id of the order."
+          },
+          "orderNumber": {
+            "type": "number",
+            "description": "The order number."
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "The date the order was placed."
+          },
+          "status": {
+            "type": "string",
+            "description": "The status of the order."
+          },
+          "buyerID": {
+            "type": "string",
+            "description": "The id of the order buyer."
+          },
+          "buyerEmail": {
+            "type": "string",
+            "description": "The email of the order buyer."
+          },
+          "buyerShippingAddress": {
+            "type": "string",
+            "description": "The shipping address of the order buyer."
+          },
+          "products": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "product": {
+                  "$ref": "#/components/schemas/Product"
+                },
+                "quantity": {
+                  "type": "number",
+                  "description": "Quantity of product in cart"
+                },
+                "subtotal": {
+                  "type": "number",
+                  "description": "Subtotal of product in cart"
+                }
+              }
+            }
+          },
+          "orderTotalProducts": {
+            "type": "number",
+            "description": "The total quantity of products in the order."
+          },
+          "orderTotalPrice": {
+            "type": "number",
+            "description": "The total price of the order."
+          }
+        },
+        "example": {
+          "_id": "64062bcd67d009dc58649d66",
+          "orderNumber": 1,
+          "timestamp": "3/6/2023",
+          "status": "pending",
+          "buyerID": "64015ee93df47041a3837a23",
+          "buyerEmail": "estebanposse98@gmail.com",
+          "buyerShippingAddress": "Emilio Civit",
+          "products": [
+            {
+              "product": {
+                "_id": "636bd97f8b94654de74ee25e",
+                "title": "Mario Kart 8 Deluxe",
+                "description": "Hit the road with the definitive version of Mario Kart 8 and play anytime, anywhere! Race your friends or battle them in a revised battle mode on new and returning battle courses. Play locally in up to 4-player multiplayer in 1080p while playing in TV Mode.",
+                "price": 60,
+                "stock": 6,
+                "code": "dsadas",
+                "category": "games",
+                "thumbnail": "https://i.imgur.com/gI3kPh3.png"
+              },
+              "quantity": 2,
+              "subtotal": 120
+            },
+            {
+              "product": {
+                "_id": "636bd97f8b94654de74ee252",
+                "title": "Dying Light 2. Deluxe Edition",
+                "description": "Use your agility and combat skills to survive, and change the fate of The City. Upgrade your Dying Light 2 Standard Edition to get the Deluxe content.",
+                "price": 80,
+                "stock": 5,
+                "code": "dsadas",
+                "category": "games",
+                "thumbnail": "https://i.imgur.com/zbjM3Ni.png"
+              },
+              "quantity": 2,
+              "subtotal": 160
+            }
+          ],
+          "orderTotalProducts": 4,
+          "orderTotalPrice": 280
+        }
+      },
+      "Message": {
+        "type": "object",
+        "required": [
+          "id",
+          "author",
+          "senderID",
+          "senderEmail",
+          "text",
+          "date"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The auto-generated id of the message."
+          },
+          "author": {
+            "$ref": "#/components/schemas/MessageAuthor"
+          },
+          "senderID": {
+            "type": "string",
+            "description": "The id of the message sender."
+          },
+          "senderEmail": {
+            "type": "string",
+            "description": "The email of the message sender."
+          },
+          "text": {
+            "type": "string",
+            "description": "The text of the message."
+          },
+          "date": {
+            "type": "string",
+            "description": "The date and hour the message was sent."
+          }
+        },
+        "example": {
+          "senderEmail": "estebanposse98@gmail.com",
+          "senderID": "64015ee93df47041a3837a23",
+          "author": {
+            "name": "Bebe",
+            "avatar": "https://i.imgur.com/3oHh4La.png"
+          },
+          "text": "Welcome to Cartridge Valley!",
+          "date": "3/16/2023, 6:02:26 PM"
+        }
+      },
+      "MessageAuthor": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "avatar"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The auto-generated id of the message author."
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the message author."
+          },
+          "avatar": {
+            "type": "string",
+            "description": "The URL of the message author's avatar."
+          }
+        },
+        "example": {
+          "id": "64068dd92d3fe9de624b9725",
+          "name": "John Doe",
+          "avatar": "https://i.imgur.com/8UYsXOS.jpg"
+        }
+      }
+    },
+    "requestBodies": {
+      "NewProduct": {
+        "description": "A JSON object with the product to be added",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/NewProduct"
+            }
+          }
+        }
+      },
+      "UpdateProduct": {
+        "description": "A JSON object with the updated product",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/UpdateProduct"
+            }
+          }
+        }
+      },
+      "LoginUser": {
+        "description": "A JSON object with the login credentials",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/LoginUser"
+            }
+          }
+        }
+      },
+      "NewUser": {
+        "description": "A JSON object with the sign-up credentials",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/NewUser"
+            }
+          }
+        }
+      },
+      "UpdateUser": {
+        "description": "A JSON object with updated user credentials",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/UpdateUser"
+            }
+          }
+        }
+      }
+    },
+    "links": {
+      "getProduct": {
+        "operationId": "getProduct",
+        "parameters": {
+          "id": "$response.body#/product"
+        }
+      },
+      "updateProduct": {
+        "operationId": "updateProduct",
+        "parameters": {
+          "id": "$response.body#/product"
+        }
+      },
+      "deleteProduct": {
+        "operationId": "deleteProduct",
+        "parameters": {
+          "id": "$response.body#/product"
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Users",
+      "description": "Manage ecommerce users & admins"
+    },
+    {
+      "name": "Products",
+      "description": "Manage ecommerce products"
+    },
+    {
+      "name": "Carts",
+      "description": "Manage ecommerce carts"
+    },
+    {
+      "name": "Orders",
+      "description": "Manage ecommerce orders"
+    },
+    {
+      "name": "Chat",
+      "description": "Manage ecommerce chat"
+    }
+  ]
+}

@@ -6,6 +6,9 @@ const messagesRepository = new messagesRepo();
 const getAllMessages = async (req, res) => {
     try {
         const messages = await messagesRepository.getMessages();
+        if (!messages || messages.length === 0) {
+            return { response: "No messages found", status: 404 }
+        }
         return { response: messages, status: 200 }
     } catch (e) {
         errorLog(e);
@@ -16,6 +19,9 @@ const getAllMessages = async (req, res) => {
 const getMessagesByUserEmail = async (email) => {
     try {
         const messages = await messagesRepository.getMessagesByParameter({senderEmail: email});
+        if (!messages || messages.length === 0) {
+            return { response: "No messages found for this user", status: 404 }
+        }
         return { response: messages, status: 200 }
     } catch (e) {
         errorLog(e);

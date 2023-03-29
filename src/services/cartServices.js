@@ -59,9 +59,12 @@ const addProducts = async (id, products) => {
 const getProducts = async (id) => {
     try {
         let rawCart = await cartManager.getById(id);
+        if (!rawCart) {
+            return { response: "Couldn't find cart!", status: 404 }
+        }
         let cart = new cartDTO(rawCart)
         if (cart.products.length === 0) {
-            return { response: "This cart has no products", status: 200 }
+            return { response: "This cart has no products", status: 204 }
         } else {
             let cartProducts = await Promise.all(cart.products.map(async p => {
                 return {
@@ -119,6 +122,10 @@ const getCartByUserID = async (userID) => {
 
 const deleteCart = async (id) => {
     try {
+        let cart = await cartManager.getById(id);
+        if (!cart) {
+            return { response: "Couldn't find cart!", status: 404 }
+        }
         await cartManager.deleteById(id)
         return { response: 'Cart deleted', status: 201 }
     } catch (error) {
@@ -130,6 +137,9 @@ const deleteCart = async (id) => {
 const deleteProduct = async (id, id_prod) => {
     try {
         let cart = await cartManager.getById(id);
+        if (!cart) {
+            return { response: "Couldn't find cart!", status: 404 }
+        }
         let newProducts = cart.products.filter((product) => (product._id).toString() !== id_prod);
         cart.products = newProducts;
         let totalAmounts = totalCounter(cart.products)
@@ -146,11 +156,14 @@ const deleteProduct = async (id, id_prod) => {
 const clearCart = async (id) => {
     try {
         let cart = await cartManager.getById(id);
+        if (!cart) {
+            return { response: "Couldn't find cart!", status: 404 }
+        }
         cart.products = [];
         cart.cartTotalProducts = 0;
         cart.cartTotalPrice = 0
         let updatedCart = await cartManager.updateItem(cart);
-        return { response: 'Cart updated!', status: 201 }
+        return { response: 'Cart cleared!', status: 201 }
     } catch (error) {
         errorLog(error)
         return { response: "Couldn't update cart", status: 500 }
