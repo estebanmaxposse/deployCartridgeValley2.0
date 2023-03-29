@@ -10,6 +10,8 @@ import { getProducts, clearCart } from "./cartServices.js";
 const getNewOrder = async (id, {user}) => {
     try {
         let cart = await cartManager.getById(id);
+        if (!cart) return { response: "Cart not found", status: 404 };
+        if (cart.cartTotalProducts === 0) return { response: "Cart is empty. Add some products first", status: 400 };
         let products = await getProducts(id);
         let newOrder = new Order();
         newOrder.orderNumber = await orderManager.getOrderNumber();
@@ -33,6 +35,7 @@ const getNewOrder = async (id, {user}) => {
 const getAllOrders = async () => {
     try {
         const rawOrders = await orderManager.getAll();
+        if (!rawOrders) return { response: "No orders found", status: 404 };
         const orders = rawOrders.map((o) => new orderDTO(o));
         return { response: orders, status: 200 };
     } catch (error) {
@@ -44,6 +47,7 @@ const getAllOrders = async () => {
 const getOrder = async (id) => {
     try {
         let order = await orderManager.getById(id);
+        if (!order) return { response: "Order not found", status: 404 };
         return { response: order, status: 200 };
     } catch (error) {
         errorLog(error);
@@ -54,6 +58,7 @@ const getOrder = async (id) => {
 const getOrdersByUser = async (id) => {
     try {
         let orders = await orderManager.getByParameter({ buyerID: id });
+        if (!orders) return { response: "Orders not found", status: 404 };
         return { response: orders, status: 200 };
     } catch (error) {
         errorLog(error);
@@ -64,6 +69,7 @@ const getOrdersByUser = async (id) => {
 const updateOrder = async (id, body) => {
     try {
         let order = await orderManager.getById(id);
+        if (!order) return { response: "Order not found", status: 404 };
         order.status = body.status;
         let updatedOrder = await orderManager.updateItem(order);
         return { response: "Order updated!", status: 201 };
@@ -76,6 +82,7 @@ const updateOrder = async (id, body) => {
 const deleteOrder = async (id) => {
     try {
         let order = await orderManager.getById(id);
+        if (!order) return { response: "Order not found", status: 404 };
         let deletedOrder = await orderManager.deleteItem(order);
         return { response: "Order deleted!", status: 201 };
     } catch (error) {
