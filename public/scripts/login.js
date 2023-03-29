@@ -15,9 +15,8 @@ const login = async () => {
             },
             body: JSON.stringify({ email: email, password: password })
         })
-        console.log('RESPONSE', response);
         const result = await response.json();
-        console.log('RESULT', result);
+        console.log('TOKEN', result);
         const token = localStorage.setItem('token', result);
         window.location.href = '/';
     } catch (error) {

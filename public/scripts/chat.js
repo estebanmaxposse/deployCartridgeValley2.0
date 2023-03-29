@@ -45,6 +45,10 @@ const addMessage = (e) => {
     return false;
 }
 
+server.on('load-messages' , (data) => {
+    renderMessages(data);
+})
+
 server.on('messages', data => {
     console.log('messages', data);
     renderMessages(data);

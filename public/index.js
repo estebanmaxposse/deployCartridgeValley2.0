@@ -3,7 +3,6 @@ const logoutButton = document.getElementById('logout');
 
 const checkUser = () => {
     user = localStorage.getItem('token');
-    console.log(user);
     if (!user) {
         alert('Please login first')
         window.location.href = '/pages/login.html'
