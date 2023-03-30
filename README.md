@@ -27,13 +27,13 @@ function nowWorkingOn() {
 Clone the project
 
 ```bash
-  git clone https://link-to-project
+  git clone https://github.com/estebanmaxposse/deployCartridgeValley2.0.git
 ```
 
 Go to the project directory
 
 ```bash
-  cd my-project
+  cd deployCartridgeValley2.0
 ```
 
 Install dependencies
