@@ -15,6 +15,16 @@ const login = async () => {
             },
             body: JSON.stringify({ email: email, password: password })
         })
+        if (response.status == 401) {
+            console.log('Invalid password');
+            alert('Invalid password');
+            location.reload();
+        }
+        if (response.status == 404) {
+            console.log('User not found');
+            alert('User not found');
+            location.reload();
+        }
         const result = await response.json();
         const token = localStorage.setItem('token', result);
         window.location.href = '/';
