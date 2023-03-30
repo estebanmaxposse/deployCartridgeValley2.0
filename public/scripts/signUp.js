@@ -1,7 +1,7 @@
 const signUpForm = document.getElementById('signUpForm');
 const signUpButton = document.getElementById('signup-button');
 
-const signUp = () => {
+const signUp = (event) => {
     console.log('SIGNUP');
     const email = document.getElementById('user-email').value;
     const password = document.getElementById('user-password').value;
@@ -21,9 +21,25 @@ const signUp = () => {
         body: JSON.stringify({ email: email, password: password, username: username, fullName: fullName, phoneNumber: phoneNumber, shippingAddress: shippingAddress, age: age, avatar: avatar })
     })
         .then(response => {
-            return response.json();
+            if (response.status == 409) {
+                console.log('User already exists');
+                // Display an error message to the user
+                const errorDiv = document.createElement('div');
+                errorDiv.innerHTML = 'User already exists';
+                errorDiv.style.color = 'red';
+                signUpForm.appendChild(errorDiv);
+                alert('User already exists');
+                location.reload();
+            } else {
+                return response.json();
+            }
         })
         .then(data => {
+            console.log('DATA', data);
+            if (data === "User already exists") {
+                location.reload();
+                return;
+            }
             localStorage.setItem('token', data);
             window.location.href = '/';
         })
